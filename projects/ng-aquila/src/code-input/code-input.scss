@@ -1,32 +1,33 @@
 @use '../shared-styles/index' as *;
 
-$selected-box-shadow: 0 -2px 0 0;
-$default-box-shadow: 0 -1px 0 0;
-
 :host {
   display: block;
 
   .nx-code-input__field {
     @include type-style(code-input);
     color: v(code-input-color);
-    margin: 0 nx-spacer(3xs);
+    margin-left: v(code-input-gap);
     text-align: center;
-    border: 0;
+    border: v(code-input-border-width) solid v(code-input-border-color);
     outline: 0;
     caret-color: v(code-input-active-color);
-    box-shadow: inset $default-box-shadow v(code-input-color);
+    box-shadow: inset 0 calc(-1 * v(code-input-underline-width)) 0 0 v(code-input-color);
     //this is needed for the box-shadow to be visible on iOS
     -webkit-appearance: none;
-    width: nx-spacer(2m);
-    border-radius: 0;
+    width: v(code-input-field-width);
+    border-radius: v(code-input-border-radius);
     padding: 0;
-    background: transparent;
+    background: v(code-input-background-color);
     box-sizing: border-box;
+    height: v(code-input-field-height);
 
     &:focus {
-      margin-bottom: -nx-border-size(xs);
-      color: v(code-input-active-color);
-      box-shadow: inset $selected-box-shadow v(code-input-active-color);
+      color: v(code-input-active-text-color);
+      border-color: v(code-input-focus-border-color);
+      box-shadow:
+        inset 0 calc(-1 * v(code-input-active-underline-width)) 0 0 v(code-input-active-color),
+        v(code-input-focus-outline-box-shadow);
+      background: v(code-input-focus-background-color);
     }
   }
 
@@ -34,12 +35,8 @@ $default-box-shadow: 0 -1px 0 0;
     margin-left: 0;
   }
 
-  .nx-code-input__field:last-child {
-    margin-right: 0;
-  }
-
   .nx-code-input--field-with-gap {
-    margin-left: 20px;
+    margin-left: v(code-input-group-gap);
   }
 
   &:focus {
@@ -48,31 +45,33 @@ $default-box-shadow: 0 -1px 0 0;
   }
 
   [dir='rtl'] & {
-    .nx-code-input__field:first-child {
-      margin-right: 0;
-      margin-left: nx-spacer(3xs);
+    .nx-code-input__field {
+      margin-left: 0;
+      margin-right: v(code-input-gap);
     }
 
-    .nx-code-input__field:last-child {
-      margin-left: 0;
-      margin-right: nx-spacer(3xs);
+    .nx-code-input__field:first-child {
+      margin-right: 0;
     }
 
     .nx-code-input--field-with-gap {
-      margin-left: nx-spacer(3xs);
-      margin-right: 20px;
+      margin-right: v(code-input-group-gap);
     }
   }
 }
 
 :host.is-negative {
   .nx-code-input__field {
-    caret-color: v(negative);
-    box-shadow: inset $default-box-shadow v(negative);
-    color: v(negative);
+    caret-color: v(code-input-negative-color);
+    box-shadow: inset 0 calc(-1 * v(code-input-underline-width)) 0 0 v(code-input-negative-color);
+    color: v(code-input-negative-color);
+    border-color: v(code-input-negative-border-color);
+    background: v(code-input-negative-background-color);
 
     &:focus {
-      box-shadow: inset $selected-box-shadow v(negative);
+      box-shadow:
+        inset 0 calc(-1 * v(code-input-active-underline-width)) 0 0 v(code-input-negative-color),
+        v(code-input-focus-outline-box-shadow);
     }
   }
 }
@@ -80,13 +79,15 @@ $default-box-shadow: 0 -1px 0 0;
 :host.has-error {
   &:not(.is-negative) {
     .nx-code-input__field {
-      margin-bottom: -nx-border-size(xs);
       font-weight: nx-font-weight(bold);
       color: v(code-input-error-color);
-      box-shadow: inset $default-box-shadow v(code-input-error-color);
+      box-shadow: inset 0 calc(-1 * v(code-input-underline-width)) 0 0 v(code-input-error-color);
+      border-color: v(code-input-error-border-color);
 
       &:focus {
-        box-shadow: inset $selected-box-shadow v(code-input-error-color);
+        box-shadow:
+          inset 0 calc(-1 * v(code-input-active-underline-width)) 0 0 v(code-input-error-color),
+          v(code-input-focus-outline-box-shadow);
       }
     }
   }
@@ -104,15 +105,18 @@ $default-box-shadow: 0 -1px 0 0;
   .nx-code-input__field {
     cursor: not-allowed;
     color: v(code-input-disabled-color);
-    box-shadow: inset $default-box-shadow nx-theme-color(code-input-disabled-color);
-    box-shadow: inset $default-box-shadow v(code-input-disabled-color);
+    box-shadow: inset 0 calc(-1 * v(code-input-underline-width)) 0 0 v(code-input-disabled-color);
+    border-color: v(code-input-disabled-border-color);
+    background: v(code-input-disabled-background-color);
   }
 }
 
 :host.is-disabled.is-negative {
   .nx-code-input__field {
-    color: v(negative-02-dimmed);
-    box-shadow: inset $default-box-shadow v(negative-02-dimmed);
+    color: v(code-input-disabled-negative-color);
+    box-shadow: inset 0 calc(-1 * v(code-input-underline-width)) 0 0
+      v(code-input-disabled-negative-color);
+    border-color: v(code-input-disabled-negative-border-color);
   }
 }
 
@@ -131,32 +135,19 @@ input[type='number'],
 @media screen and (forced-colors: active) {
   .nx-code-input__field {
     border-bottom: 1px solid buttonText !important;
+    box-shadow: inset 0 -1px 0 0 buttonText;
 
     &:focus {
       border-bottom: 2px solid highlight !important;
+      box-shadow: inset 0 -2px 0 0 buttonText;
     }
   }
 
   :host.is-disabled {
     .nx-code-input__field {
       border-bottom: 1px solid GrayText !important;
-    }
-  }
-}
-
-@media screen and (forced-colors: active) {
-  .nx-code-input__field {
-    box-shadow: inset $default-box-shadow buttonText;
-
-    &:focus {
-      box-shadow: inset $selected-box-shadow buttonText;
-    }
-  }
-
-  :host.is-disabled {
-    .nx-code-input__field {
       color: GrayText;
-      box-shadow: inset $default-box-shadow GrayText;
+      box-shadow: inset 0 -1px 0 0 GrayText;
       opacity: 1;
     }
   }

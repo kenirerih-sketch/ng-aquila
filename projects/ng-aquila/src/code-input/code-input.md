@@ -6,7 +6,7 @@ b2c: true
 expert: true
 stable: done
 alias: otp, pin input
-a1Light: true
+a1Densities: true
 ---
 
 Use this component when you want users to input a one-time, fixed, and specific set of characters to be validated. There is no limit to how many fields can be used.
@@ -47,11 +47,25 @@ The default type of the inputs is `text`. The value can be changed by setting th
 
 <!-- example(code-input-type) -->
 
+<div class="docs-hide-ndbx">
+
+### Inverse
+
+For use on dark backgrounds, add `inverse` input.
+
+<!-- example(code-input-inverse) -->
+
+</div>
+
+<div class="docs-hide-a1">
+
 ### Negative styling
 
 You can apply the negative styling to the code input by using the `[negative]` input.
 
 <!-- example(code-input-negative) -->
+
+</div>
 
 ### Accessibility
 

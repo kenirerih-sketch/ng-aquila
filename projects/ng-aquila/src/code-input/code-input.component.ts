@@ -11,6 +11,7 @@ import {
 } from '@angular/cdk/keycodes';
 import { NgClass } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -18,6 +19,7 @@ import {
   DoCheck,
   ElementRef,
   Input,
+  input,
   Optional,
   Self,
 } from '@angular/core';
@@ -46,7 +48,7 @@ export type NxConversionTypes = 'lower' | 'upper';
   host: {
     '[class.nx-code-input]': 'true',
     '[class.has-error]': 'errorState',
-    '[class.is-negative]': 'negative',
+    '[class.is-negative]': 'negative || inverse()',
     '[class.is-disabled]': 'disabled',
     '[attr.tabindex]': '-1',
     role: 'group',
@@ -103,7 +105,7 @@ export class NxCodeInputComponent implements ControlValueAccessor, DoCheck {
   _keyCode: string[] = new Array(DEFAULT_INPUT_LENGTH).fill('');
   private _focused = false;
 
-  /** Whether the code input uses the negative set of styling. */
+  /** Whether the code input should use negative styling. This will be deprecated in favor of `inverse`. */
   @Input() set negative(value: BooleanInput) {
     const newValue = coerceBooleanProperty(value);
     if (this._negative !== newValue) {
@@ -114,6 +116,9 @@ export class NxCodeInputComponent implements ControlValueAccessor, DoCheck {
     return this._negative;
   }
   private _negative = false;
+
+  /** Whether the code input should use negative styling. */
+  readonly inverse = input<boolean, BooleanInput>(false, { transform: booleanAttribute });
 
   /** Whether the code input is disabled. */
   @Input() set disabled(value: BooleanInput) {
