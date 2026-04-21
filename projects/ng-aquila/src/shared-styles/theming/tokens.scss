@@ -1726,6 +1726,8 @@ $nx-theme: (
   progress-indicator-mobile-line-height: paragraph-03-line-height,
   progress-indicator-mobile-font-weight: paragraph-03-font-weight,
   progress-indicator-mobile-letter-spacing: paragraph-03-letter-spacing,
+  progress-indicator-mobile-label-display: block,
+  progress-indicator-bar-mobile-display: none,
   progress-stepper-label-font-size: large-label-font-size,
   progress-stepper-label-line-height: large-label-line-height,
   progress-stepper-label-font-weight: 300,
@@ -1748,6 +1750,7 @@ $nx-theme: (
   single-stepper-step-line-height: paragraph-03-line-height,
   single-stepper-step-font-weight: 300,
   single-stepper-step-letter-spacing: paragraph-03-letter-spacing,
+  single-stepper-step-gap: 8px,
   multi-stepper-line-color: disabled-01,
   multi-stepper-line-filled-color: interactive-primary,
   // later we can split this deeper into completed and uncompleted steps

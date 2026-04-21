@@ -22,7 +22,7 @@
 
 @include media-breakpoint-down(small) {
   .nx-progress-stepper__mobile-label {
-    display: block;
+    display: v(progress-indicator-mobile-label-display);
     text-align: center;
   }
 }

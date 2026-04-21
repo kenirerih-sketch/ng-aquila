@@ -1,7 +1,5 @@
 @use '../../shared-styles/index' as *;
 
-$margin-bottom: nx-spacer(2xs);
-
 :host {
   display: block;
 }
@@ -10,19 +8,18 @@ $margin-bottom: nx-spacer(2xs);
   display: flex;
   @include type-style(single-stepper-step);
   color: v(single-stepper-step-color);
-  margin-top: nx-spacer(2xs);
+  margin-top: v(single-stepper-step-gap);
 }
 
 // We will show those parts only on larger screens
 nx-progressbar {
-  margin-bottom: $margin-bottom;
   display: block;
 }
 
 @include media-breakpoint-down(small) {
   nx-progressbar,
   .nx-single-step__infos {
-    display: none;
+    display: v(progress-indicator-bar-mobile-display);
   }
 }
 
