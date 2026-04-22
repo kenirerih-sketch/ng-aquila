@@ -1,5 +1,5 @@
 import fs from 'fs';
-import Fuse from 'fuse.js';
+import Fuse, { type IFuseOptions } from 'fuse.js';
 import path from 'path';
 import z from 'zod/v3';
 
@@ -37,42 +37,36 @@ const tags: { [key: string]: string[] } = JSON.parse(
 
 function handleSearchNdbxComponents(args: { componentName: string; usage?: string }) {
   const { componentName, usage } = args;
-  const topic = normalizeNxName(componentName?.trim()?.toLowerCase() || '');
+  const query = normalizeNxName(componentName?.trim()?.toLowerCase() || '');
   const action = usage?.trim() || '';
-  if (!topic) {
+  if (!query) {
     return { content: [{ type: 'text', text: 'Error: No component name provided' }] };
   }
 
-  const tagRecommendText = getTagRecommendTextForTopic(topic);
+  const tagRecommendText = getTagRecommendTextForTopic(query);
   const componentList = sections.filter((item) => item.category === 'components');
-  const componentFound = searchDocs(topic, componentList);
+  const { definitive: exactComponent, similar } = searchDocs(query, componentList);
 
   // If no components found, return a message with tag recommendations
-  if (!componentFound?.length) {
+  if (!exactComponent && similar.length === 0) {
     return {
       content: [
         {
           type: 'text',
-          text: `Component documentation for '${topic} ${action}' not found.${tagRecommendText}`,
+          text: `Component documentation for '${query} ${action}' not found.${tagRecommendText}`,
         },
       ],
     };
   }
 
-  // If multiple components match, suggest alternatives
-  const additionComponents =
-    componentFound.length >= 1 ? getAdditionalComponent(componentFound) : '';
-
-  // Find the exact component by name
-  const exactComponent = componentFound.find((d) => d.name === topic + '.md');
-
-  // If no exact match, return a message with alternatives
+  // Multiple matches → ask user to clarify
   if (!exactComponent) {
+    const additionComponents = getAdditionalComponent(similar);
     return {
       content: [
         {
           type: 'text',
-          text: `Component documentation for '${topic}' not found. \nDo you mean one of following components? \n${additionComponents}${tagRecommendText}\n`,
+          text: `Component documentation for '${query}' not found. \nDo you mean one of following components? \n${additionComponents}${tagRecommendText}\n`,
         },
       ],
     };
@@ -87,7 +81,7 @@ function handleSearchNdbxComponents(args: { componentName: string; usage?: strin
         content: [
           {
             type: 'text',
-            text: `Usage '${action}' not found for component '${topic}'.\nAvailable usages:\n${usageHeadings.map((h) => '- ' + h).join('\n')} \n\n Note: you can leave usage blank to get basic usage.`,
+            text: `Usage '${action}' not found for component '${query}'.\nAvailable usages:\n${usageHeadings.map((h) => '- ' + h).join('\n')} \n\n Note: you can leave usage blank to get basic usage.`,
           },
         ],
       };
@@ -111,14 +105,12 @@ function handleSearchNdbxComponents(args: { componentName: string; usage?: strin
 
   // Add usage list only for discovery calls
   if (!action) {
-    content += '\n# Additional ' + topic + ' usages\n' + getComponentUsageList(exactComponent);
+    content += '\n# Additional ' + query + ' usages\n' + getComponentUsageList(exactComponent);
+  }
 
-    if (componentFound.length > 1) {
-      content += `\n\n# Other Similar name components\n${componentFound
-        .filter((d) => d.name !== topic + '.md')
-        .map((c) => '- ' + c.name.replace('.md', ''))
-        .join('\n')}`;
-    }
+  // Append similar components if any were found in subsequent phases
+  if (similar.length > 0) {
+    content += '\n\n# Similar name components\n' + getAdditionalComponent(similar);
   }
 
   return { content: [{ type: 'text', text: content }] };
@@ -251,80 +243,106 @@ function normalizeNxName(name: string) {
  * Utils functions
  */
 
+export { normalizeNxName, searchDocs };
+
 /**
- * Search by name/alias with softMatchAny, then fuseMatch
+ * search using Fuse.js search:
+ * Run phases in order (strictest → broadest).
+ * Stop when 1+ results found in a phase.
+ *
+ * - Phase 1: exact name or alias match
+ * - Phase 2: fuzzy match for typos and wrong-order queries
  */
 type DocWithAlias = { name: string; alias?: string[] };
-function searchDocs<T extends DocWithAlias>(query: string, docs: Array<T>): T[] {
-  let result = softMatchAny(query, docs, 'name');
-  if (result.length > 0) {
-    return result;
-  }
-  result = softMatchAny(query, docs, 'alias');
-  if (result.length > 0) {
-    return result;
-  }
-  result = fuseMatch(query, docs, 'name');
-  if (result.length > 0) {
-    return result;
-  }
-  result = fuseMatch(query, docs, 'alias');
-  return result;
+type SearchResult<T> = { definitive: T | null; similar: T[] };
+
+/** Normalize separators to single spaces: 'aa-bb' → 'aa bb', 'aa bb' → 'aa bb' */
+function toSpaceCase(s: string): string {
+  return s.replace(/-+/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-/**
- * Tokenizes a string into lowercase word tokens.
- * @param text Input text
- * @returns Array of tokens
- */
-function tokenize(text: string): string[] {
-  return text.toLowerCase().match(/\w+/g) || [];
+type DocFlat<T extends DocWithAlias> = Omit<T, 'alias'> & { alias: string };
+
+/** Returns the single definitive match from search result candidates, or null if ambiguous. */
+function findDefinitive<T extends DocWithAlias>(results: T[], q: string): T | null {
+  const nameMatches = results.filter(
+    (doc) => toSpaceCase(doc.name.replace(/\.md$/i, '').toLowerCase()) === q,
+  );
+  if (nameMatches.length === 1) {
+    return nameMatches[0];
+  }
+
+  const aliasMatch = results.find((doc) =>
+    (doc.alias ?? []).some((a) => toSpaceCase(a.trim().toLowerCase()) === q),
+  );
+  return aliasMatch ?? null;
 }
 
-/**
- * Performs a soft match (any query token matches) on a list of objects.
- * @param query Search query
- * @param list List of objects
- * @param field Field to match (default 'name')
- * @returns Array of matching objects
- */
-export function softMatchAny<T>(query: string, list: T[], field?: keyof T): T[] {
-  const key = (field ?? 'name') as keyof T;
-  const queryTokens = tokenize(query);
-  return list.filter((item) => {
-    let value: string;
-    if (item && typeof item === 'object' && key in item) {
-      const v = item[key];
-      value = Array.isArray(v) ? v.join(' ') : String(v);
-    } else {
-      value = String(item);
+function fusePhaseSearch<T extends DocWithAlias>(
+  pattern: string,
+  docs: T[],
+  options: IFuseOptions<DocFlat<T>>,
+): T[] {
+  const flat: DocFlat<T>[] = docs.map((doc) => ({
+    ...doc,
+    name: doc.name.replace(/\.md$/i, ''),
+    alias: (doc.alias ?? []).map((a) => a.trim()).join(', '),
+  }));
+  const fuse = new Fuse(flat, {
+    keys: [
+      { name: 'name', weight: 0.5 },
+      { name: 'alias', weight: 0.5 },
+    ],
+    ...options,
+  });
+  const results = fuse.search(pattern);
+  return results.map((r) => docs[flat.indexOf(r.item)]);
+}
+
+function searchDocs<T extends DocWithAlias>(query: string, docs: Array<T>): SearchResult<T> {
+  // Normalize separators: 'time-picker' → 'time picker'
+  const q = toSpaceCase(query);
+
+  const phases = [
+    () =>
+      // Stricter search for exact matches on name or alias with no typos allowed (threshold: 0)
+      fusePhaseSearch(q, docs, {
+        useExtendedSearch: true,
+        threshold: 0,
+        includeScore: true,
+
+        ignoreLocation: true,
+        isCaseSensitive: false,
+      }),
+    () =>
+      // Broader search allowing for typos and wrong-order queries
+      fusePhaseSearch(q, docs, {
+        threshold: 0.6,
+        includeScore: true,
+        shouldSort: true,
+      }),
+  ];
+
+  // Check result of phases in order (strictest → broadest).
+  // Stop as soon as a phase produces results:
+  //   0 results → continue to next phase
+  //   1 result  → definitive match
+  //   2+ results → try to resolve by exact name/alias; otherwise treat as ambiguous return as suggestions list
+  for (const phase of phases) {
+    const result = phase();
+    if (result.length === 0) continue;
+    if (result.length === 1) return { definitive: result[0], similar: [] };
+
+    // Multiple results → check if any has exact name/alias match to resolve to single definitive result
+    const definitive = findDefinitive(result, q);
+    if (definitive) {
+      return { definitive, similar: result.filter((item) => item !== definitive) };
     }
-    const nameTokens = tokenize(value);
-    return queryTokens.some((qToken) => nameTokens.some((nToken) => nToken.includes(qToken)));
-  });
-}
 
-/**
- * Performs fuzzy matching using Fuse.js.
- * @param query Search query
- * @param list List of objects
- * @param field Field to match (default 'name')
- * @returns Array of matching objects
- */
-export function fuseMatch<T>(query: string, list: T[], field?: keyof T): T[] {
-  const key = (field ?? 'name') as string;
-  const fuse = new Fuse(list, {
-    keys: [key],
-    threshold: 0.4,
-    ignoreLocation: true,
-    minMatchCharLength: 3,
-    getFn: (obj, keyPath) => {
-      if (typeof keyPath === 'string') {
-        const value = (obj as { [key: string]: any })[keyPath];
-        return Array.isArray(value) ? value.join(' ') : value;
-      }
-      return undefined;
-    },
-  });
-  return fuse.search(query).map((result) => result.item);
+    // No single definitive match, return all as similar results for user to clarify
+    return { definitive: null, similar: result };
+  }
+
+  // not found in any phase
+  return { definitive: null, similar: [] };
 }
