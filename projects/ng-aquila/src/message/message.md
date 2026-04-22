@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: message banner, toast, snackbar, alert, info, error, warning, success, notification
 a1Light: true
+a1Densities: true
 ---
 
 

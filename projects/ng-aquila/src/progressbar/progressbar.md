@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: progress, loading bar
 a1Light: true
+a1Densities: true
 ---
 
 The progress bar module provides a simple horizontal bar to show progress.
