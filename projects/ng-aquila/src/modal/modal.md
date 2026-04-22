@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: dialog, popup
 a1Light: true
+a1Densities: true
 
 desc: |
     this require adding cdk style to angular.json

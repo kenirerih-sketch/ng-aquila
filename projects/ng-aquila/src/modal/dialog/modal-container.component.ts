@@ -61,6 +61,7 @@ export type AnimationState = 'opening' | 'opened' | 'closing' | 'closed';
     '[attr.aria-label]': '_config.ariaLabel',
     '[attr.aria-describedby]': '_config.ariaDescribedBy || null',
     '[class.is-expert]': '_isExpert',
+    '[class.nx-modal-container--has-close-icon]': '_config.showCloseIcon',
     '[class.nx-modal-container--entering]': 'animationState() === "enter"',
     '[class.nx-modal-container--exiting]': 'animationState() === "exit"',
     '[class.nx-modal-container--fullscreen]': '_config.fullscreen',

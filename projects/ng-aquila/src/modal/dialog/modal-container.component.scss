@@ -1,19 +1,17 @@
 @use '../../shared-styles/index' as *;
 
 $max-modal-content-height: 65vh !default;
-$horizontal-offset: 48px;
-$action-bar-height: nx-spacer(2xl);
 
 ::ng-deep .cdk-overlay-pane {
   &.nx-modal--x-margin {
-    margin: 0 nx-spacer(2m) !important;
+    margin: 0 v(modal-padding-small) !important;
 
     @include media-breakpoint-down('small') {
       margin: 0 nx-spacer(2xs) !important;
     }
   }
   &.is-fullscreen {
-    padding-top: nx-spacer(2m);
+    padding-top: v(modal-padding-small);
 
     @include media-breakpoint-down('small') {
       padding-top: nx-spacer(2xs);
@@ -24,9 +22,9 @@ $action-bar-height: nx-spacer(2xl);
 :host {
   background: v(modal-background-color);
   color: v(modal-text-color);
-  padding: nx-spacer(3m) nx-spacer(3m) nx-spacer(3m) nx-spacer(3m);
-  border-radius: nx-border-radius(s);
-  box-shadow: v(shadow-large);
+  padding: v(modal-padding);
+  border-radius: v(modal-border-radius);
+  box-shadow: v(modal-shadow);
 
   display: block;
   position: relative;
@@ -58,6 +56,9 @@ $action-bar-height: nx-spacer(2xl);
   // Initial state for fullscreen modals (before animation)
   &.nx-modal-container--fullscreen {
     transform: translateY(100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   &.nx-modal-container--entering {
@@ -79,7 +80,7 @@ $action-bar-height: nx-spacer(2xl);
   }
 
   .is-fullscreen & {
-    border-radius: nx-spacer(2xs) nx-spacer(2xs) 0 0;
+    border-radius: v(modal-full-screen-border-radius) v(modal-full-screen-border-radius) 0 0;
   }
 
   @include media-breakpoint-down('small') {
@@ -91,37 +92,39 @@ $action-bar-height: nx-spacer(2xl);
   }
 
   ::ng-deep .nx-modal__title {
-    text-align: center;
-    font-size: 1.875rem;
-    font-weight: 300;
-    line-height: 2.25rem;
+    font-size: v(modal-title-font-size);
+    font-weight: v(modal-title-font-weight);
+    line-height: v(modal-title-line-height);
+    letter-spacing: v(modal-title-letter-spacing);
     display: flex;
-    align-items: center;
+    align-items: v(modal-title-align);
     flex-direction: column;
     margin: 0;
-    margin-bottom: #{nx-spacer(m)};
+    margin-bottom: v(modal-title-gap);
     @include media-breakpoint-down('small') {
       font-size: 1.625rem;
     }
+    gap: v(modal-title-content-gap);
   }
   ::ng-deep .nx-modal__status {
-    margin-bottom: #{nx-spacer(s)};
-    font-size: 4rem;
+    font-size: v(modal-status-icon-size);
   }
+}
+
+:host(.nx-modal-container--has-close-icon:not(:has(.nx-modal__title))) {
+  padding-top: v(modal-with-close-icon-padding-top);
 }
 
 :host(.is-expert) {
   ::ng-deep .nx-modal__status {
     display: flex;
-    margin-bottom: 0;
-    margin-right: #{nx-spacer(s)};
-    font-size: 2.25rem !important;
+    font-size: v(modal-status-icon-size-expert);
   }
   ::ng-deep .nx-modal__title {
     font-weight: 400;
     text-align: left;
-    flex-direction: row;
-    margin-bottom: #{nx-spacer(s)};
+    flex-direction: v(modal-title-layout-expert);
+    margin-bottom: v(modal-title-gap-expert);
   }
 
   ::ng-deep .nx-modal__actions {
@@ -131,74 +134,57 @@ $action-bar-height: nx-spacer(2xl);
 
 :host ::ng-deep .nx-modal__content {
   display: block;
-  margin: 0 -#{nx-spacer(3m)};
-  padding: 0 nx-spacer(3m);
+  margin: 0 calc(-1 * v(modal-padding));
+  padding: 0 v(modal-padding);
   max-height: $max-modal-content-height;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 
   .is-fullscreen & {
-    max-height: calc(100% - #{nx-spacer(2m)});
+    max-height: unset;
   }
 
   @include media-breakpoint-down('small') {
-    margin: 0 -#{nx-spacer(2m)};
-    padding: 0 nx-spacer(2m);
-
-    .is-fullscreen & {
-      max-height: calc(100% - #{nx-spacer(3m)});
-    }
+    margin: 0 calc(-1 * v(modal-padding-small));
+    padding: 0 v(modal-padding-small);
   }
 }
 
 :host ::ng-deep .nx-modal__actions {
   // Pull the actions down to avoid their padding stacking with the modal's padding.
-  margin-bottom: -#{nx-spacer(3m)};
+  margin-bottom: calc(-1 * v(modal-padding));
 
   // Make the top grey border also stretch over the modal padding
-  margin-left: -#{nx-spacer(3m)};
-  margin-right: -#{nx-spacer(3m)};
+  margin-left: calc(-1 * v(modal-padding));
+  margin-right: calc(-1 * v(modal-padding));
 
-  height: $action-bar-height;
   border-top: nx-border-size(xs) solid v(modal-actions-border-color);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0 nx-spacer(3m);
-  border-bottom-left-radius: nx-border-radius(s);
-  border-bottom-right-radius: nx-border-radius(s);
+  padding: v(modal-actions-padding);
+  border-bottom-left-radius: v(modal-border-radius);
+  border-bottom-right-radius: v(modal-border-radius);
 
   .is-fullscreen & {
     background: v(modal-background-color);
-    position: absolute;
-    bottom: calc(#{$action-bar-height} - #{nx-spacer(2m)});
-    width: 100%;
   }
 
   @include media-breakpoint-down('small') {
-    margin-bottom: -#{nx-spacer(2m)};
-    margin-left: -#{nx-spacer(2m)};
-    margin-right: -#{nx-spacer(2m)};
-    padding: 0 nx-spacer(2m);
-
-    .is-fullscreen & {
-      bottom: calc(#{$action-bar-height} - #{nx-spacer(3m)});
-    }
+    margin-bottom: calc(-1 * v(modal-padding-small));
+    margin-left: calc(-1 * v(modal-padding-small));
+    margin-right: calc(-1 * v(modal-padding-small));
+    padding: calc(v(modal-padding) / 2) v(modal-padding-small);
   }
 }
 
 .nx-modal__close {
   position: absolute;
-  top: nx-spacer(s);
-  right: nx-spacer(s);
-  height: nx-spacer(m);
-
-  nx-icon {
-    font-size: nx-font-size(s);
-  }
+  top: v(modal-close-icon-top);
+  right: v(modal-close-icon-right);
 
   :host-context([dir='rtl']) & {
     right: auto;
-    left: nx-spacer(s);
+    left: v(modal-close-icon-right);
   }
 }
