@@ -125,6 +125,7 @@ export class NxContextMenuComponent implements AfterContentInit, OnDestroy {
   _handleKeydown(event: KeyboardEvent) {
     const keyCode = event.keyCode;
     const manager = this._keyManager;
+    this._keyManager.setFocusOrigin('keyboard');
 
     switch (keyCode) {
       case ESCAPE:
@@ -165,8 +166,8 @@ export class NxContextMenuComponent implements AfterContentInit, OnDestroy {
     this._firstItemFocusRef = afterNextRender(
       {
         read: () => {
+          this._keyManager.setFocusOrigin(origin ?? 'program');
           this._keyManager.setActiveItem(0); // always select the very first item since even disabled items are focusable
-          this._keyManager.activeItem?.focus(origin);
         },
       },
       { injector: this._injector },

@@ -195,6 +195,68 @@ describe('nxContextMenu', () => {
     flush();
   }));
 
+  it('should not apply keyboard focus origin to the first item when opened via mouse click', fakeAsync(() => {
+    const fixture = createComponent(SimpleMenu);
+    const triggerEl = fixture.componentInstance.triggerEl.nativeElement;
+
+    // Open and close once so items are available for spying.
+    dispatchMouseEvent(triggerEl, 'mousedown');
+    triggerEl.dispatchEvent(new MouseEvent('click', { bubbles: true, detail: 1 }));
+    fixture.detectChanges();
+    flush();
+    fixture.componentInstance.trigger.closeContextMenu();
+    fixture.detectChanges();
+    tick(500);
+    flush();
+
+    // Spy on the first item's focus to track which origins are applied.
+    // In a real browser, calling focus() on an already-focused element is a no-op,
+    // so a prior focus('keyboard') from FocusKeyManager.setActiveItem() would stick
+    // and the subsequent focus('program') would be ignored.
+    const focusSpy = spyOn(fixture.componentInstance.items.first, 'focus').and.callThrough();
+
+    dispatchMouseEvent(triggerEl, 'mousedown');
+    triggerEl.dispatchEvent(new MouseEvent('click', { bubbles: true, detail: 1 }));
+    fixture.detectChanges();
+    flush();
+
+    const origins = focusSpy.calls.allArgs().map((args) => args[0]);
+    expect(origins).not.toContain('keyboard');
+  }));
+
+  it('should apply keyboard focus origin to item when pressing arrow down after opening via mouse', fakeAsync(() => {
+    const fixture = createComponent(SimpleMenu);
+    const triggerEl = fixture.componentInstance.triggerEl.nativeElement;
+
+    // Open and close once so items are available for spying.
+    dispatchMouseEvent(triggerEl, 'mousedown');
+    triggerEl.dispatchEvent(new MouseEvent('click', { bubbles: true, detail: 1 }));
+    fixture.detectChanges();
+    flush();
+    fixture.componentInstance.trigger.closeContextMenu();
+    fixture.detectChanges();
+    tick(500);
+    flush();
+
+    // Open via mouse again.
+    dispatchMouseEvent(triggerEl, 'mousedown');
+    triggerEl.dispatchEvent(new MouseEvent('click', { bubbles: true, detail: 1 }));
+    fixture.detectChanges();
+    flush();
+
+    // Spy on the SECOND item's focus after the menu is open.
+    const focusSpy = spyOn(fixture.componentInstance.items.get(1)!, 'focus').and.callThrough();
+
+    // Press arrow down — this goes through _handleKeydown which now sets origin to 'keyboard'.
+    const panel = overlayContainerElement.querySelector('.nx-context-menu');
+    dispatchKeyboardEvent(panel!, 'keydown', DOWN_ARROW);
+    fixture.detectChanges();
+    flush();
+
+    const origins = focusSpy.calls.allArgs().map((args) => args[0]);
+    expect(origins).toContain('keyboard');
+  }));
+
   it('should scroll the panel to the top on open, when it is scrollable', fakeAsync(() => {
     const fixture = createComponent(SimpleMenu);
 
