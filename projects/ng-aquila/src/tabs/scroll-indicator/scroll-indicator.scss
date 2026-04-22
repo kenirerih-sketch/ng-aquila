@@ -39,7 +39,7 @@
 
     &::after {
       content: '';
-      display: v(tab-header-indicator-display);
+      display: block;
       width: v(tab-scroll-indicator-fade-width);
       position: absolute;
       top: 0;
@@ -57,22 +57,13 @@
 
     &::before {
       content: '';
-      display: v(tab-header-indicator-display);
+      display: block;
       width: v(tab-scroll-indicator-fade-width);
       position: absolute;
       top: 0;
       left: calc(0px - v(tab-scroll-indicator-fade-width));
       height: calc(100% - var(--tab-item-border-width));
       background: linear-gradient(to right, transparent 0%, v(ui-01) 100%);
-    }
-  }
-
-  // mobile
-  @include media-breakpoint-down(medium) {
-    width: v(tab-scroll-indicator-width-small-screen);
-
-    button {
-      display: v(tab-header-indicator-display);
     }
   }
 

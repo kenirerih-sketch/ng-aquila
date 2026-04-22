@@ -12,8 +12,8 @@ import { delay } from 'rxjs/operators';
 @Injectable()
 export class DropdownFetchInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(`intercepted request to /dropdown-options`);
     if (req.url.endsWith('/dropdown-options')) {
+      console.log(`intercepted request to /dropdown-options`);
       const filterValue = req.params.get('filter');
       // Simulate backend fetch with delay and suffix
       const optionsBase = [

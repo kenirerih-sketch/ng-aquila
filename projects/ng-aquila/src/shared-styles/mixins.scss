@@ -190,7 +190,7 @@
   font-weight: v(tab-item-active-font-weight);
   border-bottom-style: solid;
   border-color: v(tab-item-active-border-color);
-  padding-bottom: 8px;
+  padding-bottom: calc(var(--tab-item-padding-bottom) - var(--tab-item-active-border-width));
   cursor: default;
 
   &:hover,
