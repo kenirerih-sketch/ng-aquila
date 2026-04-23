@@ -1,8 +1,11 @@
-import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { ALLIANZ_ONE, AllianzOneOptions } from '@allianz/ng-aquila/config/allianz-one/token';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  computed,
   ElementRef,
+  inject,
   Input,
   input,
   OnChanges,
@@ -14,7 +17,19 @@ import { cloneSvg, NxIconFontDefinition, NxIconRegistry } from './icon-registry'
 import { NxSvgIcon } from './icons';
 
 /** Types of icon sizes */
-export type IconSize = 'auto' | 's' | 'm' | 'l' | 'xl';
+export type IconSize = 'auto' | 's' | 'm' | 'l' | 'xl' | '2xl';
+
+export type IconAccentColor =
+  | 'yellow'
+  | 'orange'
+  | 'red'
+  | 'purple'
+  | 'aqua'
+  | 'blue'
+  | 'teal'
+  | 'green'
+  | 'gray';
+export type NxIconType = 'auto' | 'primary' | 'secondary' | 'accent-attention' | 'accent-subtle';
 
 @Component({
   selector: 'nx-icon',
@@ -22,15 +37,34 @@ export type IconSize = 'auto' | 's' | 'm' | 'l' | 'xl';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./icon.component.scss'],
   host: {
-    '[class.nx-icon--outline]': 'outline',
-    '[class.nx-icon--fill]': 'fill',
-    '[class.nx-icon--auto]': 'size === "auto"',
+    '[class.nx-icon--outline]': '!a1Enabled() && (outline() || contained())',
+    '[class.nx-icon--inverse]': 'a1Enabled() && inverse()',
+    '[class.primary]': 'a1Enabled() && type() === "primary"',
+    '[class.secondary]': 'a1Enabled() && type() === "secondary"',
+    '[class.emphasis]': 'a1Enabled() && emphasis()',
+    '[class.surface]': 'a1Enabled() && (outline() || contained() || emphasis())',
+    '[class]': 'accentColorClass()',
+    '[class.nx-icon--fill]': '!a1Enabled() && fill()',
+    '[class.nx-icon--auto]': 'size() === "auto"',
+    '[class.nx-icon--s]': 'size() === "s"',
+    '[class.nx-icon--m]': 'size() === "m"',
+    '[class.nx-icon--l]': 'size() === "l"',
+    '[class.nx-icon--xl]': 'size() === "xl"',
+    '[class.nx-icon--2xl]': 'size() === "2xl"',
     /** Provide a stable selector for getting icons by name or retrieving the name (primarily for harnesses) */
     '[attr.data-nx-icon-name]': 'name',
   },
   standalone: true,
 })
 export class NxIconComponent implements OnChanges {
+  private readonly _allianzOneOptions = inject<AllianzOneOptions | null>(ALLIANZ_ONE, {
+    optional: true,
+  });
+
+  protected readonly a1Enabled = computed<boolean>(
+    () => this._allianzOneOptions?.enabled?.() || false,
+  );
+
   /** Keeps track of the elements and attributes that we've prefixed with the current path. */
   private readonly _elementsWithExternalReferences?: Map<
     Element,
@@ -47,36 +81,41 @@ export class NxIconComponent implements OnChanges {
   }
   private _name = '';
 
+  readonly type = input<NxIconType>('auto');
+
   /** Whether the icon has an outline. */
-  @Input() set outline(value: BooleanInput) {
-    this._outline = coerceBooleanProperty(value);
-  }
-  get outline(): boolean {
-    return this._outline;
-  }
-  private _outline = false;
+  readonly outline = input(false, { transform: booleanAttribute });
 
-  /** Whether the icon is filled. */
-  @Input() set fill(value: BooleanInput) {
-    this._fill = coerceBooleanProperty(value);
-  }
-  get fill(): boolean {
-    return this._fill;
-  }
-  private _fill = false;
+  readonly contained = input(false, { transform: booleanAttribute });
 
-  /** Specifies the size of the icon. */
-  @Input() set size(value: IconSize) {
-    if (this._size === value) {
-      return;
+  readonly emphasis = input(false, { transform: booleanAttribute });
+
+  readonly accentColor = input<IconAccentColor>('blue');
+  readonly accentColorClass = computed(() => {
+    const color = this.accentColor();
+    let accentType = null;
+    switch (this.type()) {
+      case 'accent-attention':
+        accentType = 'attention';
+        break;
+      case 'accent-subtle':
+        accentType = 'subtle';
+        break;
     }
-    this._size = value;
-    this.el.nativeElement.classList.add('nx-icon--' + this.size);
-  }
-  get size(): IconSize {
-    return this._size;
-  }
-  private _size: IconSize = 'auto';
+    return color && accentType ? `${accentType}-${color}` : '';
+  });
+  /** Whether the icon is filled. */
+  readonly fill = input(false, { transform: booleanAttribute });
+
+  readonly inverseInput = input(false, { alias: 'inverse', transform: booleanAttribute });
+  readonly inverse = computed(() => this.inverseInput() || this.fill());
+
+  /**
+   * Specifies the size of the icon.
+   * Use 's' and 'm' for functional Icons and
+   * 'l', 'xl' and '2xl' for illustrative icons.
+   */
+  readonly size = input<IconSize>('auto');
 
   /** Sets the font name that should be used. */
   readonly font = input('');

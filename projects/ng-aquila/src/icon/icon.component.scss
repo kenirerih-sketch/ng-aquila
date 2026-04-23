@@ -41,26 +41,24 @@ $icon-outline-size-xl: 160px;
   font-size: inherit;
 }
 
-// Since the font size basically controls the dimensions of the icon
-// we use the nx-spacer function here instead of font-sizes.
-// Font sizes are defined for text so sizes m, l and xl don't exist.
+// Icon size is controlled by font-size
 :host(.nx-icon--s) {
-  font-size: nx-spacer(m);
+  font-size: v(icon-size-s);
 }
-
 :host(.nx-icon--m) {
-  font-size: nx-spacer(4m);
+  font-size: v(icon-size-m);
 }
-
 :host(.nx-icon--l) {
-  font-size: nx-spacer(2xl);
+  font-size: v(icon-size-l);
 }
-
 :host(.nx-icon--xl) {
-  font-size: nx-spacer(5xl);
+  font-size: v(icon-size-xl);
+}
+:host(.nx-icon--2xl) {
+  font-size: v(icon-size-2xl);
 }
 
-// Icon Variants
+// NDBX Outline Icon Variants
 // -------------------------
 :host(.nx-icon--outline) {
   border-radius: 50%;
@@ -91,6 +89,123 @@ $icon-outline-size-xl: 160px;
   }
 }
 
+$accent-colors: yellow, orange, red, purple, aqua, blue, teal, green, gray;
+
+// A1 color variants
+:host(:not(.nx-icon--inverse):not(.surface)) {
+  &.primary {
+    color: v(icon-primary-color);
+  }
+
+  &.secondary {
+    color: v(icon-secondary-color);
+  }
+
+  @each $color in $accent-colors {
+    &.attention-#{$color} {
+      color: v(color-attention-#{$color});
+    }
+    &.subtle-#{$color} {
+      color: v(color-subtle-#{$color});
+    }
+  }
+}
+
+// A1 inverse color variants
+:host(.nx-icon--inverse:not(.surface)) {
+  color: v(icon-inverse-primary-color);
+
+  &.secondary {
+    color: v(icon-inverse-secondary-color);
+  }
+
+  @each $color in $accent-colors {
+    &.attention-#{$color} {
+      color: v(color-attention-inverse-#{$color});
+    }
+    &.subtle-#{$color} {
+      color: v(color-subtle-inverse-#{$color});
+    }
+  }
+}
+
+// A1 Icon Variants with surfaces (contained OR emphasis)
+:host(.surface) {
+  border-radius: 50%;
+  width: v(icon-contained-s-container-size);
+  height: v(icon-contained-s-container-size);
+  background-color: v(icon-surface-background-color);
+
+  &.secondary {
+    color: v(icon-secondary-color);
+  }
+
+  &.emphasis {
+    background-color: v(icon-surface-emphasis-background-color);
+  }
+
+  @each $color in $accent-colors {
+    &.attention-#{$color} {
+      color: v(icon-on-accent-attention-color);
+      background-color: v(color-attention-#{$color});
+    }
+    &.subtle-#{$color} {
+      color: v(color-on-subtle-#{$color});
+      background-color: v(color-subtle-#{$color});
+    }
+  }
+
+  // A1 Contained Icon sizes
+  &.nx-icon--s {
+    font-size: v(icon-contained-s-font-size);
+    width: v(icon-contained-s-container-size);
+    height: v(icon-contained-s-container-size);
+  }
+  &.nx-icon--m {
+    font-size: v(icon-contained-m-font-size);
+    width: v(icon-contained-m-container-size);
+    height: v(icon-contained-m-container-size);
+  }
+  &.nx-icon--l {
+    font-size: v(icon-contained-l-font-size);
+    width: v(icon-contained-l-container-size);
+    height: v(icon-contained-l-container-size);
+  }
+  &.nx-icon--xl {
+    font-size: v(icon-contained-xl-font-size);
+    width: v(icon-contained-xl-container-size);
+    height: v(icon-contained-xl-container-size);
+  }
+  &.nx-icon--2xl {
+    font-size: v(icon-contained-2xl-font-size);
+    width: v(icon-contained-2xl-container-size);
+    height: v(icon-contained-2xl-container-size);
+  }
+}
+
+// A1 inverse color variants for icons with surfaces (contained OR emphasis)
+:host(.surface.nx-icon--inverse) {
+  background-color: v(icon-surface-inverse-background-color);
+  &.secondary {
+    color: v(icon-inverse-secondary-color);
+  }
+  &.emphasis {
+    background-color: v(icon-surface-emphasis-inverse-background-color);
+  }
+
+  @each $color in $accent-colors {
+    &.attention-#{$color} {
+      background-color: v(color-attention-inverse-#{$color});
+      color: v(icon-on-accent-attention-inverse-color);
+    }
+    &.subtle-#{$color} {
+      background-color: v(color-subtle-inverse-#{$color});
+      color: v(color-on-subtle-inverse-#{$color});
+    }
+  }
+}
+
+// NDBX Filled Icon Variant
 :host(.nx-icon--fill) {
   border-radius: 50%;
   border-color: transparent;

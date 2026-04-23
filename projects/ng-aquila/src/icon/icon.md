@@ -5,12 +5,12 @@ category: components
 b2c: true
 expert: true
 stable: done
-a1Light: true
+a1Densities: true
 ---
 
 <div class="docs-private">
 
-### General usage of NDBX icons
+### General usage of icons
 
 The icons are comprised of two general types: **functional** and **product icons**. **Functional icons** are used to indicate important actions and functions like search, close or links. In most cases, functional icons will have a size of 24x24px (**s**). **Product icons** are a visual expression of aspects of our products. They are, for instance, used to select product options or in claims use cases. To make both icons distinguishable, the name of all product icons starts with `product-*`. The outline and fill options should only be used in combination with **product** icons.
 
@@ -20,7 +20,7 @@ Current icon version: **2.33.0** --- from [Global Allianz Icons](https://github.
 
 #### Standalone projects
 
-Please note that `provideNdbxIcons()` has to be used on the root level, so in the `bootstrapApplication` call.
+Please note that `provideAllianzIcons()` has to be used on the root level, so in the `bootstrapApplication` call.
 
 
 ```ts
@@ -78,11 +78,110 @@ add it to your AppModule and include the `node_modules/@fortawesome/fontawesome-
 </div>
 
 <div class="docs-private">
-⚠️ **NDBX/Aquila conflict**: please make sure **not** to import the opensource(aquila) **NxDocumentationIconModule** into NDBX projects, since it's only supposed to be used in opensource(aquila) projects and would lead to conflicts with **NdbxIconModule**
+
+⚠️ __NDBX/A1/Aquila conflict:__ please make sure **not** to import the opensource(aquila) **NxDocumentationIconModule** into Allianz projects, since it's only supposed to be used in opensource(aquila) projects and would lead to conflicts with **AllianzIconModule**
 recommend to use either module and register custom font yourself if need.
 </div>
 
-### Essential Icons
+
+### Sizes
+
+**Functional** icons should mainly use the size **s**.
+
+<!-- example(icon-sizes) -->
+
+<div class="docs-hide-ndbx">
+
+### Types
+
+Icons can be `primary | secondary | accent-attention | accent-subtle`. 
+The default is `primary`. [For __accent-attention__ and  __accent-subtle__ the color can be set with the `accentColor` input](./documentation/icon/overview#colors). 
+
+<!-- example(icon-type) -->
+
+### Contained
+
+Contained Icons can be _primary, secondary, emphasis, accent-attention or accent-subtle_
+
+<!-- example(icon-emphasis) -->
+
+__Primary__ and __Secondary__ Contained Icons should be placed on colored backgrounds (e.g. emphasis). 
+
+<!-- example(icon-contained) -->
+
+#### Contained Sizes
+
+Contained icons are available in sizes `s`, `m`, `l`, `xl` and `2xl`.
+
+<!-- example(icon-contained-sizes) -->
+
+
+## Colors
+
+Use the predefined color schemes for icon types `accent-attention` or `accent-subtle`.
+Available color options are `yellow | orange | red | purple | aqua | blue | teal | green | gray`
+
+<!-- example(icon-attention-colors) -->
+
+</div>
+
+<div class="docs-hide-a1">
+
+## NDBX approach
+
+#### Filled icons
+
+<div class="docs-private">
+
+The filled option should only be used with **product** icons.
+
+<!-- example(icon-filled) -->
+
+#### Icons with outline
+
+<div class="docs-private">
+
+The outline option should only be used with **product** icons.
+
+</div>
+<!-- example(icon-outline) -->
+</div>
+</div>
+
+
+
+### Status icon
+
+<div class="docs-hide-a1">
+<!-- example(status-icon) -->
+</div>
+
+<div class="docs-a1">
+<!-- example(status-icon-sizes) -->
+</div>
+
+### Icon Catalogue
+
+<div class="docs-private">
+
+#### Functional icons
+
+Functional icons should use __sizes `s | m`__
+
+To use the icons shown here, please make sure to import the `AllianzIconModule` (see [General usage of Allianz icons](./documentation/icon/overview#general-usage-of-icons)).
+
+<!-- example(icon-list-functional, { "privateExample": true, "hideStackblitzButton": true }) -->
+
+#### Product icons
+
+Product icons should use __sizes `l | xl | 2xl`__
+
+To use the icons shown here, please make sure to import the `AllianzIconModule` (see [General usage of Allianz icons](./documentation/icon/overview#general-usage-of-icons)).
+
+<!-- example(icon-list-product, { "privateExample": true, "hideStackblitzButton": true }) -->
+</div>
+
+#### Essential Icons
 
 The library ships with a set of necessary icons that are used in the components themselves. You can override them with a custom SVG or by specifying a certain class from an icon font.
 
@@ -96,51 +195,6 @@ For the components to use your desired icons for the essential icons list you ca
 
 <!-- example(icon-essential-override) -->
 
-### Sizes
-
-**Functional** icons should mainly use the size **s**.
-
-<!-- example(icon-sizes) -->
-
-### Icons with outline
-
-<div class="docs-private">
-
-The outline option should only be used with **product** icons.
-
-</div>
-<!-- example(icon-outline) -->
-
-### Filled icons
-
-<div class="docs-private">
-
-The filled option should only be used with **product** icons.
-
-</div>
-<!-- example(icon-filled) -->
-
-### Status icon
-<!-- example(status-icon) -->
-
-<div class="docs-private">
-
-### Functional icons
-
-To use the icons shown here, please make sure to import the `NdbxIconModule` (see [General usage of NDBX icons](./documentation/icon/overview#general-usage-of-ndbx-icons)).
-
-<!-- example(icon-list-functional, { "privateExample": true, "hideStackblitzButton": true }) -->
-</div>
-
-<div class="docs-private">
-
-### Product icons
-
-To use the icons shown here, please make sure to import the `NdbxIconModule` (see [General usage of NDBX icons](./documentation/icon/overview#general-usage-of-ndbx-icons)).
-
-<!-- example(icon-list-product, { "privateExample": true, "hideStackblitzButton": true }) -->
-</div>
-
 ### Register icons service
 
 Custom icons can be registered via the `NxIconRegistry` injectable service. With the `NxIconRegistry` you can associate icon names with SVG, URL and HTML strings and define a CSS font class. When you are registering an icon by URL please make sure to import the `HttpClientModule` from `@angular/common/http`.
@@ -149,7 +203,7 @@ Custom icons can be registered via the `NxIconRegistry` injectable service. With
 you can use `font` attribute to specify font set (`<nx-icon font="FONT_SET_NAME" name="ICON_NAME">`)
 
 <div class="docs-private">
-💡 NDBX iconfont set name is **ndbx-icons**.
+💡 Allianz iconfont set name is **ndbx-icons**.
 </div>
 
 <!-- example(icon-registry) -->
