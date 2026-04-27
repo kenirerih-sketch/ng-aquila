@@ -44,7 +44,17 @@ We work with five different types of buttons. The primary's heavy appearance is 
 
 ### Negative
 
+<div class="docs-hide-a1">
+
 <!-- example(button-negative) -->
+
+</div>
+
+<div class="docs-a1">
+
+<!-- example(button-negative-a1) -->
+
+</div>
 
 ### With icons
 

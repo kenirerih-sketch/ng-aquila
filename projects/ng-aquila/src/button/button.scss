@@ -120,37 +120,11 @@
 }
 
 :host(.nx-button--primary.nx-button--negative) {
-  background-color: v(negative);
-  border-color: v(negative);
-  color: v(negative-accent);
+  @include button-theme(primary-inverse);
+}
 
-  &:hover:not([disabled]):not(:active) {
-    background-color: v(negative-01);
-    border-color: v(negative-01);
-    color: v(negative-accent);
-  }
-
-  // reset hover styles for devices that don't support hover
-  @media (hover: none) {
-    &:hover:not([disabled]):not(:active) {
-      background-color: v(negative);
-      border-color: v(negative);
-      color: v(negative-accent);
-    }
-  }
-
-  &:active,
-  &.nx-button--active {
-    background-color: v(negative-02);
-    border-color: v(negative-02);
-    color: v(negative-accent);
-  }
-
-  &[disabled] {
-    background-color: v(negative-dimmed);
-    border-color: transparent;
-    color: v(negative-background-dimmed);
-  }
+:host(.nx-button--primary.nx-button--danger.nx-button--negative) {
+  @include button-theme(primary-danger-inverse);
 }
 
 :host(.nx-button--secondary) {
@@ -162,36 +136,11 @@
 }
 
 :host(.nx-button--secondary.nx-button--negative) {
-  color: v(negative);
-  border-color: v(negative);
+  @include button-theme(secondary-inverse);
+}
 
-  &:hover:not([disabled]):not(:active) {
-    background-color: v(negative-01);
-    border-color: v(negative-01);
-    color: v(button-secondary-text-color);
-  }
-
-  // reset hover styles for devices that don't support hover
-  @media (hover: none) {
-    &:hover:not([disabled]):not(:active) {
-      background-color: transparent;
-      border-color: v(negative);
-      color: v(negative);
-    }
-  }
-
-  &:active,
-  &.nx-button--active {
-    background-color: v(negative-02);
-    border-color: v(negative-02);
-    color: v(button-secondary-text-color);
-  }
-
-  &[disabled] {
-    background-color: transparent;
-    border-color: v(negative-dimmed);
-    color: v(negative-dimmed);
-  }
+:host(.nx-button--secondary.nx-button--danger.nx-button--negative) {
+  @include button-theme(secondary-danger-inverse);
 }
 
 :host(.nx-button--tertiary) {
