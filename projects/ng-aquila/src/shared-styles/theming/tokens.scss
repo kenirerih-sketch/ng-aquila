@@ -1868,6 +1868,7 @@ $nx-theme: (
   progressbar-background-color: ui-03,
   progressbar-indicator-color: interactive-primary,
   progressbar-height: 4px,
+  progressbar-border-radius: 0px,
   // ----- progress-indicator components ----- //
   // mobile label is used in all three indicator components
   progress-indicator-mobile-color: text-01,
@@ -1893,7 +1894,11 @@ $nx-theme: (
   progress-stepper-step-disabled-color: text-01,
   progress-stepper-dot-color: text-02,
   progress-stepper-dot-background-color: interactive-primary,
+  progress-stepper-dot-active-background-color: interactive-primary,
+  progress-stepper-dot-active-color: text-02,
+  progress-stepper-dot-border: none,
   progress-stepper-dot-disabled-background-color: disabled-01,
+  progress-stepper-dot-size: 24px,
   single-stepper-step-color: text-01,
   single-stepper-step-font-size: paragraph-03-font-size,
   single-stepper-step-line-height: paragraph-03-line-height,
@@ -1907,6 +1912,7 @@ $nx-theme: (
   multi-stepper-dot-checkmark-color: ui-01,
   multi-stepper-dot-background-color: ui-01,
   multi-stepper-dot-disabled-color: disabled-01,
+  multi-stepper-dot-border-size: 2px,
   multi-stepper-step-color: text-01,
   multi-stepper-step-disabled-color: text-01,
   multi-stepper-step-font-size: paragraph-03-font-size,
@@ -1919,6 +1925,48 @@ $nx-theme: (
   multi-stepper-group-line-height: paragraph-01-line-height,
   multi-stepper-group-font-weight: paragraph-01-font-weight,
   multi-stepper-group-letter-spacing: paragraph-01-letter-spacing,
+  multi-stepper-item-dot-size: 16px,
+  multi-stepper-item-small-dot-size: 8px,
+  multi-stepper-items-margin: 56px,
+  multi-stepper-line-style: dotted,
+  multi-stepper-line-height: 4px,
+  multi-stepper-line-border-radius: 0px,
+  multi-stepper-line-active-margin: 0,
+  multi-stepper-line-active-width: calc(100% - (var(--multi-stepper-item-dot-size) - 2px)),
+  multi-stepper-line-active-offset: calc(var(--multi-stepper-item-dot-size) - 1px),
+  multi-stepper-vertical-line-height: 16px,
+  multi-stepper-vertical-line-gap: 0px,
+  multi-stepper-vertical-line-active-margin: calc(
+      (var(--multi-stepper-item-dot-size) - 24px) * 0.5 - 1px
+    ),
+  multi-stepper-vertical-line-active-height: calc(
+      16px + 24px - var(--multi-stepper-item-dot-size) + 2px
+    ),
+  multi-stepper-vertical-label-gap: 16px,
+  multi-stepper-vertical-margin-start: calc(
+      (var(--multi-stepper-item-dot-size) - var(--multi-stepper-line-height)) * 0.5
+    ),
+  multi-stepper-vertical-group-line-style: dotted,
+  multi-stepper-vertical-group-label-padding-bottom: 16px,
+  multi-stepper-vertical-group-label-padding-top: 32px,
+  multi-stepper-vertical-group-label-active-offset: 4px,
+  multi-stepper-vertical-group-label-gap: calc(
+      var(--multi-stepper-item-dot-size) +
+        16px - var(--multi-stepper-vertical-margin-start) - var(--multi-stepper-line-height)
+    ),
+  multi-stepper-horizontal-line-gap: 4px,
+  multi-stepper-horizontal-inline-line-gap: 16px,
+  multi-stepper-horizontal-inline-subprogress-line-gap: 8px,
+  multi-stepper-horizontal-inline-subprogress-counter-gap: 8px,
+  multi-stepper-horizontal-inline-subprogress-width: 24px,
+  multi-stepper-horizontal-label-top: calc(var(--multi-stepper-item-dot-size) * 0.5 + 16px),
+  multi-stepper-padding-bottom: 8px,
+  multi-stepper-active-offset: 8px,
+  multi-stepper-active-width: calc(100% - 4px),
+  multi-stepper-icon-font-size: 16px,
+  multi-stepper-label-translate-left: 0,
+  multi-stepper-label-translate-right: 0,
+  multi-stepper-label-selected-font-weight: var(--multi-stepper-step-font-weight),
   // ----- end progress-indicator components ----- //
   radio-button-border-width: 2px,
   radio-button-circle-size: 24px,

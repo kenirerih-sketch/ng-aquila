@@ -1,7 +1,5 @@
 @use '../../shared-styles/index' as *;
 
-$counter-circle-size: nx-spacer(m);
-
 .nx-subprogress__items {
   display: flex;
   margin: 0 auto;
@@ -16,10 +14,10 @@ $counter-circle-size: nx-spacer(m);
   flex: 1 0 auto;
 
   &:not(:first-child) {
-    margin-left: nx-spacer(s);
+    margin-left: v(multi-stepper-horizontal-inline-line-gap);
 
     :host-context([dir='rtl']) & {
-      margin-right: nx-spacer(s);
+      margin-right: v(multi-stepper-horizontal-inline-line-gap);
       margin-left: initial;
     }
   }
@@ -29,21 +27,27 @@ $counter-circle-size: nx-spacer(m);
   display: flex;
   flex: 1 1 100%;
   align-items: center;
+
+  .nx-subprogress__counter {
+    border: v(progress-stepper-dot-border);
+    background-color: v(progress-stepper-dot-active-background-color);
+    color: v(progress-stepper-dot-active-color);
+  }
 }
 
 .nx-subprogress__progress {
   flex: 1 1 100%;
-  margin-left: nx-spacer(2xs);
+  margin-left: v(multi-stepper-horizontal-inline-subprogress-line-gap);
 
   :host-context([dir='rtl']) & {
-    margin-right: nx-spacer(2xs);
+    margin-right: v(multi-stepper-horizontal-inline-subprogress-line-gap);
     margin-left: initial;
   }
 }
 
 .nx-subprogress__item--inactive {
   .nx-subprogress__counter {
-    max-width: $counter-circle-size;
+    max-width: v(multi-stepper-horizontal-inline-subprogress-width);
 
     background-color: transparent;
     border-width: nx-border-size(m);
@@ -66,21 +70,21 @@ $counter-circle-size: nx-spacer(m);
 }
 
 .nx-subprogress__counter {
-  flex: 0 0 $counter-circle-size;
+  flex: 0 0 v(progress-stepper-dot-size);
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: v(progress-stepper-dot-background-color);
   color: v(progress-stepper-dot-color);
-  width: $counter-circle-size;
-  height: $counter-circle-size;
+  width: v(progress-stepper-dot-size);
+  height: v(progress-stepper-dot-size);
   text-align: center;
   border-radius: 50%;
-  margin-right: nx-spacer(2xs);
+  margin-right: v(multi-stepper-horizontal-inline-subprogress-counter-gap);
 
   :host-context([dir='rtl']) & {
     margin-right: initial;
-    margin-left: nx-spacer(2xs);
+    margin-left: v(multi-stepper-horizontal-inline-subprogress-counter-gap);
   }
 }
 

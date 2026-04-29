@@ -1,19 +1,12 @@
 @use '../../shared-styles/index' as *;
 
-$dot-size: nx-spacer(s);
-$dot-border-size: nx-border-size(m);
-
-// the heights of the dotted line between the elements
-$label-line-height: nx-line-height(2xs);
-$vertical-line-height: nx-spacer(s);
-
 :host {
   flex: 1 1 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  padding-bottom: nx-spacer(2xs);
+  padding-bottom: v(multi-stepper-padding-bottom);
   cursor: pointer;
   max-width: 100%;
 
@@ -75,7 +68,7 @@ $vertical-line-height: nx-spacer(s);
     .label {
       position: static;
       transform: none;
-      margin-left: nx-spacer(s);
+      margin-left: v(multi-stepper-vertical-label-gap);
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -84,7 +77,7 @@ $vertical-line-height: nx-spacer(s);
       @include type-style(multi-stepper-step);
 
       [dir='rtl'] & {
-        margin-right: nx-spacer(s);
+        margin-right: v(multi-stepper-vertical-label-gap);
         margin-left: initial;
       }
 
@@ -128,30 +121,32 @@ $vertical-line-height: nx-spacer(s);
 
     .line {
       border-top: 0;
-      border-left-width: nx-border-size(xl);
-      border-left-style: dotted;
+      border-left-width: v(multi-stepper-line-height);
+      border-left-style: v(multi-stepper-line-style);
       border-left-color: v(multi-stepper-line-color);
-      height: $vertical-line-height;
+      height: v(multi-stepper-vertical-line-height);
       flex: 0 0 auto;
-      margin-left: (($dot-size - nx-border-size(xl)) * 0.5);
-
+      margin-left: calc((v(multi-stepper-item-dot-size) - v(multi-stepper-line-height)) * 0.5);
+      margin-top: v(multi-stepper-vertical-line-gap);
+      margin-bottom: v(multi-stepper-vertical-line-gap);
+      border-radius: v(multi-stepper-line-border-radius);
       [dir='rtl'] & {
-        border-right-width: nx-border-size(xl);
-        border-right-style: dotted;
+        border-right-width: v(multi-stepper-line-height);
+        border-right-style: v(multi-stepper-line-style);
         border-right-color: v(multi-stepper-line-color);
-        margin-right: (($dot-size - nx-border-size(xl)) * 0.5);
+        margin-right: calc((v(multi-stepper-item-dot-size) - v(multi-stepper-line-height)) * 0.5);
         margin-left: initial;
         border-left: none;
       }
     }
 
     &.is-active .line {
-      $offset: (($label-line-height - $dot-size) * 0.5) + 1px; // 1px is to visually close the tiny gap to the dot
+      // 1px is to visually close the tiny gap to the dot
       border-left-style: solid;
       border-left-color: v(multi-stepper-line-filled-color);
-      margin-top: -$offset;
-      margin-bottom: -$offset;
-      height: $vertical-line-height + $offset * 2;
+      margin-top: v(multi-stepper-vertical-line-active-margin);
+      margin-bottom: v(multi-stepper-vertical-line-active-margin);
+      height: v(multi-stepper-vertical-line-active-height);
 
       [dir='rtl'] & {
         border-right-style: solid;
@@ -171,18 +166,20 @@ $vertical-line-height: nx-spacer(s);
 
   &:not(.nx-multi-step-item--vertical) {
     .line {
-      border-top-width: nx-border-size(xl);
-      border-top-style: dotted;
+      border-top-width: v(multi-stepper-line-height);
+      border-top-style: v(multi-stepper-line-style);
       border-top-color: v(multi-stepper-line-color);
-      margin: 0 nx-spacer(3xs);
+      margin: 0 v(multi-stepper-horizontal-line-gap);
       position: absolute;
-      left: calc(#{$dot-size} + #{nx-spacer(3xs)});
-      width: calc(100% - (#{$dot-size} + (#{nx-spacer(3xs)} * 2)));
+      left: calc(v(multi-stepper-item-dot-size) + v(multi-stepper-horizontal-line-gap));
+      width: calc(
+        100% - (v(multi-stepper-item-dot-size) + (v(multi-stepper-horizontal-line-gap) * 2))
+      );
       transform: translateX(50%);
-      top: calc(#{$dot-size} / 2 - #{nx-border-size(xl)} / 2);
-
+      top: calc(v(multi-stepper-item-dot-size) / 2 - v(multi-stepper-line-height) / 2);
+      border-radius: v(multi-stepper-line-border-radius);
       [dir='rtl'] & {
-        right: calc(#{$dot-size} + #{nx-spacer(3xs)});
+        right: calc(v(multi-stepper-item-dot-size) + v(multi-stepper-horizontal-line-gap));
         left: auto;
         transform: translateX(-50%);
       }
@@ -192,12 +189,12 @@ $vertical-line-height: nx-spacer(s);
       .line {
         border-top-color: v(multi-stepper-line-filled-color);
         border-top-style: solid;
-        margin: 0;
-        left: calc(#{$dot-size} - 1px);
-        width: calc(100% - (#{$dot-size} - 2px));
+        margin: v(multi-stepper-line-active-margin);
+        left: v(multi-stepper-line-active-offset);
+        width: v(multi-stepper-line-active-width);
 
         [dir='rtl'] & {
-          right: calc(#{$dot-size} - 1px);
+          right: v(multi-stepper-line-active-offset);
           left: auto;
         }
       }
@@ -215,11 +212,11 @@ $vertical-line-height: nx-spacer(s);
       border-image-source: none;
       transition: border-style 0.1s ease-in;
       margin: 0;
-      left: calc(#{nx-spacer(3xs)} * 2);
-      width: calc(100% - #{nx-spacer(3xs)});
+      left: v(multi-stepper-active-offset);
+      width: v(multi-stepper-active-width);
 
       [dir='rtl'] & {
-        right: calc(#{nx-spacer(3xs)} * 2);
+        right: v(multi-stepper-active-offset);
         left: auto;
       }
     }
@@ -238,7 +235,7 @@ $vertical-line-height: nx-spacer(s);
 
 .label {
   position: absolute;
-  top: calc(#{$dot-size * 0.5} + #{nx-spacer(s)});
+  top: v(multi-stepper-horizontal-label-top);
   text-align: center;
   color: v(multi-stepper-step-color);
   left: 0;
@@ -251,9 +248,9 @@ $vertical-line-height: nx-spacer(s);
 }
 
 .dot {
-  width: $dot-size;
-  height: $dot-size;
-  border-width: $dot-border-size;
+  width: v(multi-stepper-item-dot-size);
+  height: v(multi-stepper-item-dot-size);
+  border-width: v(multi-stepper-dot-border-size);
   border-style: solid;
   border-color: v(multi-stepper-dot-touched-color);
   color: v(multi-stepper-dot-checkmark-color);
@@ -263,7 +260,7 @@ $vertical-line-height: nx-spacer(s);
   position: relative;
 
   nx-icon {
-    font-size: nx-font-size(3xs);
+    font-size: v(multi-stepper-icon-font-size);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -282,8 +279,8 @@ $vertical-line-height: nx-spacer(s);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: nx-spacer(2xs);
-  height: nx-spacer(2xs);
+  width: v(multi-stepper-item-small-dot-size);
+  height: v(multi-stepper-item-small-dot-size);
   border-radius: 50%;
   background-color: v(multi-stepper-dot-touched-color);
 
