@@ -17,6 +17,7 @@
   display: flex;
   @include type-style(pagination);
   padding: 0;
+  gap: v(pagination-navigation-gap);
 }
 
 .nx-pagination__item {
@@ -69,11 +70,16 @@ nx-icon.nx-pagination__arrow {
   display: flex;
   @include type-style(pagination);
   padding: 0;
+  gap: v(pagination-compact-gap);
 }
 
 .nx-pagination-compact__display {
   color: v(pagination-text-color);
   display: flex;
+  gap: v(pagination-compact-display-gap);
+  align-items: center;
+  font-size: v(pagination-compact-display-font-size);
+  font-weight: v(pagination-compact-display-font-weight);
 }
 
 .nx-pagination-compact__current-page {
@@ -202,7 +208,9 @@ nx-icon.nx-pagination__arrow {
 .nx-pagination-compact__direction-label,
 .nx-pagination__link--first,
 .nx-pagination__link--last,
-.nx-pagination__item--desktop {
+.nx-pagination__item--desktop,
+.pagination-button-last,
+.pagination-button-first {
   display: flex;
 
   @include container-breakpoint-down(small) {
@@ -226,6 +234,35 @@ nx-icon.nx-pagination__arrow {
   }
 }
 
+.nx-pagination--number {
+  height: v(pagination-number-size);
+  width: v(pagination-number-size);
+  border-radius: v(pagination-number-border-radius);
+  color: v(pagination-number-color);
+  font-size: v(pagination-number-font-size);
+
+  &:hover {
+    background: v(pagination-number-hover-bg);
+  }
+
+  &:active {
+    background: v(pagination-number-active-bg);
+  }
+
+  &.is-active {
+    background: v(pagination-number-selected-bg);
+    color: v(pagination-number-selected-color);
+
+    &:hover {
+      background: v(pagination-number-selected-hover-bg);
+    }
+
+    &:active {
+      background: v(pagination-number-selected-active-bg);
+    }
+  }
+}
+
 .nx-pagination-slider {
   .nx-pagination__item {
     display: flex;
@@ -244,5 +281,75 @@ nx-icon.nx-pagination__arrow {
   .nx-pagination--icon.is-active {
     background-color: v(pagination-slider-icon-active-color);
     cursor: auto;
+  }
+}
+
+.double-chevron-left {
+  transform: rotate(270deg);
+}
+
+.double-chevron-right {
+  transform: rotate(90deg);
+}
+
+.pagination-button {
+  padding: v(pagination-button-padding);
+}
+
+:host(.nx-a1-pagination) {
+  .nx-pagination__item {
+    display: flex;
+    margin: 0;
+    align-self: center;
+  }
+
+  .nx-pagination__item--mobile {
+    display: none;
+
+    @include container-breakpoint-down(small) {
+      display: block;
+    }
+
+    @include media-breakpoint-down(small) {
+      display: block;
+    }
+  }
+
+  .nx-pagination__item--desktop {
+    display: flex;
+
+    @include container-breakpoint-down(small) {
+      display: none;
+    }
+
+    @include media-breakpoint-down(small) {
+      display: none;
+    }
+  }
+
+  .nx-pagination--number {
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:active {
+      text-decoration: underline;
+    }
+
+    &.is-active {
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &:active {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .nx-pagination-compact__current-page,
+  .nx-pagination-compact__page-separator,
+  .nx-pagination-compact__total-pages {
+    margin: 0;
   }
 }

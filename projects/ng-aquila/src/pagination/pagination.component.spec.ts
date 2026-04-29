@@ -769,7 +769,7 @@ class SliderPaginationBeginat6 extends PaginationTest {
   imports: [NxPaginationModule, BidiModule],
 })
 class FocusCurrentPageButtonPagination extends PaginationTest {
-  @ViewChildren('link') _linkElements!: QueryList<ElementRef>;
+  @ViewChildren('focusable') _linkElements!: QueryList<ElementRef>;
   lastInteractedButtonIsPage: boolean = true;
   count = 210;
   perPage = 10;

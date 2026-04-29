@@ -6,7 +6,7 @@ b2c: true
 expert: true
 stable: done
 alias: pager, paginator
-a1Light: true
+a1Densities: true
 ---
 
 Pagination is used for splitting up content or data into several pages, with controls for navigating to the next or previous page. You can choose between two options:
@@ -24,10 +24,14 @@ Pagination is used for splitting up content or data into several pages, with con
 
 <!-- example(pagination-simple) -->
 
+<div class="docs-hide-a1">
+
 ### Slider Pagination
 The pagination can be used for a slider using `type="slider"`. **Important:** Maximum 6 slides are supported.
 
 <!-- example(pagination-slider) -->
+
+</div>
 
 ### Localization
 

@@ -1,40 +1,73 @@
 @if (isPaginationVisible() && isPaginationContainerVisible()) {
   <nav [attr.aria-label]="ariaLabel" class="nx-pagination">
     <ul class="nx-pagination__container">
-      <li class="nx-pagination__item">
-        <button
-          #link
-          [disabled]="_isPaginationPreviousDisabled()"
-          [attr.aria-label]="paginationTexts.first"
-          [class.is-disabled]="_isPaginationPreviousDisabled()"
-          class="nx-pagination__link nx-pagination__link--first"
-          (click)="onFirst()"
-          type="button"
-        >
-          <nx-icon
-            class="nx-pagination__arrow"
-            [name]="_isRTL ? 'arrow-last' : 'arrow-first'"
-            aria-hidden="true"
-          ></nx-icon>
-        </button>
-      </li>
-      <li class="nx-pagination__item nx-pagination__item-previous">
-        <button
-          #link
-          [disabled]="_isPaginationPreviousDisabled()"
-          [attr.aria-label]="paginationTexts.previous"
-          [class.is-disabled]="_isPaginationPreviousDisabled()"
-          class="nx-pagination__link nx-pagination__link--previous"
-          (click)="onPrev()"
-          type="button"
-        >
-          <nx-icon
-            class="nx-pagination__arrow"
-            [name]="_isRTL ? 'arrow-right' : 'arrow-left'"
-            aria-hidden="true"
-          ></nx-icon>
-        </button>
-      </li>
+      @if (_a1Enabled()) {
+        <li class="nx-pagination__item">
+          <button
+            nxButton="secondary"
+            size="small"
+            type="button"
+            class="pagination-button pagination-button-first"
+            (click)="onFirst()"
+            [disabled]="_isPaginationPreviousDisabled()"
+            [attr.aria-label]="paginationTexts.first"
+          >
+            <nx-icon
+              class="double-chevron-left"
+              name="double-chevron-small"
+              aria-hidden="true"
+            ></nx-icon>
+          </button>
+        </li>
+        <li class="nx-pagination__item nx-pagination__item-previous">
+          <button
+            nxButton="secondary"
+            size="small"
+            type="button"
+            class="pagination-button"
+            (click)="onPrev()"
+            [disabled]="_isPaginationPreviousDisabled()"
+            [attr.aria-label]="paginationTexts.previous"
+          >
+            <nx-icon name="chevron-left-small" aria-hidden="true"></nx-icon>
+          </button>
+        </li>
+      } @else {
+        <li class="nx-pagination__item">
+          <button
+            #focusable
+            [disabled]="_isPaginationPreviousDisabled()"
+            [attr.aria-label]="paginationTexts.first"
+            [class.is-disabled]="_isPaginationPreviousDisabled()"
+            class="nx-pagination__link nx-pagination__link--first"
+            (click)="onFirst()"
+            type="button"
+          >
+            <nx-icon
+              class="nx-pagination__arrow"
+              [name]="_isRTL ? 'arrow-last' : 'arrow-first'"
+              aria-hidden="true"
+            ></nx-icon>
+          </button>
+        </li>
+        <li class="nx-pagination__item nx-pagination__item-previous">
+          <button
+            #focusable
+            [disabled]="_isPaginationPreviousDisabled()"
+            [attr.aria-label]="paginationTexts.previous"
+            [class.is-disabled]="_isPaginationPreviousDisabled()"
+            class="nx-pagination__link nx-pagination__link--previous"
+            (click)="onPrev()"
+            type="button"
+          >
+            <nx-icon
+              class="nx-pagination__arrow"
+              [name]="_isRTL ? 'arrow-right' : 'arrow-left'"
+              aria-hidden="true"
+            ></nx-icon>
+          </button>
+        </li>
+      }
       @for (pageNum of getPages(); track pageNum.value) {
         <li
           class="nx-pagination__item nx-pagination__item--desktop"
@@ -42,7 +75,7 @@
         >
           @if (pageNum.label !== '...') {
             <button
-              #link
+              #focusable
               class="nx-pagination--number"
               (click)="onPage(pageNum.value)"
               [attr.aria-current]="pageNum.value === page ? 'page' : ''"
@@ -65,7 +98,7 @@
           [ngClass]="getPaginationItemClasses(pageNum)"
         >
           <button
-            #link
+            #focusable
             class="nx-pagination--number"
             (click)="onPage(pageNum.value)"
             [attr.aria-current]="pageNum.value === page ? 'page' : ''"
@@ -76,84 +109,145 @@
           </button>
         </li>
       }
-      <li class="nx-pagination__item nx-pagination__item-next">
-        <button
-          #link
-          [disabled]="_isPaginationNextDisabled()"
-          [attr.aria-label]="paginationTexts.next"
-          [class.is-disabled]="_isPaginationNextDisabled()"
-          class="nx-pagination__link nx-pagination__link--next"
-          (click)="onNext()"
-          type="button"
-        >
-          <nx-icon
-            class="nx-pagination__arrow"
-            [name]="_isRTL ? 'arrow-left' : 'arrow-right'"
-            aria-hidden="true"
-          ></nx-icon>
-        </button>
-      </li>
-      <li class="nx-pagination__item">
-        <button
-          #link
-          [disabled]="_isPaginationNextDisabled()"
-          [attr.aria-label]="paginationTexts.last"
-          [class.is-disabled]="_isPaginationNextDisabled()"
-          class="nx-pagination__link nx-pagination__link--last"
-          (click)="onLast()"
-          type="button"
-        >
-          <nx-icon
-            class="nx-pagination__arrow"
-            [name]="_isRTL ? 'arrow-first' : 'arrow-last'"
-            aria-hidden="true"
-          ></nx-icon>
-        </button>
-      </li>
+      @if (_a1Enabled()) {
+        <li class="nx-pagination__item nx-pagination__item-next">
+          <button
+            nxButton="secondary"
+            size="small"
+            type="button"
+            class="pagination-button"
+            (click)="onNext()"
+            [disabled]="_isPaginationNextDisabled()"
+            [attr.aria-label]="paginationTexts.next"
+          >
+            <nx-icon name="chevron-right-small" aria-hidden="true"></nx-icon>
+          </button>
+        </li>
+        <li class="nx-pagination__item">
+          <button
+            nxButton="secondary"
+            size="small"
+            type="button"
+            class="pagination-button pagination-button-last"
+            (click)="onLast()"
+            [disabled]="_isPaginationNextDisabled()"
+            [attr.aria-label]="paginationTexts.last"
+          >
+            <nx-icon
+              class="double-chevron-right"
+              name="double-chevron-small"
+              aria-hidden="true"
+            ></nx-icon>
+          </button>
+        </li>
+      } @else {
+        <li class="nx-pagination__item nx-pagination__item-next">
+          <button
+            #focusable
+            [disabled]="_isPaginationNextDisabled()"
+            [attr.aria-label]="paginationTexts.next"
+            [class.is-disabled]="_isPaginationNextDisabled()"
+            class="nx-pagination__link nx-pagination__link--next"
+            (click)="onNext()"
+            type="button"
+          >
+            <nx-icon
+              class="nx-pagination__arrow"
+              [name]="_isRTL ? 'arrow-left' : 'arrow-right'"
+              aria-hidden="true"
+            ></nx-icon>
+          </button>
+        </li>
+        <li class="nx-pagination__item">
+          <button
+            #focusable
+            [disabled]="_isPaginationNextDisabled()"
+            [attr.aria-label]="paginationTexts.last"
+            [class.is-disabled]="_isPaginationNextDisabled()"
+            class="nx-pagination__link nx-pagination__link--last"
+            (click)="onLast()"
+            type="button"
+          >
+            <nx-icon
+              class="nx-pagination__arrow"
+              [name]="_isRTL ? 'arrow-first' : 'arrow-last'"
+              aria-hidden="true"
+            ></nx-icon>
+          </button>
+        </li>
+      }
     </ul>
   </nav>
 }
 @if (isPaginationCompactVisible()) {
   <nav [attr.aria-label]="ariaLabel" class="nx-pagination-compact">
-    <button
-      #link
-      [attr.aria-label]="paginationTexts.previous"
-      class="nx-pagination-compact__previous"
-      [disabled]="_isPaginationPreviousDisabled()"
-      [class.is-disabled]="_isPaginationPreviousDisabled()"
-      (click)="onPrev()"
-      type="button"
-    >
-      <nx-icon
-        class="nx-pagination__arrow"
-        [name]="_isRTL ? 'arrow-right' : 'arrow-left'"
-        aria-hidden="true"
-      ></nx-icon>
-      <span class="nx-pagination-compact__direction-label">
-        {{ paginationTexts.previous }}
-      </span>
-    </button>
+    @if (_a1Enabled()) {
+      <button
+        nxButton="secondary"
+        size="small"
+        type="button"
+        class="pagination-button"
+        (click)="onPrev()"
+        [disabled]="_isPaginationPreviousDisabled()"
+        [attr.aria-label]="paginationTexts.previous"
+      >
+        <nx-icon name="chevron-left-small" aria-hidden="true"></nx-icon>
+      </button>
+    } @else {
+      <button
+        #focusable
+        [attr.aria-label]="paginationTexts.previous"
+        class="nx-pagination-compact__previous"
+        [disabled]="_isPaginationPreviousDisabled()"
+        [class.is-disabled]="_isPaginationPreviousDisabled()"
+        (click)="onPrev()"
+        type="button"
+      >
+        <nx-icon
+          class="nx-pagination__arrow"
+          [name]="_isRTL ? 'arrow-right' : 'arrow-left'"
+          aria-hidden="true"
+        ></nx-icon>
+        <span class="nx-pagination-compact__direction-label">
+          {{ paginationTexts.previous }}
+        </span>
+      </button>
+    }
     <div class="nx-pagination-compact__display">
       <span class="nx-pagination-compact__current-page">{{ page }}</span>
       <span class="nx-pagination-compact__page-separator"> {{ paginationTexts.ofLabel }} </span>
       <span class="nx-pagination-compact__total-pages">{{ totalNumberPages }}</span>
     </div>
-    <button
-      #link
-      class="nx-pagination-compact__next"
-      [disabled]="_isPaginationNextDisabled()"
-      [class.is-disabled]="_isPaginationNextDisabled()"
-      [attr.aria-label]="paginationTexts.next"
-      (click)="onNext()"
-      type="button"
-    >
-      <span class="nx-pagination-compact__direction-label"> {{ paginationTexts.next }} </span>
-      <nx-icon
-        class="nx-pagination__arrow"
-        [name]="_isRTL ? 'arrow-left' : 'arrow-right'"
-        aria-hidden="true"
-      ></nx-icon>
-    </button>
+    @if (_a1Enabled()) {
+      <button
+        nxButton="secondary"
+        size="small"
+        type="button"
+        class="pagination-button"
+        (click)="onNext()"
+        [disabled]="_isPaginationNextDisabled()"
+        [attr.aria-label]="paginationTexts.next"
+      >
+        <nx-icon name="chevron-right-small" aria-hidden="true"></nx-icon>
+      </button>
+    } @else {
+      <button
+        #focusable
+        class="nx-pagination-compact__next"
+        [disabled]="_isPaginationNextDisabled()"
+        [class.is-disabled]="_isPaginationNextDisabled()"
+        [attr.aria-label]="paginationTexts.next"
+        (click)="onNext()"
+        type="button"
+      >
+        <span class="nx-pagination-compact__direction-label"> {{ paginationTexts.next }} </span>
+        <nx-icon
+          class="nx-pagination__arrow"
+          [name]="_isRTL ? 'arrow-left' : 'arrow-right'"
+          aria-hidden="true"
+        ></nx-icon>
+      </button>
+    }
   </nav>
 }
 @if (isPaginationSliderVisible()) {
@@ -161,7 +255,7 @@
     <ul class="nx-pagination__container">
       <li class="nx-pagination__item nx-pagination__item-previous">
         <button
-          #link
+          #focusable
           [disabled]="_isPaginationSliderPreviousDisabled()"
           [attr.aria-label]="paginationTexts.previous"
           [class.is-disabled]="_isPaginationSliderPreviousDisabled()"
@@ -179,7 +273,7 @@
       @for (pageNum of getSlides(); track pageNum.value) {
         <li class="nx-pagination__item">
           <button
-            #link
+            #focusable
             class="nx-pagination--icon"
             (click)="onPage(pageNum.value)"
             [attr.aria-label]="pageNum.value"
@@ -191,7 +285,7 @@
       }
       <li class="nx-pagination__item nx-pagination__item-next">
         <button
-          #link
+          #focusable
           [disabled]="_isPaginationSliderNextDisabled()"
           [attr.aria-label]="paginationTexts.next"
           [class.is-disabled]="_isPaginationSliderNextDisabled()"

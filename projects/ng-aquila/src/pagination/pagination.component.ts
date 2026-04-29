@@ -1,3 +1,5 @@
+import { NxButtonComponent } from '@allianz/ng-aquila/button';
+import { ALLIANZ_ONE, AllianzOneOptions } from '@allianz/ng-aquila/config/allianz-one/token';
 import { NxIconModule } from '@allianz/ng-aquila/icon';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Directionality } from '@angular/cdk/bidi';
@@ -8,9 +10,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   ElementRef,
   EventEmitter,
   Inject,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -37,13 +41,16 @@ export interface Page {
   templateUrl: './pagination.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./pagination.component.scss'],
-  imports: [NxIconModule, NgClass],
+  imports: [NxIconModule, NgClass, NxButtonComponent],
+  host: {
+    '[class.nx-a1-pagination]': '_a1Enabled()',
+  },
 })
 export class NxPaginationComponent implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
-  @ViewChildren('link') _linkElements!: QueryList<ElementRef>;
+  @ViewChildren('focusable') _focusableElements!: QueryList<ElementRef>;
 
-  /** Preserves the current value of the _linkElements ViewChildren in case _linkElements changes. */
-  _linkElementsPrevious!: QueryList<ElementRef>;
+  /** Preserves the current value of the _focusableElements ViewChildren in case _focusableElements changes. */
+  protected _focusableElementsPrevious!: QueryList<ElementRef>;
 
   /** @docs-private */
   paginationTexts: IPaginationTexts;
@@ -122,6 +129,9 @@ export class NxPaginationComponent implements OnInit, AfterContentInit, AfterVie
 
   private readonly _destroyed = new Subject<void>();
 
+  private readonly _a1 = inject<AllianzOneOptions | null>(ALLIANZ_ONE, { optional: true });
+  protected readonly _a1Enabled = computed(() => this._a1?.enabled?.() ?? false);
+
   constructor(
     @Optional() @Inject(NX_PAGINATION_TEXTS) paginationTexts: IPaginationTexts | null,
     @Optional() private readonly _dir: Directionality | null,
@@ -147,18 +157,22 @@ export class NxPaginationComponent implements OnInit, AfterContentInit, AfterVie
   }
 
   ngAfterViewInit(): void {
-    this._linkElements.forEach((link) => this._focusMonitor.monitor(link));
-    this._linkElementsPrevious = this._linkElements;
-    this._linkElements.changes.subscribe((_linkElements) => {
-      this._linkElementsPrevious = this._linkElements;
-      this._linkElements.forEach((link) => this._focusMonitor.monitor(link));
+    this._focusableElements.forEach((link) => this._focusMonitor.monitor(link));
+    this._focusableElementsPrevious = this._focusableElements;
+    this._focusableElements.changes.subscribe(() => {
+      const current = new Set(this._focusableElements.toArray());
+      this._focusableElementsPrevious
+        .filter((link) => !current.has(link))
+        .forEach((link) => this._focusMonitor.stopMonitoring(link));
+      this._focusableElementsPrevious = this._focusableElements;
+      this._focusableElements.forEach((link) => this._focusMonitor.monitor(link));
     });
   }
 
   ngOnDestroy(): void {
     this._destroyed.next();
     this._destroyed.complete();
-    this._linkElements?.forEach((link) => this._focusMonitor.stopMonitoring(link));
+    this._focusableElements?.forEach((link) => this._focusMonitor.stopMonitoring(link));
   }
 
   /** Returns the number of the first page. */
