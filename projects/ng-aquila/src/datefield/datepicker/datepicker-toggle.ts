@@ -29,6 +29,7 @@ import {
   NxDatepickerComponent,
 } from './datepicker.component';
 import { NxDatepickerIntl } from './datepicker-intl';
+import { NxPlainButtonComponent } from '@allianz/ng-aquila/button';
 
 /** Can be used to override the icon of a `nxDatepickerToggle`. */
 @Directive({
@@ -48,7 +49,7 @@ export class NxDatepickerToggleIconComponent {}
   },
   exportAs: 'nxDatepickerToggle',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NxIconModule],
+  imports: [NxIconModule, NxPlainButtonComponent],
 })
 export class NxDatepickerToggleComponent<D>
   implements AfterContentInit, AfterViewInit, OnChanges, OnDestroy

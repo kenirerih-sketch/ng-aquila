@@ -15,7 +15,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   EventEmitter,
+  inject,
   Input,
   input,
   Optional,
@@ -23,6 +25,8 @@ import {
   ViewChild,
 } from '@angular/core';
 
+import type { AllianzOneOptions } from '@allianz/ng-aquila/config/allianz-one/token';
+import { ALLIANZ_ONE } from '@allianz/ng-aquila/config/allianz-one/token';
 import { NxDateAdapter } from '../adapter/index';
 import { DateRange } from '../date-range/date-range.component';
 import { createMissingDateImplError } from '../datefield.functions';
@@ -60,8 +64,8 @@ export class NxMultiYearViewComponent<D> implements AfterContentInit {
       this._getValidDateOrNull(this._dateAdapter.deserialize(value)) || this._dateAdapter.today();
     this._activeDate = this._dateAdapter.clampDate(validDate, this.minDate, this.maxDate);
     if (
-      Math.floor(this._dateAdapter.getYear(oldActiveDate) / yearsPerPage) !==
-      Math.floor(this._dateAdapter.getYear(this._activeDate) / yearsPerPage)
+      Math.floor(this._dateAdapter.getYear(oldActiveDate) / this._yearsPerPage()) !==
+      Math.floor(this._dateAdapter.getYear(this._activeDate) / this._yearsPerPage())
     ) {
       this._init();
     }
@@ -123,6 +127,18 @@ export class NxMultiYearViewComponent<D> implements AfterContentInit {
   /** The year of the selected date. Null if the selected date is null. */
   _selectedYear!: number | null;
 
+  private readonly _allianzOneOptions = inject<AllianzOneOptions | null>(ALLIANZ_ONE, {
+    optional: true,
+  });
+
+  protected readonly _yearsPerRow = computed(() =>
+    (this._allianzOneOptions?.enabled?.() ?? false) ? 5 : 4,
+  );
+
+  protected readonly _yearsPerPage = computed(() =>
+    (this._allianzOneOptions?.enabled?.() ?? false) ? 30 : 20,
+  );
+
   readonly _dateAdapter: NxDateAdapter<D>;
 
   constructor(
@@ -147,6 +163,8 @@ export class NxMultiYearViewComponent<D> implements AfterContentInit {
   _init() {
     this._todayYear = this._dateAdapter.getYear(this._dateAdapter.today());
     const activeYear = this._dateAdapter.getYear(this._activeDate);
+    const yearsPerPage = this._yearsPerPage();
+    const yearsPerRow = this._yearsPerRow();
     const activeOffset = activeYear % yearsPerPage;
     this._years = [];
     for (let i = 0, row: number[] = []; i < yearsPerPage; i++) {
@@ -192,33 +210,38 @@ export class NxMultiYearViewComponent<D> implements AfterContentInit {
         this.activeDate = this._dateAdapter.addCalendarYears(this._activeDate, isRtl ? -1 : 1);
         break;
       case UP_ARROW:
-        this.activeDate = this._dateAdapter.addCalendarYears(this._activeDate, -yearsPerRow);
+        this.activeDate = this._dateAdapter.addCalendarYears(
+          this._activeDate,
+          -this._yearsPerRow(),
+        );
         break;
       case DOWN_ARROW:
-        this.activeDate = this._dateAdapter.addCalendarYears(this._activeDate, yearsPerRow);
+        this.activeDate = this._dateAdapter.addCalendarYears(this._activeDate, this._yearsPerRow());
         break;
       case HOME:
         this.activeDate = this._dateAdapter.addCalendarYears(
           this._activeDate,
-          -this._dateAdapter.getYear(this._activeDate) % yearsPerPage,
+          -this._dateAdapter.getYear(this._activeDate) % this._yearsPerPage(),
         );
         break;
       case END:
         this.activeDate = this._dateAdapter.addCalendarYears(
           this._activeDate,
-          yearsPerPage - (this._dateAdapter.getYear(this._activeDate) % yearsPerPage) - 1,
+          this._yearsPerPage() -
+            (this._dateAdapter.getYear(this._activeDate) % this._yearsPerPage()) -
+            1,
         );
         break;
       case PAGE_UP:
         this.activeDate = this._dateAdapter.addCalendarYears(
           this._activeDate,
-          event.altKey ? -yearsPerPage * 10 : -yearsPerPage,
+          event.altKey ? -this._yearsPerPage() * 10 : -this._yearsPerPage(),
         );
         break;
       case PAGE_DOWN:
         this.activeDate = this._dateAdapter.addCalendarYears(
           this._activeDate,
-          event.altKey ? yearsPerPage * 10 : yearsPerPage,
+          event.altKey ? this._yearsPerPage() * 10 : this._yearsPerPage(),
         );
         break;
       case ENTER:
@@ -239,7 +262,7 @@ export class NxMultiYearViewComponent<D> implements AfterContentInit {
   }
 
   _getActiveCell(): number {
-    return this._dateAdapter.getYear(this.activeDate) % yearsPerPage;
+    return this._dateAdapter.getYear(this.activeDate) % this._yearsPerPage();
   }
 
   /** Focuses the active cell after the microtask queue is empty. */

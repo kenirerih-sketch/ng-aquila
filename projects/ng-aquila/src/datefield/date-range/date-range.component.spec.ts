@@ -334,8 +334,9 @@ describe('DateRangeComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
 
-      const datepickerToggleButton = component.datePickerToggle()._toggleButton
-        .nativeElement as any as HTMLButtonElement;
+      const datepickerToggleButton = fixture.nativeElement.querySelector(
+        '.nx-datepicker-toggle-button',
+      ) as HTMLButtonElement;
       expect(datepickerToggleButton.disabled).toBeTrue();
     });
   });
@@ -385,8 +386,9 @@ describe('DateRangeComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
 
-      const datepickerToggleButton = component.datePickerToggle()._toggleButton
-        .nativeElement as any as HTMLButtonElement;
+      const datepickerToggleButton = fixture.nativeElement.querySelector(
+        '.nx-datepicker-toggle-button',
+      ) as HTMLButtonElement;
       expect(datepickerToggleButton.disabled).toBeTrue();
     });
   });

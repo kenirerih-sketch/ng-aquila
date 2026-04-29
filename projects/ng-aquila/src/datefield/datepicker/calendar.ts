@@ -1,4 +1,6 @@
 import { NxButtonModule } from '@allianz/ng-aquila/button';
+import type { AllianzOneOptions } from '@allianz/ng-aquila/config/allianz-one/token';
+import { ALLIANZ_ONE } from '@allianz/ng-aquila/config/allianz-one/token';
 import { NxIconModule } from '@allianz/ng-aquila/icon';
 import { CdkMonitorFocus, FocusMonitor, LiveAnnouncer } from '@angular/cdk/a11y';
 import { Directionality } from '@angular/cdk/bidi';
@@ -10,6 +12,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   ElementRef,
   EventEmitter,
   Inject,
@@ -44,8 +47,6 @@ import { NxYearViewComponent } from './year-view';
  * found in the LICENSE file at https://angular.io/license
  */
 
-const yearsPerPage = 20;
-
 /**
  * A calendar that is used as part of the datepicker.
  * @docs-private
@@ -71,6 +72,14 @@ const yearsPerPage = 20;
 export class NxCalendarComponent<D>
   implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges
 {
+  private readonly _allianzOneOptions = inject<AllianzOneOptions | null>(ALLIANZ_ONE, {
+    optional: true,
+  });
+
+  protected readonly _isAllianzOne = computed(() => this._allianzOneOptions?.enabled?.() ?? false);
+
+  private readonly _yearsPerPage = computed(() => (this._isAllianzOne() ? 30 : 20));
+
   /** Whether the datepicker should be in date range selection mode */
   isRange = input<boolean>(false);
 
@@ -190,6 +199,7 @@ export class NxCalendarComponent<D>
       return this._dateAdapter.getYearName(this._activeDate);
     }
     const activeYear = this._dateAdapter.getYear(this._activeDate);
+    const yearsPerPage = this._yearsPerPage();
     const firstYearInView = this._dateAdapter.getYearName(
       this._dateAdapter.createDate(activeYear - (activeYear % yearsPerPage), 0, 1),
     );
@@ -416,7 +426,7 @@ export class NxCalendarComponent<D>
         ? this._dateAdapter.addCalendarMonths(this._activeDate, -1)
         : this._dateAdapter.addCalendarYears(
             this._activeDate,
-            this._currentView === 'year' ? -1 : -yearsPerPage,
+            this._currentView === 'year' ? -1 : -this._yearsPerPage(),
           );
   }
 
@@ -427,7 +437,7 @@ export class NxCalendarComponent<D>
         ? this._dateAdapter.addCalendarMonths(this._activeDate, 1)
         : this._dateAdapter.addCalendarYears(
             this._activeDate,
-            this._currentView === 'year' ? 1 : yearsPerPage,
+            this._currentView === 'year' ? 1 : this._yearsPerPage(),
           );
   }
 
@@ -457,8 +467,8 @@ export class NxCalendarComponent<D>
     }
     // Otherwise we are in 'multi-year' view.
     return (
-      Math.floor(this._dateAdapter.getYear(date1) / yearsPerPage) ===
-      Math.floor(this._dateAdapter.getYear(date2) / yearsPerPage)
+      Math.floor(this._dateAdapter.getYear(date1) / this._yearsPerPage()) ===
+      Math.floor(this._dateAdapter.getYear(date2) / this._yearsPerPage())
     );
   }
 

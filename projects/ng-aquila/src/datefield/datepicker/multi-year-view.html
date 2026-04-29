@@ -4,7 +4,7 @@
     [rows]="_years"
     [todayValue]="_todayYear"
     [selectedValue]="_selectedYear!"
-    [numCols]="4"
+    [numCols]="_yearsPerRow()"
     [activeCell]="_getActiveCell()"
     (selectedValueChange)="_yearSelected($event)"
     (keydown)="_handleCalendarBodyKeydown($event)"

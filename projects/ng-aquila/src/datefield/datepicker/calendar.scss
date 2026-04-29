@@ -1,25 +1,14 @@
 @use '../../shared-styles/index' as *;
 
-$item-size: nx-spacer(3m);
-$calendar-content-width: 7 * $item-size;
-$datepicker-border-width: nx-border-size(xs);
-$calendar-content-height: calc(
-  #{$item-size} + 6 * (#{$item-size} + 2 * #{$datepicker-border-width})
-);
-
 .nx-calendar-content {
-  width: $calendar-content-width;
-  margin: nx-spacer(s) auto 0 auto;
-  height: $calendar-content-height;
-}
+  margin: v(datefield-calendar-content-margin);
+  height: calc(
+    v(datefield-header-cell-height) + v(datefield-header-cell-border-bottom-width) + 6 *
+      v(datefield-cell-size) + 5 * v(datefield-cell-border-top-width)
+  );
 
-.nx-calendar-previous-button,
-.nx-calendar-next-button {
-  &[disabled] {
-    cursor: not-allowed;
-    nx-icon {
-      color: v(disabled-01);
-    }
+  @include media-breakpoint-response(mobile) {
+    margin: v(datefield-calendar-content-margin-mobile);
   }
 }
 
@@ -27,7 +16,7 @@ $calendar-content-height: calc(
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px;
+  padding: v(datefield-calendar-controls-padding);
 }
 
 .nx-calendar-period-label {
@@ -38,11 +27,10 @@ $calendar-content-height: calc(
 
 .nx-calendar-view-controls {
   text-align: center;
-  height: nx-spacer(m);
 }
 
 .nx-calendar-change-view-button {
-  margin: nx-spacer(2xs) 0 0 0;
+  margin: v(datefield-calendar-change-view-button-margin-top) 0 0 0;
 }
 
 .nx-calendar-change-view-button.cdk-keyboard-focused,
@@ -57,6 +45,6 @@ button::-moz-focus-inner {
   border: 0;
 }
 .nx-calendar-footer {
-  text-align: center;
-  margin: nx-spacer(s) 0 nx-spacer(2m) 0;
+  text-align: v(datefield-calendar-footer-text-align);
+  margin: v(datefield-calendar-footer-margin);
 }

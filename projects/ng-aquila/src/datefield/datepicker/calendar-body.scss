@@ -1,51 +1,69 @@
 @use '../../shared-styles/index' as *;
 
-$item-size: nx-spacer(3m);
-
 .nx-calendar-body-cell,
 .nx-calendar-adjacent-cell {
   position: relative;
+  isolation: isolate;
   height: 0;
   line-height: 0;
   text-align: center;
   outline: none;
   vertical-align: text-bottom;
   cursor: pointer;
-  border-top: nx-border-size(m);
-  border-top-style: solid;
-  border-top-color: v(ui-background);
-  border-bottom: nx-border-size(m);
-  border-bottom-style: solid;
-  border-bottom-color: v(ui-background);
+  border-top: v(datefield-cell-border-top-width) solid transparent;
+  border-bottom: v(datefield-cell-border-top-width) solid transparent;
 
-  &.range-start {
-    background-color: v(datepicker-range-background-color);
-    border-top-left-radius: 50%;
-    border-bottom-left-radius: 50%;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
   }
 
-  &.range-end {
-    background-color: v(datepicker-range-background-color);
-    border-bottom-right-radius: 50%;
-    border-top-right-radius: 50%;
-  }
-
-  &.in-range {
+  &.range-start::before,
+  &.range-end::before,
+  &.in-range::before {
     background-color: v(datepicker-range-background-color);
   }
 
-  &.range-row-start {
-    border-top-left-radius: 50%;
-    border-bottom-left-radius: 50%;
+  &.range-start::before {
+    border-top-left-radius: v(datefield-cell-border-radius);
+    border-bottom-left-radius: v(datefield-cell-border-radius);
   }
 
-  &.range-row-end {
-    border-top-right-radius: 50%;
-    border-bottom-right-radius: 50%;
+  &.range-end::before {
+    border-top-right-radius: v(datefield-cell-border-radius);
+    border-bottom-right-radius: v(datefield-cell-border-radius);
+  }
+
+  &.range-row-start::before {
+    border-top-left-radius: v(datefield-cell-border-radius);
+    border-bottom-left-radius: v(datefield-cell-border-radius);
+  }
+
+  &.range-row-end::before {
+    border-top-right-radius: v(datefield-cell-border-radius);
+    border-bottom-right-radius: v(datefield-cell-border-radius);
   }
 
   &.cdk-keyboard-focused > .nx-calendar-body-cell-content {
     @include focus-style;
+  }
+}
+
+:host tr {
+  &:first-child {
+    .nx-calendar-body-cell,
+    .nx-calendar-adjacent-cell {
+      border-top: 0;
+    }
+  }
+}
+
+.nx-calendar-body-cell {
+  &:has(.nx-calendar-body-disabled) {
+    cursor: default;
   }
 }
 
@@ -59,14 +77,14 @@ $item-size: nx-spacer(3m);
   justify-content: center;
 
   box-sizing: border-box;
-  width: $item-size;
-  height: $item-size;
+  width: v(datefield-cell-size);
+  height: v(datefield-cell-size);
 
   margin: 0 auto;
   outline: none;
   @include type-style(datefield-cell);
   color: v(datefield-cell-color);
-  border-radius: 50%;
+  border-radius: v(datefield-cell-border-radius);
 
   // Prevents text being off-center on Android.
   line-height: 1;
@@ -101,11 +119,11 @@ $item-size: nx-spacer(3m);
       content: '';
       display: block;
       position: absolute;
-      width: 4px;
-      height: 4px;
-      margin-top: 24px;
+      width: v(datefield-cell-today-dot-size);
+      height: v(datefield-cell-today-dot-size);
+      bottom: v(datefield-cell-today-dot-margin-bottom);
       background-color: v(datefield-controls-color);
-      border-radius: 50%;
+      border-radius: v(datefield-cell-border-radius);
       @media screen and (forced-colors: active) {
         background-color: CanvasText !important;
       }
@@ -167,57 +185,60 @@ $item-size: nx-spacer(3m);
   }
 }
 
-:not(.nx-calendar-body-disabled) {
-  &:hover {
-    & > .nx-calendar-body-cell-content,
-    & > .nx-calendar-adjacent-cell-content {
-      color: v(datefield-cell-hover-color);
-      background-color: v(datefield-cell-hover-background-color);
+.nx-calendar-body-cell,
+.nx-calendar-adjacent-cell {
+  &:not(:has(.nx-calendar-body-disabled)) {
+    &:hover {
+      & > .nx-calendar-body-cell-content,
+      & > .nx-calendar-adjacent-cell-content {
+        color: v(datefield-cell-hover-color);
+        background-color: v(datefield-cell-hover-background-color);
 
-      @media screen and (forced-colors: active) {
-        forced-color-adjust: none;
-        background-color: highlight;
-        color: highlightText;
-      }
+        @media screen and (forced-colors: active) {
+          forced-color-adjust: none;
+          background-color: highlight;
+          color: highlightText;
+        }
 
-      &.nx-calendar-body-selected {
-        color: v(datefield-cell-selected-color);
-        background-color: v(datefield-cell-selected-hover-background-color);
-        &.nx-calendar-body-today {
-          &::after {
-            background-color: v(datefield-cell-selected-color);
+        &.nx-calendar-body-selected {
+          color: v(datefield-cell-selected-color);
+          background-color: v(datefield-cell-selected-hover-background-color);
+          &.nx-calendar-body-today {
+            &::after {
+              background-color: v(datefield-cell-selected-color);
+            }
           }
         }
       }
-    }
-    &.in-range > .nx-calendar-body-cell-content {
-      background-color: v(datepicker-range-hover-background-color);
-    }
-  }
-  &:active {
-    & > .nx-calendar-body-cell-content {
-      &.nx-calendar-body-today {
-        color: v(datefield-cell-active-color);
-        &::after {
-          background-color: v(datefield-cell-active-color);
-        }
+      &.in-range > .nx-calendar-body-cell-content {
+        background-color: v(datepicker-range-hover-background-color);
       }
-      &:not(.nx-calendar-body-selected) {
-        background-color: v(datefield-cell-active-background-color);
-      }
-      &.nx-calendar-body-selected {
-        background-color: v(datefield-cell-selected-active-background-color);
+    }
+    &:active {
+      & > .nx-calendar-body-cell-content {
         &.nx-calendar-body-today {
+          color: v(datefield-cell-active-color);
           &::after {
-            background-color: v(datefield-cell-selected-color);
+            background-color: v(datefield-cell-active-color);
+          }
+        }
+        &:not(.nx-calendar-body-selected) {
+          background-color: v(datefield-cell-active-background-color);
+        }
+        &.nx-calendar-body-selected {
+          background-color: v(datefield-cell-selected-active-background-color);
+          &.nx-calendar-body-today {
+            &::after {
+              background-color: v(datefield-cell-selected-color);
+            }
           }
         }
       }
-    }
 
-    &.in-range > .nx-calendar-body-cell-content {
-      background-color: v(datepicker-range-active-background-color);
-      color: v(datefield-cell-selected-color);
+      &.in-range > .nx-calendar-body-cell-content {
+        background-color: v(datepicker-range-active-background-color);
+        color: v(datepicker-range-active-color);
+      }
     }
   }
 }
@@ -228,14 +249,14 @@ $item-size: nx-spacer(3m);
   justify-content: center;
 
   box-sizing: border-box;
-  width: $item-size;
-  height: $item-size;
+  width: v(datefield-cell-size);
+  height: v(datefield-cell-size);
 
   margin: 0 auto;
   @include type-style(datefield-cell);
   font-weight: nx-font-weight(regular);
   color: v(datefield-cell-disabled-color);
-  border-radius: 50%;
+  border-radius: v(datefield-cell-border-radius);
 
   // Prevents text being off-center on Android.
   line-height: 1;

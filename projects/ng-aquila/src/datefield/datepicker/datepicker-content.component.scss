@@ -1,44 +1,32 @@
 @use '../../shared-styles/index' as *;
 
-$header-padding: nx-spacer(s);
-$header-line-height: nx-line-height(2xs);
-$header-height: $header-line-height + 2 * $header-padding;
-$datepicker-border-width: nx-border-size(xs);
-
 // calc total width and height of calendar
-$item-size: nx-spacer(3m);
-$controls-height: nx-spacer(4m);
-$spacing-above-calendar: nx-spacer(s);
-$spacing-beneath-calendar: nx-spacer(2m);
-$spacing-beneath-calendar-mobile: nx-spacer(s);
-$spacing-sides-calendar: nx-spacer(2m);
-$spacing-sides-calendar-mobile: nx-spacer(xs);
+$controls-height: calc(
+  2 * v(datefield-period-label-line-height) + v(datefield-calendar-change-view-button-margin-top)
+);
+
+$calendar-content-min-height: calc(
+  v(datefield-header-cell-height) + v(datefield-header-cell-border-bottom-width) + 6 *
+    v(datefield-cell-size) + 5 * v(datefield-cell-border-top-width)
+);
 
 $calendar-min-height: calc(
-  #{$controls-height} + #{$spacing-above-calendar} + 7 * #{$item-size} +
-    #{$spacing-beneath-calendar} - #{$datepicker-border-width}
+  #{$controls-height} + v(datefield-calendar-content-margin-top) + #{$calendar-content-min-height} +
+    v(datefield-calendar-padding-bottom) - v(datefield-panel-border-width)
 );
 
 $calendar-min-height-mobile: calc(
-  #{$controls-height} + #{$spacing-above-calendar} + 7 * #{$item-size} +
-    #{$spacing-beneath-calendar-mobile} - #{$datepicker-border-width}
-);
-
-$calendar-width: calc(
-  7 * #{$item-size} + 2 * #{$spacing-sides-calendar} - 2 * #{$datepicker-border-width}
-);
-
-$calendar-width-mobile: calc(
-  7 * #{$item-size} + 2 * #{$spacing-sides-calendar-mobile} - 2 * #{$datepicker-border-width}
+  #{$controls-height} + v(datefield-calendar-content-margin-top) + #{$calendar-content-min-height} +
+    v(datefield-calendar-padding-bottom-mobile) - v(datefield-panel-border-width)
 );
 
 :host {
   background: v(datefield-panel-background-color);
   display: flex;
   flex-flow: column nowrap;
-  box-shadow: v(shadow-large);
-  border: $datepicker-border-width solid v(datefield-panel-border-color);
-  border-radius: nx-border-radius(s);
+  box-shadow: v(datefield-panel-shadow);
+  border: v(datefield-panel-border-width) solid v(datefield-panel-border-color);
+  border-radius: v(datefield-panel-border-radius);
 }
 
 .nx-calendar-focus-trap {
@@ -49,15 +37,11 @@ $calendar-width-mobile: calc(
 }
 
 .nx-datepicker-header {
-  background: v(datefield-panel-header-background-color);
-  padding: calc(#{$header-padding} - #{$datepicker-border-width}) $header-padding $header-padding
-    $header-padding;
+  padding: v(datepicker-header-padding);
   display: flex;
-  height: $header-height - $datepicker-border-width;
 
   @include media-breakpoint-response(mobile) {
-    padding-left: calc(20px - #{$datepicker-border-width});
-    padding-right: calc(20px - #{$datepicker-border-width});
+    padding: v(datepicker-header-padding-mobile);
   }
 }
 
@@ -76,11 +60,9 @@ $calendar-width-mobile: calc(
 }
 
 nx-calendar {
-  width: $calendar-width;
   min-height: $calendar-min-height;
 
   @include media-breakpoint-response(mobile) {
-    width: $calendar-width-mobile;
     min-height: $calendar-min-height-mobile;
   }
 }

@@ -1,19 +1,4 @@
-@use 'sass:math';
-
 @use '../../shared-styles/index' as *;
-
-$item-size: nx-spacer(3m);
-
-// calculate the margin between the columns
-$total-calendar-width: 7 * $item-size;
-$item-outer-margin: nx-spacer(2xs);
-$total-margin-width: $total-calendar-width - 3 * $item-size - 2 * $item-outer-margin;
-$item-side-margin: $total-margin-width * 0.25;
-
-// calculate the margin between the columns
-$total-calendar-width-mobile: 224px;
-$total-margin-width-mobile: $total-calendar-width-mobile - 3 * $item-size;
-$item-side-margin-mobile: math.div($total-margin-width, 6);
 
 .nx-calendar-table {
   border-spacing: 0;
@@ -22,47 +7,38 @@ $item-side-margin-mobile: math.div($total-margin-width, 6);
 }
 
 :host ::ng-deep .nx-calendar-body {
+  .nx-calendar-body-today::after {
+    bottom: calc(
+      v(datefield-calendar-year-cell-margin-bottom) + v(datefield-cell-today-dot-margin-bottom)
+    ) !important;
+  }
+
   .nx-calendar-body-cell-content {
-    margin: 0 $item-side-margin nx-spacer(2xs);
+    min-width: v(datefield-cell-size);
+    width: v(datefield-calendar-year-cell-width);
+    margin: 0 v(datefield-calendar-year-cell-margin-horizontal)
+      v(datefield-calendar-year-cell-margin-bottom);
+    padding: 0 v(datefield-calendar-year-cell-padding-horizontal);
 
     @include media-breakpoint-response(mobile) {
-      margin: 0 $item-side-margin-mobile nx-spacer(2xs);
+      margin: 0 v(datefield-calendar-year-cell-margin-horizontal-mobile)
+        v(datefield-calendar-year-cell-margin-bottom);
     }
   }
 
   tr .nx-calendar-body-cell:first-child .nx-calendar-body-cell-content {
-    margin-left: $item-outer-margin;
+    margin-inline-start: 0;
 
     @include media-breakpoint-response(mobile) {
-      margin-left: $item-side-margin-mobile;
-    }
-
-    [dir='rtl'] & {
-      margin-right: $item-outer-margin;
-      margin-left: $item-side-margin;
-
-      @include media-breakpoint-response(mobile) {
-        margin-right: $item-side-margin-mobile;
-        margin-left: $item-side-margin-mobile;
-      }
+      margin-inline-start: v(datefield-calendar-year-cell-margin-left-mobile);
     }
   }
 
   tr .nx-calendar-body-cell:last-child .nx-calendar-body-cell-content {
-    margin-right: $item-outer-margin;
+    margin-inline-end: 0;
 
     @include media-breakpoint-response(mobile) {
-      margin-right: $item-side-margin-mobile;
-    }
-
-    [dir='rtl'] & {
-      margin-right: $item-side-margin;
-      margin-left: $item-outer-margin;
-
-      @include media-breakpoint-response(mobile) {
-        margin-right: $item-side-margin-mobile;
-        margin-left: $item-side-margin-mobile;
-      }
+      margin-inline-end: v(datefield-calendar-year-cell-margin-left-mobile);
     }
   }
 }

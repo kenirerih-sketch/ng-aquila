@@ -79,6 +79,20 @@
 </div>
 @if (showTodayButton()) {
 <div class="nx-calendar-footer">
+  @if (_isAllianzOne()) {
+  <button
+    #todayButton
+    nxButton="secondary"
+    size="small"
+    type="button"
+    (click)="todayButtonHandler()"
+    (keydown)="todayButtonKeydownHandler($event)"
+    [disabled]="_disableTodayButton"
+    [attr.aria-label]="_intl.todayButtonAriaLabel"
+  >
+    {{_intl.todayButtonLabel}}
+  </button>
+  } @else {
   <button
     #todayButton
     nxPlainButton
@@ -90,5 +104,6 @@
   >
     {{_intl.todayButtonLabel}}
   </button>
+  }
 </div>
 }
