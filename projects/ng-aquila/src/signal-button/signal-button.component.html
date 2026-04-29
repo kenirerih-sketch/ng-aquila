@@ -11,10 +11,12 @@
   nxPopoverTrigger="click"
   [disabled]="disabled"
 >
-  @if (_iconName) {
-    <nx-icon class="nx-signal-button__icon" [name]="_iconName" size="s" aria-hidden="true">
-    </nx-icon>
-  }
+  <nx-status-icon
+    class="nx-signal-button__icon"
+    [type]="_context"
+    size="auto"
+    aria-hidden="true"
+  ></nx-status-icon>
 </button>
 
 <nx-popover #signalButtonPopover>

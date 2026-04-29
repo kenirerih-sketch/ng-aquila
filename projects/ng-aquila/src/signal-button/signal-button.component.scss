@@ -12,6 +12,7 @@
     height: v(signal-button-height);
     font-size: v(signal-button-font-size);
     border-radius: v(signal-button-border-radius);
+    cursor: v(signal-button-cursor);
     padding: 0;
     outline: 0;
     border: none;
@@ -23,62 +24,86 @@
     }
     &[disabled] {
       opacity: v(signal-button-disabled-opacity);
+      cursor: default;
     }
   }
 }
 :host(.context-error) {
-  .nx-signal-button__icon {
-    color: v(signal-button-error-icon-color);
-  }
   &:hover:not(:active):not([disabled]) {
-    .nx-signal-button__icon {
+    ::ng-deep .nx-signal-button__icon nx-icon {
       color: v(signal-button-error-hover-icon-color);
     }
   }
   &:active:not([disabled]),
   .is-active:not([disabled]) {
-    .nx-signal-button__icon {
+    ::ng-deep .nx-signal-button__icon nx-icon {
       color: v(signal-button-error-active-icon-color);
+    }
+  }
+  .nx-signal-button__button[disabled] {
+    ::ng-deep .nx-signal-button__icon nx-icon {
+      color: v(signal-button-error-disabled-icon-color);
     }
   }
 }
 
 :host(.context-success) {
-  .nx-signal-button__icon {
-    color: v(signal-button-success-icon-color);
-  }
   &:hover:not(:active):not([disabled]) {
-    .nx-signal-button__icon {
+    ::ng-deep .nx-signal-button__icon nx-icon {
       color: v(signal-button-success-hover-icon-color);
     }
   }
   &:active:not([disabled]),
   .is-active:not([disabled]) {
-    .nx-signal-button__icon {
+    ::ng-deep .nx-signal-button__icon nx-icon {
       color: v(signal-button-success-active-icon-color);
+    }
+  }
+  .nx-signal-button__button[disabled] {
+    ::ng-deep .nx-signal-button__icon nx-icon {
+      color: v(signal-button-success-disabled-icon-color);
     }
   }
 }
 
 :host(.context-warning) {
-  .nx-signal-button__icon {
-    color: v(signal-button-warning-icon-color);
-    background: v(signal-button-warning-icon-background-color);
-    border-radius: 50%;
-    width: 80%;
-    height: 80%;
-  }
-
   &:hover:not(:active):not([disabled]) {
-    .nx-signal-button__icon {
+    ::ng-deep .nx-signal-button__icon nx-icon {
       color: v(signal-button-warning-hover-icon-color);
     }
   }
 
   &:active:not([disabled]),
   .is-active:not([disabled]) {
-    .nx-signal-button__icon {
+    ::ng-deep .nx-signal-button__icon nx-icon {
       color: v(signal-button-warning-active-icon-color);
+    }
+  }
+
+  .nx-signal-button__button[disabled] {
+    ::ng-deep .nx-signal-button__icon nx-icon {
+      color: v(signal-button-warning-disabled-icon-color);
+    }
+  }
+}
+
+:host(.context-info) {
+  &:hover:not(:active):not([disabled]) {
+    ::ng-deep .nx-signal-button__icon nx-icon {
+      color: v(signal-button-info-hover-icon-color);
+    }
+  }
+
+  &:active:not([disabled]),
+  .is-active:not([disabled]) {
+    ::ng-deep .nx-signal-button__icon nx-icon {
+      color: v(signal-button-info-active-icon-color);
+    }
+  }
+
+  .nx-signal-button__button[disabled] {
+    ::ng-deep .nx-signal-button__icon nx-icon {
+      color: v(signal-button-info-disabled-icon-color);
     }
   }
 }

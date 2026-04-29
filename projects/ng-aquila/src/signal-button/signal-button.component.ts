@@ -1,4 +1,4 @@
-import { NxIconModule } from '@allianz/ng-aquila/icon';
+import { NxStatusIconComponent } from '@allianz/ng-aquila/icon';
 import {
   NxPopoverModule,
   PopoverDirection,
@@ -8,13 +8,7 @@ import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 /** The contextual type of a signal button. */
-export type NxSignalButtonContext = 'success' | 'warning' | 'error';
-
-const ICONS: { [k: string]: string } = {
-  error: 'exclamation-triangle',
-  success: 'check-circle',
-  warning: 'exclamation-circle',
-};
+export type NxSignalButtonContext = 'success' | 'warning' | 'error' | 'info';
 
 @Component({
   selector: 'nx-signal-button',
@@ -24,8 +18,9 @@ const ICONS: { [k: string]: string } = {
     '[class.context-success]': 'this._context === "success"',
     '[class.context-warning]': 'this._context === "warning"',
     '[class.context-error]': 'this._context === "error"',
+    '[class.context-info]': 'this._context === "info"',
   },
-  imports: [NxPopoverModule, NxIconModule],
+  imports: [NxPopoverModule, NxStatusIconComponent],
 })
 export class NxSignalButtonComponent {
   private _popoverDirection: PopoverDirection = 'bottom';
@@ -33,8 +28,6 @@ export class NxSignalButtonComponent {
 
   private _ariaLabel = 'signal button';
   private _ariaLabelledby = '';
-  private readonly _allowedContexts: NxSignalButtonContext[] = ['success', 'warning', 'error'];
-
   /** The event emitter for open. */
   @Output() opened = new EventEmitter<boolean>();
 
@@ -121,13 +114,5 @@ export class NxSignalButtonComponent {
     if (value !== this._context) {
       this._context = value;
     }
-  }
-
-  get _iconName(): string {
-    const context = this._allowedContexts.includes(this._context)
-      ? this._context
-      : this._allowedContexts[0];
-
-    return ICONS[context];
   }
 }

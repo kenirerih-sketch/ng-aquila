@@ -274,6 +274,13 @@ describe('NxSignalButtonComponent', () => {
       click();
       expect(getContextClass('success')).toBeTruthy();
     }));
+
+    it('should set info context class', fakeAsync(() => {
+      createTestComponent(SignalButtonComponent);
+      signalButtonInstance.context = 'info';
+      click();
+      expect(getContextClass('info')).toBeTruthy();
+    }));
   });
 });
 
