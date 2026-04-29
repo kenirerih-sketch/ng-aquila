@@ -6,6 +6,7 @@ expert: true
 stable: done
 alias: patterns
 a1Light: true
+a1Densities: true
 private: true
 noApi: true
 ---

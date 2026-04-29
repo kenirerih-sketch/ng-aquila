@@ -32,6 +32,7 @@ a {
   border-radius: v(message-border-radius);
   background-color: v(documentation-message-warning-background-color);
   margin-bottom: 16px;
+  color: v(message-warning-text-color);
 }
 
 .docs-danger-text {

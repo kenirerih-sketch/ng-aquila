@@ -10,6 +10,12 @@ a1: false
 
 ### Expert module
 
+<div class="docs-deprecation-warning">
+<strong>Expert Module & Appearance</strong></br>
+The Expert Appearance is replaced by the A1 Density Themes and the Expert Module is replaced by the <a href="./guides/a1">A1 provider</a>. </br>
+The Individual Default Options <code>InjectionToken</code> for the Components can be still used. 
+</div>
+
 If you build internal applications (expert) some components need a specific configuration to be compliant with ergonomics and other requirements for internal applications. To obtain this configuration for your whole application, you can simply activate it by importing the expert module. This acts by setting injection tokens for all affected components (e.g., form fields).
 
 When imported, this module sets the injection tokens for a bunch of components. It uses the expert settings explained in dedicated sections of every affected component:

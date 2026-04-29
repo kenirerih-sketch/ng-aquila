@@ -91,7 +91,11 @@
                 style="text-align: start"
               >
                 @if (!themeService.selectedTheme().name.includes('aquila')) {
-                  @if (component.component.a1Light || component.component.a1Densities) {
+                  @if (
+                    component.component.a1Light ||
+                    component.component.a1Densities ||
+                    component.component.a1Full
+                  ) {
                     <nx-badge
                       class="nxv-components-table__status-badge"
                       colorScheme="gray"
@@ -110,7 +114,7 @@
                       </div>
                     </nx-badge>
                   }
-                  @if (component.component.a1Densities) {
+                  @if (component.component.a1Densities || component.component.a1Full) {
                     <nx-badge class="nxv-components-table__status-badge" type="active">
                       <div class="badge-content-centered">
                         <nx-icon name="check" size="auto"></nx-icon> Densities

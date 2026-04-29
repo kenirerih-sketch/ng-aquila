@@ -5,7 +5,8 @@ category: components
 b2c: true
 expert: true
 stable: done
-a1: true
+a1Light: true
+a1Densities: true
 ---
 
 The virtual scroll component provides efficient rendering of large lists by only rendering items visible in the viewport. The items can be of various and dynamic height.

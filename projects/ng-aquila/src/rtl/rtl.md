@@ -6,6 +6,7 @@ expert: true
 stable: done
 noApi: true
 a1Light: true
+a1Densities: true
 ---
 
 All components in our Component Library have built-in support for right-to-left (RTL) locales.

@@ -6,6 +6,7 @@ expert: true
 stable: progress
 noApi: true
 a1Light: true
+a1Densities: true
 ---
 
 ### Type Guards
