@@ -1,3 +1,4 @@
+import { NxPlainButtonComponent } from '@allianz/ng-aquila/button';
 import { NxIconModule } from '@allianz/ng-aquila/icon';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceNumberProperty, NumberInput } from '@angular/cdk/coercion';
@@ -29,7 +30,6 @@ import {
   NxDatepickerComponent,
 } from './datepicker.component';
 import { NxDatepickerIntl } from './datepicker-intl';
-import { NxPlainButtonComponent } from '@allianz/ng-aquila/button';
 
 /** Can be used to override the icon of a `nxDatepickerToggle`. */
 @Directive({

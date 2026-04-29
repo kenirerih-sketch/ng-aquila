@@ -1,7 +1,8 @@
 <h1 class="general-overview__header">Component Overview</h1>
-@if (!themeService.selectedTheme().name.includes('aquila')) {
+
+@if (!_isAquilaDocs()) {
   <div nxRow>
-    <div nxCol="12,12,12,9">
+    <div nxCol="12,12,12,10">
       All components can be used with the A1 themes. The table below shows the compatibility status
       of each component with the different A1 support levels:
       <div class="status-explanation">
@@ -46,24 +47,84 @@
         to A1 Components or patterns.
       </div>
       To see the individual component in the A1 themes, switch the theme using the theme switcher
-      <nx-icon name="fill-drip" class="nx-margin-left-3xs nx-margin-right-3xs"></nx-icon> in the top
-      right corner.
+      <nx-icon name="fill-drip" class="nxv-icon-inline"></nx-icon> in the top right corner.
+
+      <h2 class="nxv-catalog-heading">
+        Catalog <span class="nxv-filter-count">{{ filteredCount() }}/{{ totalCount() }}</span>
+      </h2>
+      <h3 nxHeadline="subsection-small" class="nxv-filter-heading">
+        <span>
+          Filter by name, alias or A1 progress
+          @if (!allSelected() || searchQuery()) {
+            <nx-indicator position="after-text"></nx-indicator>
+          }
+        </span>
+
+        @if (!allSelected() || searchQuery()) {
+          <button nxPlainButton (click)="clearAllFilters()">Clear</button>
+        }
+      </h3>
+      <div class="nxv-filters-row">
+        <div class="nxv-search-formfield">
+          <nx-formfield>
+            <input
+              nxInput
+              type="text"
+              aria-label="Search components by name or alias"
+              placeholder="Search Components..."
+              [ngModel]="searchQuery()"
+              (ngModelChange)="searchQuery.set($event)"
+            />
+          </nx-formfield>
+          @if (searchQuery()) {
+            <button
+              nxPlainButton
+              type="button"
+              class="nxv-search-clear"
+              (click)="searchQuery.set('')"
+              aria-label="Clear search"
+            >
+              <nx-icon name="close" aria-hidden="true"></nx-icon>
+            </button>
+          }
+        </div>
+        <nx-tag-group
+          [ngModel]="selectedFilters()"
+          (ngModelChange)="selectedFilters.set($event)"
+          aria-label="Filter by A1 compatibility status"
+        >
+          @for (tag of filterTags; track tag.value) {
+            <nx-tag [value]="tag.value">{{ tag.label }}</nx-tag>
+          }
+        </nx-tag-group>
+      </div>
     </div>
   </div>
 }
 
-@for (componentCategory of components; track componentCategory) {
+@for (
+  componentCategory of (_isAquilaDocs() ? _components : filteredComponents)();
+  track componentCategory.label
+) {
   <div nxRow class="nxv-component-category__container">
-    <div nxCol="12,12,12,9">
-      <h2 nxHeadline="subsection-medium" class="nx-margin-bottom-m">
+    <div nxCol="12,12,12,10">
+      <h2 nxHeadline="subsection-medium" class="nxv-category-heading">
         {{ componentCategory.label }}
+        @if (!_isAquilaDocs()) {
+          <span class="nxv-category-count"
+            >{{ componentCategory.children.length }}/{{
+              filteredComponents()[$index].totalChildren
+            }}</span
+          >
+        }
       </h2>
       <table nxTable class="nxv-components-table">
         <thead>
           <tr nxTableRow>
-            <th nxHeaderCell>Item</th>
+            <th nxHeaderCell>Name</th>
+            <th nxHeaderCell>Aliases</th>
             <th nxHeaderCell class="nxv-components-table__status-header" colspan="3">
-              @if (!themeService.selectedTheme().name.includes('aquila')) {
+              @if (!_isAquilaDocs()) {
                 A1 Compatibility
               }
             </th>
@@ -84,13 +145,16 @@
                   component.label
                 }}</a>
               </td>
+              <td nxCell>
+                <span class="nxv-components-table__alias">{{ component.component.alias }}</span>
+              </td>
               <td
                 nxCell
                 class="nxv-components-table__support-cell"
                 colspan="3"
                 style="text-align: start"
               >
-                @if (!themeService.selectedTheme().name.includes('aquila')) {
+                @if (!_isAquilaDocs()) {
                   @if (
                     component.component.a1Light ||
                     component.component.a1Densities ||

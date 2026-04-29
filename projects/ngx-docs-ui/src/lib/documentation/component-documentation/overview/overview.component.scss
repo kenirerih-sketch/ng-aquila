@@ -27,9 +27,41 @@
   }
 }
 
+.nxv-filters-row {
+  display: flex;
+  gap: 38px;
+  align-items: center;
+  margin-top: var(--semantic-gap-all-linear-400, 12px);
+}
+
+.nxv-search-formfield {
+  display: inline-block;
+  position: relative;
+  width: 260px;
+
+  input {
+    width: 100%;
+  }
+
+  ::ng-deep .nx-formfield__wrapper {
+    padding: 0 !important;
+  }
+}
+
+.nxv-search-clear {
+  position: absolute;
+  right: 0;
+  inset-block: 0;
+  cursor: pointer;
+  line-height: 1rem;
+  font-size: 1.375rem;
+  padding: 0 5px;
+}
+
 .nxv-components-table {
   font-size: 1rem;
   line-height: 1.5rem;
+  table-layout: fixed;
 }
 
 .nxv-component-category__container {
@@ -41,6 +73,7 @@
 .nxv-components-table__status-cell,
 .nxv-components-table__support-cell {
   text-align: center;
+  width: 350px;
 
   &.hide-if-empty {
     padding-left: 0;
@@ -49,7 +82,8 @@
 }
 
 .nxv-components-table__support-cell {
-  width: 100px;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 .nxv-components-table__component-row {
@@ -60,9 +94,46 @@
   }
 }
 
+.nxv-components-table__alias {
+  opacity: 0.6;
+}
+
 .nxv-components-table__status-badge {
   margin-left: 4px;
   margin-right: 4px;
+}
+
+.nxv-filter-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.nxv-filter-count {
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+.nxv-catalog-heading {
+  margin-top: var(--semantic-gap-all-linear-2000, 56px);
+}
+
+.nxv-category-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: var(--semantic-gap-all-linear-1000, 24px);
+}
+
+.nxv-icon-inline {
+  margin: var(--semantic-gap-all-linear-200, 4px) 0;
+}
+
+.nxv-category-count {
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0.5;
 }
 
 .badge-content-centered {

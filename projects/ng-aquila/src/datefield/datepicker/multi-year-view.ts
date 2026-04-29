@@ -1,3 +1,5 @@
+import type { AllianzOneOptions } from '@allianz/ng-aquila/config/allianz-one/token';
+import { ALLIANZ_ONE } from '@allianz/ng-aquila/config/allianz-one/token';
 import { Directionality } from '@angular/cdk/bidi';
 import {
   DOWN_ARROW,
@@ -25,8 +27,6 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import type { AllianzOneOptions } from '@allianz/ng-aquila/config/allianz-one/token';
-import { ALLIANZ_ONE } from '@allianz/ng-aquila/config/allianz-one/token';
 import { NxDateAdapter } from '../adapter/index';
 import { DateRange } from '../date-range/date-range.component';
 import { createMissingDateImplError } from '../datefield.functions';
