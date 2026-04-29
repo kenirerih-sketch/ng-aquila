@@ -28,7 +28,7 @@ export class NxStatusIconComponent {
 
   private readonly statusListNdbx: { [key in NxStatusIconType]: any } = {
     error: { icon: 'exclamation-triangle' },
-    warning: { icon: 'exclamation-circle-warning' },
+    warning: { icon: 'exclamation-circle' },
     success: { icon: 'check-circle' },
     info: { icon: 'info-circle' },
   };
