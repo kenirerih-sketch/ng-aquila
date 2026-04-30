@@ -1,10 +1,5 @@
 @use '../shared-styles/index' as *;
 
-$border-size: nx-border-size(m);
-$border-radius: nx-border-radius(s);
-$margin-big: nx-spacer(m);
-$margin-default: nx-spacer(s);
-
 :host {
   display: block;
   /* Chrome, Safari, Edge */
@@ -23,12 +18,13 @@ $margin-default: nx-spacer(s);
 
   label:not(:empty) + .nx-stepper__input-container,
   .nx-stepper__label:not(:empty) + .nx-stepper__input-container {
-    margin-top: nx-spacer(xs);
+    margin-top: v(number-stepper-label-gap);
   }
 }
 
 :host input {
   padding: 0;
+  align-self: center;
 }
 
 .nx-stepper__input-container {
@@ -38,22 +34,23 @@ $margin-default: nx-spacer(s);
 
 .nx-stepper__label {
   display: flex;
+  align-items: v(number-stepper-label-alignment);
   @include type-style(number-stepper-label);
 }
 
 .nx-stepper__control {
-  width: nx-spacer(2m);
-  height: nx-spacer(2m);
-  min-height: nx-spacer(2m);
-  font-size: nx-font-size(s);
+  width: v(number-stepper-small-control-width);
+  height: v(number-stepper-small-control-height);
+  min-height: v(number-stepper-small-control-height);
+  font-size: v(number-stepper-small-control-font-size);
   margin: 0;
-  padding: 0;
+  padding: v(number-stepper-small-control-padding);
 }
 
 .nx-stepper__input {
-  width: nx-spacer(l);
-  min-width: nx-spacer(l);
-
+  width: v(number-stepper-small-input-width);
+  min-width: v(number-stepper-small-input-min-width);
+  text-overflow: v(number-stepper-input-text-overflow);
   &:disabled {
     color: v(number-stepper-disabled-color);
     -webkit-text-fill-color: v(number-stepper-disabled-color);
@@ -77,20 +74,20 @@ $margin-default: nx-spacer(s);
 }
 
 ::ng-deep .nx-stepper__suffix {
-  margin-left: nx-spacer(3xs);
-
+  margin-left: v(number-stepper-suffix-horizontal-gap);
+  align-self: center;
   :host-context([dir='rtl']) & {
     margin-left: initial;
-    margin-right: nx-spacer(3xs);
+    margin-right: v(number-stepper-suffix-horizontal-gap);
   }
 }
 
 ::ng-deep .nx-stepper__prefix {
-  margin-right: nx-spacer(3xs);
-
+  margin-right: v(number-stepper-prefix-horizontal-gap);
+  align-self: center;
   :host-context([dir='rtl']) & {
     margin-right: initial;
-    margin-left: nx-spacer(3xs);
+    margin-left: v(number-stepper-prefix-horizontal-gap);
   }
 }
 
@@ -98,20 +95,28 @@ $margin-default: nx-spacer(s);
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin: 0 $margin-default;
+  margin: v(number-stepper-small-horizontal-gap);
+  width: v(number-stepper-small-input-wrapper-width);
 }
 
 .nx-stepper__inner-wrapper {
   // IE11 height fix
-  height: nx-line-height(xs);
+  height: v(number-stepper-small-height);
   display: flex;
   align-items: baseline;
+  border: v(number-stepper-input-border);
+  border-radius: v(number-stepper-input-radius);
+  padding: v(number-stepper-small-input-padding);
+  width: v(number-stepper-small-inner-wrapper-width);
+  &:focus-within {
+    box-shadow: v(number-stepper-outline-focus-box-shadow);
+  }
 }
 
 .nx-stepper__input-underline {
   width: 100%;
-  margin-top: nx-spacer(4xs);
-  height: $border-size;
+  margin-top: v(number-stepper-underline-margin);
+  height: v(number-stepper-underline-height);
   background: v(number-stepper-underline-color);
 
   &--disabled {
@@ -121,36 +126,40 @@ $margin-default: nx-spacer(s);
 
 :host.nx-stepper--big {
   .nx-stepper__control {
-    width: nx-spacer(2xl);
-    min-height: nx-spacer(4m);
+    width: v(number-stepper-large-control-width);
+    padding: v(number-stepper-large-control-padding);
+    min-height: v(number-stepper-large-control-height);
     margin-bottom: 0;
   }
 
   .nx-stepper__input {
-    width: nx-spacer(2xl);
-    min-width: nx-spacer(2xl);
+    width: v(number-stepper-large-input-width);
+    min-width: v(number-stepper-large-input-min-width);
   }
 
   .nx-stepper__input,
   ::ng-deep .nx-stepper__prefix,
   ::ng-deep .nx-stepper__suffix {
     @include type-style(number-stepper-large);
-    height: nx-line-height(l);
+    height: v(number-stepper-large-line-height);
     padding: 0;
     margin-bottom: 0;
   }
 
   .nx-stepper__input-wrapper {
-    margin: 0 $margin-big;
+    width: v(number-stepper-large-input-wrapper-width);
+    margin: v(number-stepper-large-horizontal-gap);
   }
 
   .nx-stepper__input-underline {
-    margin-top: -nx-spacer(4xs);
+    margin-top: v(number-stepper-large-underline-margin-top);
   }
 
   .nx-stepper__inner-wrapper {
     // IE11 height fix
-    height: nx-line-height(l);
+    height: v(number-stepper-large-height);
+    width: v(number-stepper-large-inner-wrapper-width);
+    padding: v(number-stepper-large-input-padding);
   }
 }
 
@@ -171,6 +180,9 @@ $margin-default: nx-spacer(s);
 }
 
 :host.is-disabled {
+  .nx-stepper__inner-wrapper {
+    border: v(number-stepper-input-disabled-border);
+  }
   .nx-stepper__input-underline {
     background: v(number-stepper-disabled-underline-color);
   }
@@ -184,6 +196,9 @@ $margin-default: nx-spacer(s);
   .nx-stepper__input {
     color: v(danger);
   }
+  .nx-stepper__inner-wrapper {
+    border: v(number-stepper-input-error-border);
+  }
 
   ::ng-deep .nx-stepper__prefix,
   ::ng-deep .nx-stepper__suffix {
@@ -192,6 +207,45 @@ $margin-default: nx-spacer(s);
 
   .nx-stepper__input-underline {
     background: v(danger);
+  }
+}
+
+:host.read-only {
+  .nx-stepper__input {
+    color: v(number-stepper-readonly-color);
+  }
+  .nx-stepper__inner-wrapper {
+    border: v(number-stepper-input-readonly-border);
+    background-color: v(number-stepper-readonly-background-color);
+  }
+  ::ng-deep .nx-stepper__prefix,
+  ::ng-deep .nx-stepper__suffix {
+    color: v(number-stepper-readonly-color);
+  }
+}
+
+:host.is-negative.read-only {
+  .nx-stepper__input {
+    color: v(number-stepper-negative-readonly-color);
+  }
+
+  .nx-stepper__inner-wrapper {
+    background-color: v(number-stepper-negative-readonly-background-color);
+  }
+
+  ::ng-deep .nx-stepper__prefix,
+  ::ng-deep .nx-stepper__suffix {
+    color: v(number-stepper-negative-readonly-color);
+  }
+}
+
+:host.is-resize {
+  .nx-stepper__input-wrapper,
+  .nx-stepper__inner-wrapper {
+    width: auto;
+  }
+  .nx-stepper__input {
+    width: auto;
   }
 }
 
@@ -241,5 +295,5 @@ $margin-default: nx-spacer(s);
 }
 
 .error-spacing {
-  margin-bottom: nx-spacer(s);
+  margin-bottom: v(number-stepper-error-spacing-bottom);
 }

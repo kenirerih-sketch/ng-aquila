@@ -91,6 +91,8 @@ const CUSTOM_VALIDATOR = {
     '[class.is-negative]': 'negative',
     '[class.is-disabled]': 'disabled',
     '[class.is-error]': '_isError()',
+    '[class.read-only]': 'readonly || inputFieldReadonly()',
+    '[class.is-resize]': 'resize',
   },
   providers: [CUSTOM_VALUE_ACCESSOR, CUSTOM_VALIDATOR],
   imports: [NxButtonModule, NxIconModule, NxAutoResizeDirective, NgClass],
