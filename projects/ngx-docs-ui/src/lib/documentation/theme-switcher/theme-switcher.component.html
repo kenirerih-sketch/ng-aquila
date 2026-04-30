@@ -7,7 +7,7 @@
   aria-label="switch color theme"
 >
   <nx-icon name="fill-drip" nxIconPositionStart></nx-icon>
-  <span class="label-text">{{ selected().displayName }}</span>
+  <span class="label-text">{{ selectedTheme().displayName }}</span>
   <nx-icon
     name="chevron-down"
     nxIconPositionEnd
@@ -16,12 +16,48 @@
 </button>
 
 <nx-context-menu #nxvThemeSwitch="nxContextMenu">
-  @for (theme of themes(); track theme) {
-    <button nxContextMenuItem selectable type="button" (click)="select(theme)" [value]="theme.name">
-      @if (selected().name === theme.name) {
-        <nx-icon aria-hidden="true" name="check" nxIconPositionStart></nx-icon>
-      }
-      {{ theme.displayName }}
-    </button>
+  <nx-context-menu-group label="Theme">
+    @for (theme of themes(); track theme) {
+      <button
+        nxContextMenuItem
+        selectable
+        type="button"
+        (click)="select(theme)"
+        [value]="theme.name"
+      >
+        @if (selectedTheme().name === theme.name) {
+          <nx-icon aria-hidden="true" name="check" nxIconPositionStart></nx-icon>
+        }
+        {{ theme.displayName }}
+      </button>
+    }
+  </nx-context-menu-group>
+  @if (selectedTheme().name.includes('allianz-one')) {
+    <nx-context-menu-group label="Grid Type">
+      <button
+        nxContextMenuItem
+        selectable
+        type="button"
+        (click)="selectGridType('default')"
+        value="Default"
+      >
+        @if (selectedGridType() === 'default') {
+          <nx-icon aria-hidden="true" name="check" nxIconPositionStart></nx-icon>
+        }
+        Default
+      </button>
+      <button
+        nxContextMenuItem
+        selectable
+        type="button"
+        (click)="selectGridType('functional')"
+        value="Functional"
+      >
+        @if (selectedGridType() === 'functional') {
+          <nx-icon aria-hidden="true" name="check" nxIconPositionStart></nx-icon>
+        }
+        Functional
+      </button>
+    </nx-context-menu-group>
   }
 </nx-context-menu>

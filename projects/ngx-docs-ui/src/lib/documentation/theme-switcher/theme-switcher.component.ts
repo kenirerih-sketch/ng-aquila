@@ -16,7 +16,8 @@ export class NxvThemeSwitcherComponent {
 
   readonly themes = input<Theme[]>([]);
 
-  readonly selected = model.required<Theme>();
+  readonly selectedTheme = model.required<Theme>();
+  readonly selectedGridType = model<'default' | 'functional'>('default');
 
   constructor(private readonly iconRegistry: NxIconRegistry) {
     this.iconRegistry.registerFont('fa', 'fas', 'fa-');
@@ -24,6 +25,10 @@ export class NxvThemeSwitcherComponent {
   }
 
   select(theme: Theme) {
-    this.selected.set(theme);
+    this.selectedTheme.set(theme);
+  }
+
+  selectGridType(gridType: 'default' | 'functional') {
+    this.selectedGridType.set(gridType);
   }
 }

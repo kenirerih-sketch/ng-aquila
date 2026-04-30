@@ -1,6 +1,13 @@
 @if (showNav) {
   <div class="example-fullscreen__navigation-container">
-    <button nxButton="small" (click)="_location.back()">go back</button>
+    <nxv-theme-switch
+      [themes]="_themeSwitcherService.themes()"
+      [selectedTheme]="_themeSwitcherService.selectedTheme()"
+      (selectedThemeChange)="_themeSwitcherService.switchTheme($event)"
+      [selectedGridType]="_themeSwitcherService.selectedGridType()"
+      (selectedGridTypeChange)="_themeSwitcherService.switchGridType($event)"
+    ></nxv-theme-switch>
+    <button nxButton="secondary small" (click)="_location.back()">go back</button>
   </div>
 }
 

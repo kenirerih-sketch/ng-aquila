@@ -2615,4 +2615,25 @@ $nx-theme: (
   autocomplete-panel-padding: 8px 0,
   autocomplete-dropdown-item-padding-horizontal: 32px,
   autocomplete-overlay-offset-y: 4px,
+
+  // insets for media query grids
+  layout-inset-mobile: 16px,
+  layout-inset-base: 32px,
+  layout-inset-mobile-functional: 16px,
+  layout-inset-base-functional: 32px,
+
+  // insets for container query grids
+  layout-inset-container-mobile: 16px,
+  layout-inset-container-base: 32px,
+  layout-inset-container-large: 32px,
+  layout-inset-container-mobile-functional: 16px,
+  layout-inset-container-base-functional: 32px,
+  layout-inset-container-large-functional: 32px,
+
+  grid-gutter-width-mobile: layout-inset-container-mobile,
+  grid-gutter-width-base: layout-inset-container-base,
+  grid-gutter-width-large: layout-inset-container-large,
+
+  grid-column-gap: 0px,
+  grid-column-gap-functional: 0px,
 );

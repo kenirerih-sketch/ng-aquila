@@ -7,7 +7,7 @@ b2c: true
 expert: true
 stable: done
 alias: container, column, layout
-a1Light: true
+a1Densities: true
 ---
 <!--
 //ai
@@ -221,4 +221,25 @@ The `alignSelf` property specifies the alignment for a selected item inside the 
 To specify the order within the row, apply the `colOrder` property.
 
 <!-- example(grid-col-order) -->
+
+<div class="docs-a1">
+
+### Functional Grid
+
+The functional grid is a variant of the grid optimized for data-dense, task-oriented interfaces in the A1 design system. It uses tighter spacing to accommodate more content.
+
+To activate the functional grid, pass `gridType: 'functional'` to `provideA1Theme()` in your application config:
+
+```typescript
+// app.config.ts
+import { provideA1Theme } from '@allianz/ngx-brand-kit';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideA1Theme({ gridType: 'functional' }),
+  ],
+};
+```
+
+</div>
 

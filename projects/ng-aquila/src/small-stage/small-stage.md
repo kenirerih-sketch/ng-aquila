@@ -47,12 +47,15 @@ Images can be added to the Small Stage with `[nxSmallStageImageEnd]` and `[nxSma
 <!-- example(small-stage-image)-->
 
 
+<div class="docs-a1">
 
-## Functional Grid
+## Max Width
 
-On an active functional grid, the Small Stage can adjust it's horizontal padding to match the rest of the content area. 
+Use the `maxWidth` input to constrain the small stage content to a maximum width. This is useful when the stage is placed in a full-width container and you want to align the content with the rest of the page layout.
 
-<!-- example(small-stage-functional-grid)-->
+<!-- example(small-stage-max-width)-->
+
+</div>
 
 ## Styling
 

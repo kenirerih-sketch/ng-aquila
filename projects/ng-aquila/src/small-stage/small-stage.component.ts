@@ -1,14 +1,14 @@
-import { ALLIANZ_ONE, AllianzOneOptions } from '@allianz/ng-aquila/config/allianz-one/token';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
   HostBinding,
   Inject,
-  inject,
   InjectionToken,
   Input,
+  input,
   Optional,
 } from '@angular/core';
 
@@ -26,6 +26,12 @@ export interface SmallStageDefaultOptions {
    * Sets the default appearance (optional).
    */
   appearance?: NxSmallStageAppearance;
+
+  /**
+   * Limits the width of the small stage on large screens. defaults to `true`.
+   * Usually `true` for customer facing apps and `false` for functional apps.
+   */
+  maxWidthContent?: boolean;
 }
 
 export const SMALL_STAGE_DEFAULT_OPTIONS = new InjectionToken<SmallStageDefaultOptions>(
@@ -39,7 +45,8 @@ export const SMALL_STAGE_DEFAULT_OPTIONS = new InjectionToken<SmallStageDefaultO
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   host: {
-    '[class.is-expert]': 'expertActive() || a1Enabled()',
+    '[class.is-expert]': 'expertActive()',
+    '[class.max-width]': 'maxWidth()',
   },
 })
 export class NxSmallStageComponent {
@@ -62,17 +69,26 @@ export class NxSmallStageComponent {
   protected readonly expertActive = computed(() => this.appearance === 'expert');
 
   /**
-   * Workaround to determine which A1 grid should be used.
-   * SmallStage is used by retail and expert apps. We need map retail apps to default grid and expert apps to functional grid.
-   * TODO: remove this workaround when a solution for grid handling in A1 is found.
+   * Limits the width of the small stage content  on large screens. defaults to `true`.
    */
-  private readonly _allianzOneOptions = inject<AllianzOneOptions | null>(ALLIANZ_ONE, {
-    optional: true,
+  readonly maxWidthContentInput = input<boolean | null, boolean | string | null>(null, {
+    transform: (v) => (v === null ? null : booleanAttribute(v)),
+    alias: 'maxWidthContent',
   });
+  readonly maxWidth = computed(() => {
+    // Option 1: return input if set
+    if (this.maxWidthContentInput() !== null) {
+      return this.maxWidthContentInput();
+    }
 
-  protected readonly a1Enabled = computed<boolean>(
-    () => this._allianzOneOptions?.enabled?.() || false,
-  );
+    // Option 2: return default options if set
+    if (this._defaultOptions?.maxWidthContent !== undefined) {
+      return this._defaultOptions.maxWidthContent;
+    }
+
+    // return true as default value
+    return true;
+  });
 
   /**
    * Reduces the width of the text to 6/12 instead of 8/12.

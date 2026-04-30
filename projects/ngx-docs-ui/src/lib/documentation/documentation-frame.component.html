@@ -46,8 +46,10 @@
         @if (showThemingSwitcher) {
           <nxv-theme-switch
             [themes]="_themeSwitcherService.themes()"
-            [selected]="_themeSwitcherService.selectedTheme()"
-            (selectedChange)="this._themeSwitcherService.switchTheme($event)"
+            [selectedTheme]="_themeSwitcherService.selectedTheme()"
+            (selectedThemeChange)="this._themeSwitcherService.switchTheme($event)"
+            [selectedGridType]="_themeSwitcherService.selectedGridType()"
+            (selectedGridTypeChange)="this._themeSwitcherService.switchGridType($event)"
           ></nxv-theme-switch>
         }
         <nxv-version-select></nxv-version-select>

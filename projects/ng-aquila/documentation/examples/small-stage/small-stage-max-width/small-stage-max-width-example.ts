@@ -2,7 +2,7 @@ import {
   NxBreadcrumbComponent,
   NxBreadcrumbItemComponent,
 } from '@allianz/ng-aquila/breadcrumb';
-import { NxEyebrowComponent } from '@allianz/ng-aquila/eyebrow';
+import { NxCopytextComponent } from '@allianz/ng-aquila/copytext';
 import { NxHeadlineComponent } from '@allianz/ng-aquila/headline';
 import {
   NxSmallStageComponent,
@@ -10,36 +10,31 @@ import {
   NxSmallStageImageBottomDirective,
   NxSmallStageImageDirective,
   NxSmallStageImageEndDirective,
-  SMALL_STAGE_DEFAULT_OPTIONS,
+  NxSmallStageImageStartDirective,
 } from '@allianz/ng-aquila/small-stage';
 import { Component } from '@angular/core';
 
 /**
- * @title Small Stage Functional Grid example
+ * @title Small stage max width example
  */
 @Component({
-  selector: 'small-stage-functional-grid-example',
-  templateUrl: './small-stage-functional-grid-example.html',
-  styleUrls: ['./small-stage-functional-grid-example.css'],
+  selector: 'small-stage-max-width-example',
+  templateUrl: './small-stage-max-width-example.html',
+  styleUrls: ['./small-stage-max-width-example.css'],
   imports: [
     NxSmallStageComponent,
     NxSmallStageHeaderDirective,
     NxBreadcrumbComponent,
     NxBreadcrumbItemComponent,
     NxSmallStageImageDirective,
+    NxSmallStageImageStartDirective,
     NxSmallStageImageEndDirective,
     NxSmallStageImageBottomDirective,
     NxHeadlineComponent,
-    NxEyebrowComponent,
-  ],
-  providers: [
-    {
-      provide: SMALL_STAGE_DEFAULT_OPTIONS,
-      useValue: { appearance: 'expert' },
-    },
+    NxCopytextComponent,
   ],
 })
-export class SmallStageFunctionalGridExampleComponent {
+export class SmallStageMaxWidthExampleComponent {
   items = ['Home', 'Insurance', 'Health Insurance'];
 
   dynamicItems = this.items;

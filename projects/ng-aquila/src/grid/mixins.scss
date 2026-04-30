@@ -103,13 +103,11 @@
   margin-right: auto;
 
   @include media-breakpoint-up(xsmall) {
-    padding-right: $grid-gutter-width-mobile;
-    padding-left: $grid-gutter-width-mobile;
+    padding: 0 v(layout-inset-mobile);
   }
 
   @include media-breakpoint-up(medium) {
-    padding-right: $grid-gutter-width-base;
-    padding-left: $grid-gutter-width-base;
+    padding: 0 v(layout-inset-base);
   }
 }
 
@@ -117,8 +115,8 @@
   @each $breakpoint in map.keys($gutters) {
     @include media-breakpoint-up($breakpoint) {
       $gutter: map.get($gutters, $breakpoint);
-      padding-right: ($gutter * 0.5);
-      padding-left: ($gutter * 0.5);
+      padding-right: calc(#{$gutter} * 0.5);
+      padding-left: calc(#{$gutter} * 0.5);
     }
   }
 }
@@ -126,8 +124,8 @@
   @each $breakpoint in map.keys($gutters) {
     @include container-breakpoint-up($breakpoint) {
       $gutter: map.get($gutters, $breakpoint);
-      padding-right: ($gutter * 0.5);
-      padding-left: ($gutter * 0.5);
+      padding-right: calc(#{$gutter} * 0.5);
+      padding-left: calc(#{$gutter} * 0.5);
     }
   }
 }
@@ -139,8 +137,8 @@
   @each $breakpoint in map.keys($gutters) {
     @include media-breakpoint-up($breakpoint) {
       $gutter: map.get($gutters, $breakpoint);
-      margin-right: math.div($gutter, -2);
-      margin-left: math.div($gutter, -2);
+      margin-right: calc($gutter / -2);
+      margin-left: calc($gutter / -2);
       position: relative;
     }
   }
@@ -153,8 +151,8 @@
   @each $breakpoint in map.keys($gutters) {
     @include container-breakpoint-up($breakpoint) {
       $gutter: map.get($gutters, $breakpoint);
-      margin-right: math.div($gutter, -2);
-      margin-left: math.div($gutter, -2);
+      margin-right: calc($gutter / -2);
+      margin-left: calc($gutter / -2);
       position: relative;
     }
   }
@@ -179,12 +177,18 @@
 
 @mixin make-col($size, $columns: $grid-columns) {
   container-name: size-#{$size}-columns-#{$columns};
-  flex: 0 0 math.percentage(math.div($size, $columns));
-  // width: percentage($size / $columns);
+  flex: 0 0
+    calc(
+      #{math.percentage(math.div($size, $columns))} -
+        (var(--grid-column-gap) * #{math.div($columns - $size, $columns)})
+    );
   // Add a `max-width` to ensure content within each column does not blow out
   // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
   // do not appear to require this.
-  max-width: math.percentage(math.div($size, $columns));
+  max-width: calc(
+    #{math.percentage(math.div($size, $columns))} -
+      (var(--grid-column-gap) * #{math.div($columns - $size, $columns)})
+  );
 }
 
 @mixin make-col-modifier($type, $size, $columns) {

@@ -41,7 +41,7 @@ import { Egg } from './egg';
 import { RabbitHole } from './rabbit-hole.service';
 import { NxvSearchInputComponent } from './search-input/search-input.component';
 import { NxvThemeSwitcherComponent } from './theme-switcher/theme-switcher.component';
-import { ThemeSwitcherService } from './theme-switcher/theme-switcher.service';
+import { GridType, ThemeSwitcherService } from './theme-switcher/theme-switcher.service';
 
 export class NxDocFeatures {
   themeSwitcher = false;
@@ -110,9 +110,12 @@ export class DocumentationFrameComponent implements OnDestroy, AfterViewInit {
     this.showAnnouncement = this.announcement && this.announcement?.endTime >= new Date();
 
     const themeQuery = this._route.snapshot.queryParamMap.get('theme');
+    const gridTypeQuery = this._route.snapshot.queryParamMap.get('gridType') as GridType | null;
 
     const themeFromQuery = themeQuery ? this._themeSwitcherService.get(themeQuery) : undefined;
-    this._themeSwitcherService.initializeTheme(themeFromQuery);
+    const gridTypeFromQuery =
+      gridTypeQuery === 'default' || gridTypeQuery === 'functional' ? gridTypeQuery : undefined;
+    this._themeSwitcherService.initializeTheme(themeFromQuery, gridTypeFromQuery);
 
     this._rabbitHole.showThemeEgg.pipe(takeUntil(this._destroyed)).subscribe((showTheming) => {
       console.log('rabbit hole', showTheming);

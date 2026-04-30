@@ -1,3 +1,4 @@
+import { LAYOUT_DEFAULT_OPTIONS, LayoutDefaultOptions } from '@allianz/ng-aquila/grid';
 import { effect, inject, Injectable, InjectionToken, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -9,9 +10,12 @@ export interface Theme {
   url: string;
 }
 
+export type GridType = 'default' | 'functional';
+
 export const NX_DOCS_SELECTABLE_THEMES = new InjectionToken<Theme[]>('DOCS_SELECTABLE_THEMES');
 
 const LOCAL_STORAGE_KEY = 'nx-docs-selected-theme';
+const LOCAL_STORAGE_GRID_TYPE_KEY = 'nx-docs-selected-grid-type';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeSwitcherService {
@@ -19,6 +23,9 @@ export class ThemeSwitcherService {
   private readonly _router = inject(Router);
   private readonly _hashService = inject(NxvVersionHashService);
   readonly selectedTheme = signal<Theme>(this._themes[0]);
+  readonly selectedGridType = signal<GridType>('default');
+
+  private readonly layoutOptions = inject<LayoutDefaultOptions>(LAYOUT_DEFAULT_OPTIONS);
 
   constructor() {
     // Watch for theme changes and load the CSS
@@ -28,7 +35,10 @@ export class ThemeSwitcherService {
     });
   }
 
-  initializeTheme(themeFromQuery: Theme | undefined): void {
+  initializeTheme(
+    themeFromQuery: Theme | undefined,
+    gridTypeFromQuery: GridType | undefined,
+  ): void {
     // Priority: URL > localStorage > default
     if (themeFromQuery) {
       this.selectedTheme.set(themeFromQuery);
@@ -40,13 +50,38 @@ export class ThemeSwitcherService {
       }
     }
 
-    this._updateUrlQueryParam(this.selectedTheme());
+    if (gridTypeFromQuery) {
+      this.selectedGridType.set(gridTypeFromQuery);
+      this._saveGridTypeToStorage(gridTypeFromQuery);
+      this._setGridAppearance(gridTypeFromQuery);
+    } else {
+      const storedGridType = this._loadGridTypeFromStorage();
+      if (storedGridType) {
+        this.selectedGridType.set(storedGridType);
+        this._setGridAppearance(storedGridType);
+      }
+    }
+
+    this._updateUrlQueryParams(this.selectedTheme(), this.selectedGridType());
   }
 
   switchTheme(newTheme: Theme) {
     this.selectedTheme.set(newTheme);
     this._saveToStorage(newTheme);
-    this._updateUrlQueryParam(newTheme);
+    this._updateUrlQueryParams(newTheme, this.selectedGridType());
+  }
+
+  switchGridType(newGridType: GridType) {
+    this.selectedGridType.set(newGridType);
+    this._saveGridTypeToStorage(newGridType);
+    this._updateUrlQueryParams(this.selectedTheme(), newGridType);
+    this._setGridAppearance(newGridType);
+  }
+
+  private _setGridAppearance(gridType: GridType) {
+    if (this.layoutOptions) {
+      this.layoutOptions.appearance.set(gridType === 'functional' ? 'functional' : 'default');
+    }
   }
 
   private _loadThemeCSS(newTheme: Theme) {
@@ -106,10 +141,27 @@ export class ThemeSwitcherService {
     }
   }
 
-  private _updateUrlQueryParam(theme: Theme): void {
+  private _saveGridTypeToStorage(gridType: GridType): void {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_GRID_TYPE_KEY, gridType);
+    } catch {
+      // graceful if localStorage unavailable (private browsing, etc.)
+    }
+  }
+
+  private _loadGridTypeFromStorage(): GridType | undefined {
+    try {
+      const stored = localStorage.getItem(LOCAL_STORAGE_GRID_TYPE_KEY);
+      return stored === 'default' || stored === 'functional' ? stored : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+
+  private _updateUrlQueryParams(theme: Theme, gridType: GridType): void {
     const currentHash = window.location.hash;
     this._router.navigate([], {
-      queryParams: { theme: theme.name },
+      queryParams: { theme: theme.name, gridType },
       queryParamsHandling: 'merge',
       replaceUrl: true,
       fragment: currentHash ? currentHash.substring(1) : undefined,

@@ -1,4 +1,4 @@
-<nx-small-stage>
+<nx-small-stage maxWidthContent>
   <nav aria-label="Breadcrumb" nxSmallStageHeader>
     <ol nxBreadcrumb>
       @for (item of dynamicItems; track item; let i = $index) {
@@ -10,10 +10,11 @@
       }
     </ol>
   </nav>
-
-  <nx-eyebrow>Eyebrow</nx-eyebrow>
-  <h2 nxHeadline="page">Headline text</h2>
-
+  <nx-small-stage-image
+    nxSmallStageImageStart
+    src="assets/images/small-stage-image-start.svg"
+    fill
+  ></nx-small-stage-image>
   <nx-small-stage-image
     nxSmallStageImageEnd
     src="assets/images/small-stage-image-end.svg"
@@ -24,4 +25,7 @@
     src="assets/images/small-stage-image-narrow-screen.svg"
     fill
   ></nx-small-stage-image>
+
+  <h2 nxHeadline="page" class="nx-margin-bottom-s">Headline text</h2>
+  <p nxCopytext="large">Subline text</p>
 </nx-small-stage>

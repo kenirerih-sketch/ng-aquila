@@ -3,7 +3,11 @@ import { Location } from '@angular/common';
 import { Component, HostBinding } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { ThemeSwitcherService } from '../documentation/theme-switcher/theme-switcher.service';
+import { NxvThemeSwitcherComponent } from '../documentation/theme-switcher/theme-switcher.component';
+import {
+  GridType,
+  ThemeSwitcherService,
+} from '../documentation/theme-switcher/theme-switcher.service';
 import { LazyExampleOutletComponent } from '../lazy-example-outlet/lazy-example-outlet.component';
 
 type ExampleBackgroundType = '' | 'blank';
@@ -11,7 +15,7 @@ type ExampleBackgroundType = '' | 'blank';
 @Component({
   templateUrl: './example-full-screen.component.html',
   styleUrls: ['./example-full-screen.component.scss'],
-  imports: [NxButtonModule, LazyExampleOutletComponent],
+  imports: [NxButtonModule, LazyExampleOutletComponent, NxvThemeSwitcherComponent],
 })
 export class ExampleFullScreenComponent {
   example: string;
@@ -22,7 +26,7 @@ export class ExampleFullScreenComponent {
 
   constructor(
     _route: ActivatedRoute,
-    _themeSwitcherService: ThemeSwitcherService,
+    protected readonly _themeSwitcherService: ThemeSwitcherService,
     readonly _location: Location,
   ) {
     const routeSnapshot = _route.snapshot;
@@ -40,6 +44,13 @@ export class ExampleFullScreenComponent {
     const selectedTheme = _themeSwitcherService.get(themeName!);
     if (selectedTheme) {
       _themeSwitcherService.switchTheme(selectedTheme);
+    }
+
+    const gridTypeQuery = routeSnapshot.queryParamMap.get('gridType') as GridType | null;
+    const gridTypeFromQuery =
+      gridTypeQuery === 'default' || gridTypeQuery === 'functional' ? gridTypeQuery : undefined;
+    if (gridTypeFromQuery) {
+      _themeSwitcherService.switchGridType(gridTypeFromQuery);
     }
   }
 }
