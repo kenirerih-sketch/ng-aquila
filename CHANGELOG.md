@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 21.8.0 (2026-04-30)
+
+
+### Documentation 📚
+
+* component status updates & dark theme docs fixes ([cc02c91](https://github.com/allianz/ng-aquila/commit/cc02c914bf3d8451fba10bd892a72dc1647a938d))
+* **overview:** add A1 progress filter to component overview ([a4bcce6](https://github.com/allianz/ng-aquila/commit/a4bcce62033d8ad881709112f39a4a70360fc248))
+* update components metadata ([c354c3d](https://github.com/allianz/ng-aquila/commit/c354c3d20a92418c9d819879fe56ef78eaf32486))
+
+
+### Bug Fixes 🐛
+
+* **button:** update style for A1 inverse button ([fdef41a](https://github.com/allianz/ng-aquila/commit/fdef41a0ea7e2e8ae24452e4177f956a9f69bea1))
+* **context-menu:** use correct focus origin when opening via mouse ([31f6c2f](https://github.com/allianz/ng-aquila/commit/31f6c2fa8c89900d8aae8d12f1c8fcf910fc095f))
+* inverse styles for dropdown, checkbox and toggle-button ([38db371](https://github.com/allianz/ng-aquila/commit/38db3711af043440e0b1adaa197434a7aff100fa))
+* **mcp:** update MCP search to return exact name/alias match as result ([6c50521](https://github.com/allianz/ng-aquila/commit/6c505219e8c1da33fa2c083bab76a22bb8df4b5f))
+* **small-stage:** update eyebrow size in examples ([b71fd36](https://github.com/allianz/ng-aquila/commit/b71fd36dfb012d81cce29297700057568ab43914))
+* **tabs:** align scrolling indicators ([67f9e9e](https://github.com/allianz/ng-aquila/commit/67f9e9e10f0864afa04fcad5c5243beddc55ad96))
+
+
+### Features ✨
+
+* **code input:** support A1 densities ([0ac1d15](https://github.com/allianz/ng-aquila/commit/0ac1d15f288f090f67dea6b06e053ac754cfb104))
+* **comparison-table:** intermediate dark theme support in A1 ([96cc3c5](https://github.com/allianz/ng-aquila/commit/96cc3c5e8af163128cfa4ba0900fb002168100eb))
+* **datefield:** support A1 densities ([3b9b281](https://github.com/allianz/ng-aquila/commit/3b9b28108af0d36dd8e1ac5ef57c7443432a2a6a))
+* **grid:** support A1 density ([15bd985](https://github.com/allianz/ng-aquila/commit/15bd9857ab7a2e4bf876f6e9cc591454d7d5a206))
+* **icon:** support A1 densities ([f5c4492](https://github.com/allianz/ng-aquila/commit/f5c4492bd1eea23f752cccdad2f73d831171af50))
+* **modal:** add A1 densities ([34f8047](https://github.com/allianz/ng-aquila/commit/34f80477402f1ddbbfa02bdbfc22f5aa5b3e7c35))
+* **multi-step-indicator:** support A1 densities ([dd02ed6](https://github.com/allianz/ng-aquila/commit/dd02ed6d7e63d5362a5e84b18b716501a36e70ac))
+* **notification-panel:** support a1 densities ([dcb2d68](https://github.com/allianz/ng-aquila/commit/dcb2d688592f04c8da3c1a58ed8abe51120dd409))
+* **number-stepper:** support A1 densities ([bce264c](https://github.com/allianz/ng-aquila/commit/bce264c02e944ff882a463123d3606e7cb25e993))
+* **pagination:** support A1 densities ([cd05503](https://github.com/allianz/ng-aquila/commit/cd0550314a743bdbfddd6e9df14271fea0c03085))
+* **progress-indicator:** support a1 densities - single indicator only ([aa50f34](https://github.com/allianz/ng-aquila/commit/aa50f346edd52c4f3ff22fa81a83c18d18b4330d))
+* **signal-button:** implement A1 densities & add info variant ([3f2a222](https://github.com/allianz/ng-aquila/commit/3f2a222d098e89018153f29ac3fb75615fbd1860))
+* **status-icon:** replace svg with icon font for warning context ([e864437](https://github.com/allianz/ng-aquila/commit/e864437761aec43aebc14e5a75ee4150c381865a))
+
 ## 21.7.0 (2026-04-16)
 
 
