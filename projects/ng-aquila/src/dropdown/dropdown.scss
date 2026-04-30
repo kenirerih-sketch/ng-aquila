@@ -23,6 +23,10 @@ $dropdown-border-size: nx-border-size(xs);
 
 :host(.nx-dropdown--negative) {
   color: v(negative);
+
+  &.nx-dropdown--disabled {
+    color: v(dropdown-inverse-disabled-chevron-color);
+  }
 }
 
 :host([aria-expanded='true']) {

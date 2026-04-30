@@ -302,7 +302,7 @@ $bordered-without-right: $border-width 0 $border-width $border-width;
     &:checked + .nx-radio-toggle__label-container {
       background-color: v(negative);
       border-color: v(negative);
-      color: v(negative-accent);
+      color: v(toggle-button-negative-selected-font-color);
     }
   }
 
