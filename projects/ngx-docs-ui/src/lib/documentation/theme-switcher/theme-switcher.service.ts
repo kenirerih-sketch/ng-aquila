@@ -25,7 +25,9 @@ export class ThemeSwitcherService {
   readonly selectedTheme = signal<Theme>(this._themes[0]);
   readonly selectedGridType = signal<GridType>('default');
 
-  private readonly layoutOptions = inject<LayoutDefaultOptions>(LAYOUT_DEFAULT_OPTIONS);
+  private readonly layoutOptions = inject<LayoutDefaultOptions>(LAYOUT_DEFAULT_OPTIONS, {
+    optional: true,
+  });
 
   constructor() {
     // Watch for theme changes and load the CSS
