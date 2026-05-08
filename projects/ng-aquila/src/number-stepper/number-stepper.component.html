@@ -23,7 +23,7 @@
     <nx-icon name="minus" size="s" aria-hidden="true"></nx-icon>
   </button>
   <div class="nx-stepper__input-wrapper">
-    <div class="nx-stepper__inner-wrapper">
+    <div class="nx-stepper__inner-wrapper" (click)="_onWrapperClick($event)">
       <ng-content select="nx-number-stepper-prefix"></ng-content>
       <input
         type="text"

@@ -626,6 +626,13 @@ export class NxNumberStepperComponent
   }
 
   /** @docs-private */
+  _onWrapperClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.nativeInput.nativeElement.focus();
+    }
+  }
+
+  /** @docs-private */
   validate(c: FormControl) {
     return this._validateFn();
   }

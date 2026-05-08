@@ -108,6 +108,7 @@
   border-radius: v(number-stepper-input-radius);
   padding: v(number-stepper-small-input-padding);
   width: v(number-stepper-small-inner-wrapper-width);
+  cursor: text;
   &:focus-within {
     box-shadow: v(number-stepper-outline-focus-box-shadow);
   }
