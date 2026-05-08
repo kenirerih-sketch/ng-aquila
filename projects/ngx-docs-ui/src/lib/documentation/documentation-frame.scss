@@ -38,6 +38,10 @@ $toc-width: 200px;
       filter: v(documentation-svg-filter);
     }
 
+    .documentation-header__main-logo--dark {
+      filter: brightness(0) invert(1);
+    }
+
     @media (max-width: 703px) {
       margin-right: 16px;
     }

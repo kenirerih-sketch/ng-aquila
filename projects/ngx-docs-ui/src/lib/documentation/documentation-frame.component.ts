@@ -7,6 +7,7 @@ import { AsyncPipe, NgComponentOutlet } from '@angular/common';
 import {
   AfterViewInit,
   Component,
+  computed,
   effect,
   Inject,
   InjectionToken,
@@ -90,6 +91,11 @@ export class DocumentationFrameComponent implements OnDestroy, AfterViewInit {
   hideNavigation = false;
 
   cssVarSidebar = viewChild(CssVarSidebarComponent);
+
+  readonly isA1DarkTheme = computed(() => {
+    const name = this._themeSwitcherService.selectedTheme().name;
+    return name.includes('allianz-one') && name.includes('dark');
+  });
 
   private readonly _destroyed = new Subject<void>();
 

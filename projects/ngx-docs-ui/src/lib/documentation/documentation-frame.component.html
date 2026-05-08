@@ -20,6 +20,7 @@
             <figure nxFigure>
               <img
                 class="documentation-header__main-logo"
+                [class.documentation-header__main-logo--dark]="isA1DarkTheme()"
                 src="{{ logoPath.logoWithTitlePath }}"
                 alt="Brand Logo"
                 role="none"
