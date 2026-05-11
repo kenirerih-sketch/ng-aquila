@@ -7,6 +7,7 @@ expert: true
 stable: done
 a1Light: true
 a1Densities: true
+group: Utilities
 ---
 
 The virtual scroll component provides efficient rendering of large lists by only rendering items visible in the viewport. The items can be of various and dynamic height.

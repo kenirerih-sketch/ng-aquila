@@ -6,6 +6,7 @@ b2c: false
 expert: true
 stable: done
 a1Densities: true
+group: Navigation
 ---
 
 <div class="docs-deprecation-warning">

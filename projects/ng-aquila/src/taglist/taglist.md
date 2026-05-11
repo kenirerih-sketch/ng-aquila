@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: chip, Tags, tag, token
 a1Densities: true
+group: Data Display
 ---
 
 <div class="docs-deprecation-warning">

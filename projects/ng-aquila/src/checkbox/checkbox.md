@@ -6,6 +6,7 @@ b2c: true
 expert: true
 stable: done
 a1Densities: true
+group: Forms & Inputs
 ---
 
 The Checkbox is used when there is a list of options and the user may select one or more options, including all or none. This component appears also in case of yes or no choices (e.g. “Remember me” by Login). It's an efficient and elegant way to select/deselect an item or enable/disable certain actions.

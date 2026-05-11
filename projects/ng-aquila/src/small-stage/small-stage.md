@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: page banner, hero, banner
 a1Densities: true
+group: Data Display
 ---
 
 ## Overview

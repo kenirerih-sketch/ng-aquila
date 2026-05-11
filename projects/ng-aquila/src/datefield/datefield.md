@@ -16,6 +16,7 @@ desc: |
     | `NxNativeDateModule` | `Date`                      | `en-US` only                            | None       | `@aposin/ng-aquila/datefield`           |
     | `NxMomentDateModule` | `Moment`                    | [Moment locales](https://momentjs.com/) | Moment.js  | `@aposin/ng-aquila/moment-date-adapter` |
     | `NxIsoDateModule`    | ISO `string` (`YYYY-MM-DD`) | [dayjs locales](https://day.js.org/)    | dayjs      | `@aposin/ng-aquila/iso-date-adapter`    |
+group: Forms & Inputs
 ---
 
 ### Module

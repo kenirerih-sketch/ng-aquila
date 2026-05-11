@@ -8,6 +8,7 @@ stable: done
 alias: progress, loading bar
 a1Light: true
 a1Densities: true
+group: Data Display
 ---
 
 The progress bar module provides a simple horizontal bar to show progress.

@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: slide toggle, checkbox, switch, toggle
 a1Densities: true
+group: Forms & Inputs
 ---
 
 The switcher component represents a boolean value, just like the native input of a checkbox.

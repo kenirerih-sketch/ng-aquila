@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: select, multi select, combobox, picker
 a1Densities: true
+group: Forms & Inputs
 ---
 
 <div class="docs-deprecation-warning">

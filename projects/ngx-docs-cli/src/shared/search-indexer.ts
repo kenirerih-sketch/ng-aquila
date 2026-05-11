@@ -6,7 +6,11 @@ const Fuse = require('fuse.js');
 
 const mapComponent = (type?: string) => (comp) => {
   // set display type
-  comp.searchDisplayType = type || SearchDisplayType.COMPONENT;
+  if (!type && comp.category === 'general') {
+    comp.searchDisplayType = SearchDisplayType.GENERAL;
+  } else {
+    comp.searchDisplayType = type || SearchDisplayType.COMPONENT;
+  }
 
   return comp;
 };

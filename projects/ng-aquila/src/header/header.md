@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: toolbar, navbar, app bar, navigation bar
 a1Densities: true
+group: Navigation
 ---
 
 <div class="docs-deprecation-warning">

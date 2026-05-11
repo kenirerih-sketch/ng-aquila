@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: expansion panel, collapse
 a1Densities: true
+group: Layout
 ---
 
 ### Standalone Expansion Panel

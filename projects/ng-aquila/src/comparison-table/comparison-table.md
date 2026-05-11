@@ -6,6 +6,7 @@ b2c: true
 expert: true
 stable: done
 a1Light: true
+group: Data Display
 ---
 
 ### Notes about the usage of the component

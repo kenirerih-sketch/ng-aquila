@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: number input, range, counter, quantity
 a1Densities: true
+group: Forms & Inputs
 ---
 
 ### Examples

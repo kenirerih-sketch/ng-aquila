@@ -6,6 +6,9 @@ b2c: true
 expert: true
 stable: done
 a1Full: true
+group: 
+  - Navigation
+  - Actions
 ---
 
 The nxLink provides a styled link without interfering with the functionality of the Angular router. Embed a link to lead the user towards more information or an action he/she wants to execute.

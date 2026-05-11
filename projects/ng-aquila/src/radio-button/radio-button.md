@@ -6,6 +6,7 @@ b2c: true
 expert: true
 stable: done
 a1Densities: true
+group: Forms & Inputs
 ---
 
 Use a radio button when you want the user to choose from a relatively small (i.e. two to six) group of mutually exclusive options. If several options can be selected, consider checkboxes instead. Please note that the radio button has no margins.

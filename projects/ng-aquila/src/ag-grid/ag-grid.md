@@ -7,6 +7,9 @@ expert: true
 stable: progress
 noApi: true
 a1Light: true
+group: 
+- Utilities
+- Data Display
 ---
 
 <div class="docs-deprecation-warning">

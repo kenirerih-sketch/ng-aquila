@@ -6,6 +6,10 @@ import { NxHeadlineModule } from '@allianz/ng-aquila/headline';
 import { NxIconComponent } from '@allianz/ng-aquila/icon';
 import { NxIndicatorComponent } from '@allianz/ng-aquila/indicator';
 import { NxInputModule } from '@allianz/ng-aquila/input';
+import {
+  NxRadioToggleButtonComponent,
+  NxRadioToggleComponent,
+} from '@allianz/ng-aquila/radio-toggle';
 import { NxTableModule } from '@allianz/ng-aquila/table';
 import { NxTagComponent, NxTagGroupComponent } from '@allianz/ng-aquila/taglist';
 import { NX_DOCS_GITHUB_LINK, ThemeSwitcherService } from '@allianz/ngx-docs-ui';
@@ -13,6 +17,7 @@ import { Component, computed, Inject, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
+import { NxvComponentIconComponent } from '../../../documentation/component-icon/component-icon.component';
 import { ComponentDescriptor } from '../../../core/manifest';
 import { GithubLinkConfig } from '../../../core/types';
 import { ManifestService } from '../../../service/manifest.service';
@@ -36,7 +41,10 @@ type A1FilterTag = 'a1Light' | 'densities' | 'a1Full' | 'ndbxOnly';
     NxTagGroupComponent,
     NxTagComponent,
     NxPlainButtonComponent,
+    NxRadioToggleComponent,
+    NxRadioToggleButtonComponent,
     FormsModule,
+    NxvComponentIconComponent,
   ],
 })
 export class NxvOverviewComponent {
@@ -59,9 +67,22 @@ export class NxvOverviewComponent {
 
   readonly searchQuery = signal('');
 
+  readonly selectedGroup = signal<string>('all');
+
+  readonly componentGroups = [
+    'Navigation',
+    'Forms & Inputs',
+    'Data Display',
+    'Overlays',
+    'Layout',
+    'Actions',
+    'Utilities',
+  ] as const;
+
   clearAllFilters(): void {
     this.searchQuery.set('');
     this.selectedFilters.set(this.filterTags.map((t) => t.value));
+    this.selectedGroup.set('all');
   }
 
   constructor(
@@ -71,7 +92,10 @@ export class NxvOverviewComponent {
     this.issueBoardLink = `${githubLinkConfig.repoLink}/issues`;
   }
 
-  readonly allSelected = computed(() => this.selectedFilters().length === this.filterTags.length);
+  readonly allSelected = computed(
+    () =>
+      this.selectedFilters().length === this.filterTags.length && this.selectedGroup() === 'all',
+  );
   readonly totalCount = computed(() =>
     (this._components() ?? []).reduce((sum, cat) => sum + cat.children.length, 0),
   );
@@ -83,9 +107,14 @@ export class NxvOverviewComponent {
     this._router.navigate(['/documentation', component.component.id]);
   }
 
+  getComponentGroup(group: string | string[] | undefined): string | undefined {
+    return Array.isArray(group) ? group.join(', ') : group;
+  }
+
   readonly filteredComponents = computed(() => {
     const selected: Set<A1FilterTag | null> = new Set(this.selectedFilters());
     const query = this.searchQuery().trim().toLowerCase();
+    const group = this.selectedGroup();
     return (this._components() ?? []).map((cat) => ({
       ...cat,
       totalChildren: cat.children.length,
@@ -93,7 +122,10 @@ export class NxvOverviewComponent {
         const category = this._getA1Category(child.component);
         const matchesA1Progress = category === null || selected.has(category);
         const matchesSearch = !query || this._matchesSearch(child, query);
-        return matchesA1Progress && matchesSearch;
+        const groups = child.component.group;
+        const matchesGroup =
+          group === 'all' || (Array.isArray(groups) ? groups.includes(group) : groups === group);
+        return matchesA1Progress && matchesSearch && matchesGroup;
       }),
     }));
   });

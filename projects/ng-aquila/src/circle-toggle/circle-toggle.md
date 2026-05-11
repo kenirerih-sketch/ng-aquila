@@ -8,6 +8,7 @@ stable: done
 alias: button, radio, toggle, checkbox
 a1Light: true
 a1: false
+group: Forms & Inputs
 ---
 
 The toggle circle can be used as standalone toggle circle (checkbox role) or multiple toggle circles can be grouped with the circle toggle group wrapper and fullfill a radio group role.

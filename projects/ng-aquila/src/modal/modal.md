@@ -16,6 +16,7 @@ desc: |
     ...,
     "node_modules/@angular/cdk/overlay-prebuilt.css"
     ]
+group: Overlays
 ---
 
 

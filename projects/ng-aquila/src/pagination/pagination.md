@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: pager, paginator
 a1Densities: true
+group: Navigation
 ---
 
 Pagination is used for splitting up content or data into several pages, with controls for navigating to the next or previous page. You can choose between two options:

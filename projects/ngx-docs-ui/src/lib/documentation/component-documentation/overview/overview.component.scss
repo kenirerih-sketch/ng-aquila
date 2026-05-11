@@ -1,6 +1,24 @@
 @import '../../../../../../ng-aquila/src/shared-styles/theming/theming';
 @import '../../../styles/themes/docs-theme';
 
+::ng-deep {
+  .nx-radio-toggle {
+    --toggle-button-width: 100%;
+    --toggle-button-horizontal-padding: var(--segmented-control-m-button-inset-horizontal, 14px);
+    --toggle-button-large-font-size: var(--toggle-button-large-font-size, 12px);
+    width: 100%;
+  }
+  nx-radio-toggle-button {
+    flex: 1;
+  }
+  .nx-radio-toggle__label-container {
+    justify-content: center;
+  }
+  .nx-radio-toggle__label {
+    white-space: nowrap;
+  }
+}
+
 .status-explanation {
   display: grid;
   grid-template-columns: 0.2fr 1fr; /* Two equal columns */
@@ -67,6 +85,26 @@
 .nxv-component-category__container {
   margin-bottom: 64px;
   margin-top: 32px;
+  container-type: inline-size;
+}
+
+@container (max-width: 980px) {
+  .nxv-components-table__catalog-header,
+  .nxv-components-table__catalog-cell {
+    display: none;
+  }
+}
+@container (max-width: 680px) {
+  .nxv-components-table__alias-header,
+  .nxv-components-table__alias-cell {
+    display: none;
+  }
+}
+@container (max-width: 480px) {
+  .nxv-components-table__status-header,
+  .nxv-components-table__support-cell {
+    display: none;
+  }
 }
 
 .nxv-components-table__status-header,
@@ -94,6 +132,13 @@
   }
 }
 
+.nxv-components-table__component-label-inner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nxv-components-table__group,
 .nxv-components-table__alias {
   opacity: 0.6;
 }
@@ -107,6 +152,10 @@
   display: flex;
   align-items: baseline;
   gap: 8px;
+}
+.nxv-group-filter-row {
+  margin-top: 12px;
+  margin-bottom: 4px;
 }
 
 .nxv-filter-count {

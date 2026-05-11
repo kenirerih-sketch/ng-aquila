@@ -7,6 +7,9 @@ expert: true
 stable: done
 alias: card, selectable card
 a1Densities: true
+group:
+  - Data Display
+  - Forms & Inputs
 ---
 
 Use this component to present a card with different options.

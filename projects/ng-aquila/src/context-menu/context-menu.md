@@ -8,6 +8,7 @@ stable: done
 alias: menu
 a1Light: true
 a1Densities: true
+group: Overlays
 ---
 
 <div class="docs-deprecation-warning">

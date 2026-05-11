@@ -7,6 +7,7 @@ expert: true
 stable: done
 a1Light: true
 a1Densities: true
+group: Forms & Inputs
 ---
 
 Autocomplete is a companion to the input element. When input element receives a focus or a down arrow is pressed and autocomplete items are defined, the autcomplete panel is displayed. On selecting the autocomplete option, it's value is used to set the value of input.

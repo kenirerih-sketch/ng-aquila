@@ -16,43 +16,52 @@
             <div class="search-results">
               @if (searchResults()?.component?.entries?.length) {
                 <div>
-                  <h2>
-                    Components ({{
-                      searchResults().component.entries.length < searchResults().component.total
-                        ? searchResults().component.entries.length +
-                          ' of ' +
-                          searchResults().component.total
-                        : searchResults().component.entries.length
-                    }})
+                  <h2>Components ({{ countLabel(searchResults().component) }})</h2>
+                  @for (group of componentGroups(); track group.name) {
+                    <h3 class="search-results__group-heading">
+                      {{ group.name }}
+                    </h3>
+                    @for (entry of group.entries; track entry.item.id) {
+                      <div class="search-results__entry search-results__component-entry">
+                        <nxv-component-icon [label]="entry.item.title" />
+                        <div class="search-results__component-info">
+                          <div class="search-results__component-name">
+                            <nx-link>
+                              <a [routerLink]="['/my-viewer/documentation', entry.item.id]">{{
+                                entry.item.title
+                              }}</a>
+                            </nx-link>
+                            @if (entry.item.alias) {
+                              <span class="nx-margin-left-s" [nx-attention-color]="'gray'">{{
+                                entry.item.alias
+                              }}</span>
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  }
+                </div>
+              }
+              @if (searchResults()?.general?.entries?.length) {
+                <div>
+                  <h2 class="nx-margin-top-3m">
+                    General ({{ countLabel(searchResults().general) }})
                   </h2>
-                  @for (entry of searchResults().component.entries; track entry.item.id) {
-                    <div class="search-results__entry">
+                  @for (entry of searchResults().general.entries; track entry.item.id) {
+                    <div class="nx-margin-bottom-m">
                       <nx-link>
                         <a [routerLink]="['/my-viewer/documentation', entry.item.id]">{{
                           entry.item.title
                         }}</a>
                       </nx-link>
-                      @if (entry.item.alias) {
-                        <nx-badge colorScheme="teal" class="nx-margin-left-s">{{
-                          entry.item.alias
-                        }}</nx-badge>
-                      }
-                      <div class="nx-margin-bottom-m">
-                        {{ entry.item.id }} {{ entry.item.category }}
-                      </div>
                     </div>
                   }
                 </div>
               }
               @if (searchResults()?.api?.entries?.length) {
                 <div>
-                  <h2 class="nx-margin-top-3m">
-                    API ({{
-                      searchResults().api.entries.length < searchResults().api.total
-                        ? searchResults().api.entries.length + ' of ' + searchResults().api.total
-                        : searchResults().api.entries.length
-                    }})
-                  </h2>
+                  <h2 class="nx-margin-top-3m">API ({{ countLabel(searchResults().api) }})</h2>
                   @for (
                     entry of searchResults().api.entries;
                     track entry.item.id + '.' + entry.item.name
@@ -82,15 +91,7 @@
               }
               @if (searchResults()?.guide?.entries?.length) {
                 <div>
-                  <h2 class="nx-margin-top-3m">
-                    Guides ({{
-                      searchResults().guide.entries.length < searchResults().guide.total
-                        ? searchResults().guide.entries.length +
-                          ' of ' +
-                          searchResults().guide.total
-                        : searchResults().guide.entries.length
-                    }})
-                  </h2>
+                  <h2 class="nx-margin-top-3m">Guides ({{ countLabel(searchResults().guide) }})</h2>
                   @for (entry of searchResults().guide.entries; track entry.item.id) {
                     <p class="search-results__entry">
                       <nx-link>
@@ -105,13 +106,7 @@
               @if (searchResults()?.example?.entries?.length) {
                 <div>
                   <h2 class="nx-margin-top-3m">
-                    Example ({{
-                      searchResults().example.entries.length < searchResults().example.total
-                        ? searchResults().example.entries.length +
-                          ' of ' +
-                          searchResults().example.total
-                        : searchResults().example.entries.length
-                    }})
+                    Example ({{ countLabel(searchResults().example) }})
                   </h2>
                   @for (entry of searchResults().example.entries; track entry.item.id) {
                     <p class="search-results__entry">

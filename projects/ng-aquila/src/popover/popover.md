@@ -6,6 +6,7 @@ b2c: true
 expert: true
 stable: done
 a1Densities: true
+group: Overlays
 ---
 
 Popover requires Angular CDK (incl. CSS). Learn [how to enable Angular CDK styles](./documentation/overlay/overview#angular-cdk).

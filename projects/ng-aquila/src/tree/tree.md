@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: treeview
 a1Densities: true
+group: Navigation
 ---
 
 <div class="docs-deprecation-warning">

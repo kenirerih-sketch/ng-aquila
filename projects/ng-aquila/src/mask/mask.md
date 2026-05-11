@@ -8,6 +8,7 @@ stable: done
 alias: input mask, masked input
 a1Light: true
 a1Densities: true
+group: Forms & Inputs
 ---
 
 ### Overview

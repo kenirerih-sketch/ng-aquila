@@ -6,6 +6,7 @@ b2c: true
 expert: true
 stable: done
 a1Full: true
+group: Data Display
 ---
 
 The signal button can be used to open a popover with a message. With use of `popoverDirection` the popover can be opened in the direction `top`, `bottom`, `left` and `right`. The popover `scrollStrategy` can be set to `close` or `reposition`.

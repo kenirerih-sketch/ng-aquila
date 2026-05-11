@@ -8,6 +8,7 @@ stable: done
 alias: text form, inline field
 a1: false
 a1Light: true
+group: Forms & Inputs
 ---
 
 <div class="docs-deprecation-warning">

@@ -6,6 +6,7 @@ b2c: true
 expert: true
 stable: done
 a1Full: true
+group: Data Display
 ---
 
 The component library supports three types of lists: unordered lists, ordered lists and lists with icons.

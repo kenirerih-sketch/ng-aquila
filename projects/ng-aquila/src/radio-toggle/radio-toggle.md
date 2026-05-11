@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: radio toggle, segmented control, button group, toggle group
 a1Full: true
+group: Forms & Inputs
 ---
 
 ## Examples

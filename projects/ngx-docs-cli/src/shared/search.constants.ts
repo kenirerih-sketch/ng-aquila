@@ -1,6 +1,7 @@
 export enum SearchDisplayType {
   GUIDE = 'guide',
   COMPONENT = 'component',
+  GENERAL = 'general',
   EXAMPLE = 'example',
   DIRECTIVE = 'directive',
   SERVICES = 'services',
@@ -36,5 +37,6 @@ export const fuseOptions = {
     'alias',
     'directiveSelectors',
     'directiveExportAs',
+    'group',
   ],
 };

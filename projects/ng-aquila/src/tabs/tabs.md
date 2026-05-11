@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: navigation tabs
 a1Densities: true
+group: Navigation
 ---
 
 ### Basic Example

@@ -10,6 +10,9 @@ main {
   display: flex;
   flex-direction: column;
 }
+nx-link {
+  --link-small-font-size: var(--semantic-font-size-utility-m, 18px);
+}
 
 .search-results__wrapper {
   flex: 1 0 auto;
@@ -28,4 +31,37 @@ main {
   opacity: 0.5;
   font-style: italic;
   font-weight: 100;
+}
+
+.search-results__component-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.search-results__component-entry {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  margin-bottom: var(--semantic-gap-all-linear-600, 22px);
+
+  nxv-component-icon {
+    flex-shrink: 0;
+    align-self: center;
+    min-width: 42px;
+  }
+}
+
+.search-results__group-heading {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  margin: 16px 0 8px;
+  opacity: 0.56;
+}
+
+.search-results__component-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }

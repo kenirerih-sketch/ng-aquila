@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: otp, pin input
 a1Densities: true
+group: Forms & Inputs
 ---
 
 Use this component when you want users to input a one-time, fixed, and specific set of characters to be validated. There is no limit to how many fields can be used.

@@ -8,6 +8,7 @@ stable: done
 alias: heading, title
 a1Light: true
 a1Densities: true
+group: Data Display
 ---
 
 Headlines are decoupled from the actual markup. You can pick any tag from h1 - h6 to fulfill the expected semantics and adjust the appearance with the following attributes.

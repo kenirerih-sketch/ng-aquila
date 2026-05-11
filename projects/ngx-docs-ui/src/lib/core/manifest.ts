@@ -25,6 +25,7 @@ export interface ComponentDescriptor {
   a1Light?: boolean;
   a1Densities?: boolean;
   alias?: string;
+  group?: string | string[];
 }
 
 export interface GuideDescriptor {

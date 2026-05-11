@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: sidebar, drawer, sheet, side sheet
 a1Densities: true
+group: Overlays
 ---
 
 <div class="docs-deprecation-warning">

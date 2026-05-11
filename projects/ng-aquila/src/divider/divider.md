@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: separator
 a1Full: true
+group: Layout
 ---
 
 ### Divider

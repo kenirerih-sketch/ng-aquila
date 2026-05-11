@@ -3,24 +3,53 @@ import { NxGridModule } from '@allianz/ng-aquila/grid';
 import { NxLinkModule } from '@allianz/ng-aquila/link';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 
+import { NxvComponentIconComponent } from '../component-icon/component-icon.component';
 import { FuseSearchService } from '../../service/fuse-search.service';
+import { NxAttentionColorComponent } from '@allianz/ng-aquila/text';
 
 @Component({
   selector: 'nxv-search-results',
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss'],
-  imports: [CdkScrollable, NxGridModule, NxLinkModule, NxBadgeModule, AsyncPipe, RouterModule],
+  imports: [
+    CdkScrollable,
+    NxGridModule,
+    NxLinkModule,
+    NxBadgeModule,
+    AsyncPipe,
+    RouterModule,
+    NxvComponentIconComponent,
+    NxAttentionColorComponent,
+  ],
 })
 export class NxvSearchResultsComponent implements OnInit, OnDestroy {
   maxEntriesPerCategory = 15;
   readonly searchTerm = signal('');
   initializing = false;
   readonly searchResults = signal<any>(null);
+  readonly componentGroups = computed(() => {
+    const entries: any[] = this.searchResults()?.component?.entries ?? [];
+    const groups = entries.reduce<Record<string, any[]>>((acc, entry) => {
+      const groupValue = entry.item.group;
+      const groupKeys: string[] = Array.isArray(groupValue)
+        ? groupValue.length > 0
+          ? groupValue
+          : ['Other']
+        : [groupValue ?? 'Other'];
+      // Combine multiple group labels into one key so each component appears only once
+      const combinedKey = [...groupKeys].sort().join(', ');
+      (acc[combinedKey] ??= []).push(entry);
+      return acc;
+    }, {});
+    return Object.entries(groups)
+      .map(([name, items]) => ({ name, entries: items }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  });
   initReady$ = new BehaviorSubject(false);
   searchChanged$ = new BehaviorSubject('');
   private readonly _destroyed = new Subject<void>();
@@ -76,6 +105,12 @@ export class NxvSearchResultsComponent implements OnInit, OnDestroy {
       data[item.searchDisplayType].total++;
     }
     return data;
+  }
+
+  countLabel(category: { entries: any[]; total: number }): string {
+    return category.entries.length < category.total
+      ? `${category.entries.length} of ${category.total}`
+      : `${category.entries.length}`;
   }
 
   getApiBadge(type: string) {

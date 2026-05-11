@@ -7,6 +7,7 @@ expert: true
 stable: done
 alias: progress spinner, loading, loader
 a1Densities: true
+group: Data Display
 ---
 
 ### Sizes

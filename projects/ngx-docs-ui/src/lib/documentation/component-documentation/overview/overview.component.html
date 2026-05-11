@@ -54,7 +54,7 @@
       </h2>
       <h3 nxHeadline="subsection-small" class="nxv-filter-heading">
         <span>
-          Filter by name, alias or A1 progress
+          Filter by group, name, alias or A1 progress
           @if (!allSelected() || searchQuery()) {
             <nx-indicator position="after-text"></nx-indicator>
           }
@@ -64,6 +64,19 @@
           <button nxPlainButton (click)="clearAllFilters()">Clear</button>
         }
       </h3>
+      <div class="nxv-group-filter-row">
+        <nx-radio-toggle
+          [ngModel]="selectedGroup()"
+          (ngModelChange)="selectedGroup.set($event)"
+          [variant]="'medium'"
+          aria-label="Filter by component group"
+        >
+          <nx-radio-toggle-button value="all">All</nx-radio-toggle-button>
+          @for (group of componentGroups; track group) {
+            <nx-radio-toggle-button [value]="group">{{ group }}</nx-radio-toggle-button>
+          }
+        </nx-radio-toggle>
+      </div>
       <div class="nxv-filters-row">
         <div class="nxv-search-formfield">
           <nx-formfield>
@@ -106,100 +119,120 @@
   componentCategory of (_isAquilaDocs() ? _components : filteredComponents)();
   track componentCategory.label
 ) {
-  <div nxRow class="nxv-component-category__container">
-    <div nxCol="12,12,12,10">
-      <h2 nxHeadline="subsection-medium" class="nxv-category-heading">
-        {{ componentCategory.label }}
-        @if (!_isAquilaDocs()) {
-          <span class="nxv-category-count"
-            >{{ componentCategory.children.length }}/{{
-              filteredComponents()[$index].totalChildren
-            }}</span
-          >
-        }
-      </h2>
-      <table nxTable class="nxv-components-table">
-        <thead>
-          <tr nxTableRow>
-            <th nxHeaderCell>Name</th>
-            <th nxHeaderCell>Aliases</th>
-            <th nxHeaderCell class="nxv-components-table__status-header" colspan="3">
-              @if (!_isAquilaDocs()) {
-                A1 Compatibility
-              }
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (component of componentCategory.children; track component) {
-            <tr
-              nxTableRow
-              [routerLink]="['/documentation', component.component.id]"
-              (keydown.ENTER)="navigateToComponent(component)"
-              (keydown.SPACE)="navigateToComponent(component)"
-              class="nxv-components-table__component-row"
-              [class.is-deprecated]="component.component.deprecated"
+  @if (componentCategory.children.length > 0) {
+    <div nxRow class="nxv-component-category__container">
+      <div nxCol="12,12,12,10">
+        <h2 nxHeadline="subsection-medium" class="nxv-category-heading">
+          {{ componentCategory.label }}
+          @if (!_isAquilaDocs()) {
+            <span class="nxv-category-count"
+              >{{ componentCategory.children.length }}/{{
+                filteredComponents()[$index].totalChildren
+              }}</span
             >
-              <td nxCell class="nxv-components-table__component-label">
-                <a [routerLink]="['/documentation', component.component.id]">{{
-                  component.label
-                }}</a>
-              </td>
-              <td nxCell>
-                <span class="nxv-components-table__alias">{{ component.component.alias }}</span>
-              </td>
-              <td
-                nxCell
-                class="nxv-components-table__support-cell"
-                colspan="3"
-                style="text-align: start"
-              >
-                @if (!_isAquilaDocs()) {
-                  @if (
-                    component.component.a1Light ||
-                    component.component.a1Densities ||
-                    component.component.a1Full
-                  ) {
-                    <nx-badge
-                      class="nxv-components-table__status-badge"
-                      colorScheme="gray"
-                      prominence="subtle"
-                    >
-                      <div class="badge-content-centered">
-                        <nx-icon name="check" size="auto"></nx-icon>
-                        A1 Light
-                      </div>
-                    </nx-badge>
-                  }
-                  @if (component.component.a1 !== undefined && !component.component.a1) {
-                    <nx-badge class="nxv-components-table__status-badge" type="critical">
-                      <div class="badge-content-centered">
-                        <nx-icon name="exclamation-circle-warning" size="auto"></nx-icon> NDBX Only
-                      </div>
-                    </nx-badge>
-                  }
-                  @if (component.component.a1Densities || component.component.a1Full) {
-                    <nx-badge class="nxv-components-table__status-badge" type="active">
-                      <div class="badge-content-centered">
-                        <nx-icon name="check" size="auto"></nx-icon> Densities
-                      </div>
-                    </nx-badge>
-                  }
-                  @if (component.component.a1Full) {
-                    <nx-badge class="nxv-components-table__status-badge" type="positive">
-                      <div class="badge-content-centered">
-                        <nx-icon name="check" size="auto"></nx-icon> A1 Full
-                      </div>
-                    </nx-badge>
-                  }
-                }
-              </td>
-            </tr>
           }
-        </tbody>
-      </table>
+        </h2>
+        <table nxTable class="nxv-components-table">
+          <thead>
+            <tr nxTableRow>
+              <th nxHeaderCell>Name</th>
+              <th nxHeaderCell class="nxv-components-table__alias-header">Aliases</th>
+              @if (componentCategory.label !== 'general') {
+                <th nxHeaderCell class="nxv-components-table__catalog-header">Group</th>
+              }
+              <th nxHeaderCell class="nxv-components-table__status-header" colspan="3">
+                @if (!_isAquilaDocs()) {
+                  A1 Compatibility
+                }
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (component of componentCategory.children; track component) {
+              <tr
+                nxTableRow
+                [routerLink]="['/documentation', component.component.id]"
+                (keydown.ENTER)="navigateToComponent(component)"
+                (keydown.SPACE)="navigateToComponent(component)"
+                class="nxv-components-table__component-row"
+                [class.is-deprecated]="component.component.deprecated"
+              >
+                <td nxCell class="nxv-components-table__component-label">
+                  <div class="nxv-components-table__component-label-inner">
+                    @if (componentCategory.label !== 'general') {
+                      <nxv-component-icon [label]="component.label" />
+                    }
+                    <div>
+                      <a [routerLink]="['/documentation', component.component.id]">{{
+                        component.label
+                      }}</a>
+                    </div>
+                  </div>
+                </td>
+                <td nxCell class="nxv-components-table__alias-cell">
+                  <span class="nxv-components-table__alias">{{ component.component.alias }}</span>
+                </td>
+                @if (componentCategory.label !== 'general') {
+                  <td nxCell class="nxv-components-table__catalog-cell">
+                    @if (getComponentGroup(component.component.group); as group) {
+                      <span class="nxv-components-table__group">{{ group }}</span>
+                    }
+                  </td>
+                }
+                <td
+                  nxCell
+                  class="nxv-components-table__support-cell"
+                  colspan="3"
+                  style="text-align: start"
+                >
+                  @if (!_isAquilaDocs()) {
+                    @if (
+                      component.component.a1Light ||
+                      component.component.a1Densities ||
+                      component.component.a1Full
+                    ) {
+                      <nx-badge
+                        class="nxv-components-table__status-badge"
+                        colorScheme="gray"
+                        prominence="subtle"
+                      >
+                        <div class="badge-content-centered">
+                          <nx-icon name="check" size="auto"></nx-icon>
+                          A1 Light
+                        </div>
+                      </nx-badge>
+                    }
+                    @if (component.component.a1 !== undefined && !component.component.a1) {
+                      <nx-badge class="nxv-components-table__status-badge" type="critical">
+                        <div class="badge-content-centered">
+                          <nx-icon name="exclamation-circle-warning" size="auto"></nx-icon> NDBX
+                          Only
+                        </div>
+                      </nx-badge>
+                    }
+                    @if (component.component.a1Densities || component.component.a1Full) {
+                      <nx-badge class="nxv-components-table__status-badge" type="active">
+                        <div class="badge-content-centered">
+                          <nx-icon name="check" size="auto"></nx-icon> Densities
+                        </div>
+                      </nx-badge>
+                    }
+                    @if (component.component.a1Full) {
+                      <nx-badge class="nxv-components-table__status-badge" type="positive">
+                        <div class="badge-content-centered">
+                          <nx-icon name="check" size="auto"></nx-icon> A1 Full
+                        </div>
+                      </nx-badge>
+                    }
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
+  }
 }
 <p>
   If a component you need is not listed here,

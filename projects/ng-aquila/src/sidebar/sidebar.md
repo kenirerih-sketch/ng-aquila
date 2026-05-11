@@ -8,6 +8,7 @@ stable: done
 alias: sidenav, side navigation, side menu
 a1Light: true
 a1Densities: true
+group: Navigation
 ---
 
 The `<nx-sidebar>` provides a collapsible container for side content (often navigation, though it can be any content) alongside some primary content.
