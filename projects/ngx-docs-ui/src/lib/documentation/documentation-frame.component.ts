@@ -13,6 +13,7 @@ import {
   InjectionToken,
   OnDestroy,
   Optional,
+  signal,
   viewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -91,6 +92,19 @@ export class DocumentationFrameComponent implements OnDestroy, AfterViewInit {
   hideNavigation = false;
 
   cssVarSidebar = viewChild(CssVarSidebarComponent);
+  mobileSearch = viewChild<NxvSearchInputComponent>('mobileSearch');
+
+  readonly mobileSearchOpen = signal(false);
+
+  openMobileSearch() {
+    this.mobileSearchOpen.set(true);
+    // Focus after the overlay is rendered so the keyboard opens on touch devices.
+    queueMicrotask(() => this.mobileSearch()?.focusInput());
+  }
+
+  closeMobileSearch() {
+    this.mobileSearchOpen.set(false);
+  }
 
   readonly isA1DarkTheme = computed(() => {
     const name = this._themeSwitcherService.selectedTheme().name;

@@ -2,7 +2,15 @@ import { NxButtonModule } from '@allianz/ng-aquila/button';
 import { NxFormfieldModule } from '@allianz/ng-aquila/formfield';
 import { NxIconModule } from '@allianz/ng-aquila/icon';
 import { NxInputModule } from '@allianz/ng-aquila/input';
-import { Component, OnInit } from '@angular/core';
+import {
+  booleanAttribute,
+  Component,
+  ElementRef,
+  input,
+  OnInit,
+  output,
+  viewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -15,6 +23,17 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
   imports: [NxButtonModule, NxFormfieldModule, NxIconModule, NxInputModule, FormsModule],
 })
 export class NxvSearchInputComponent implements OnInit {
+  /**
+   * Enables mobile behavior: the clear button is always shown and, when pressed
+   * while the input is empty, emits `close` instead of clearing.
+   */
+  readonly mobile = input(false, { transform: booleanAttribute });
+
+  /** Emits when the user dismisses the search (clear pressed on empty input). */
+  readonly close = output<void>();
+
+  readonly searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
+
   searchTerm = '';
   searchTermChanged$ = new BehaviorSubject<string>('');
 
@@ -22,6 +41,10 @@ export class NxvSearchInputComponent implements OnInit {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
   ) {}
+
+  focusInput() {
+    this.searchInput()?.nativeElement.focus();
+  }
 
   ngOnInit() {
     this.searchTermChanged$
@@ -57,6 +80,12 @@ export class NxvSearchInputComponent implements OnInit {
   }
 
   resetSearchInput(): void {
+    // In mobile mode, pressing clear while the input is already empty means
+    // "dismiss the expanded search" — let the host component handle it.
+    if (this.mobile() && !this.searchTerm) {
+      this.close.emit();
+      return;
+    }
     this.searchTermChanged$.next('');
     this.searchTerm = '';
   }

@@ -75,7 +75,7 @@
         </nx-link>
       </nx-header-actions>
     </nx-header-row>
-    <nx-header-row class="nx-mobile-navigation">
+    <nx-header-row class="nx-mobile-navigation" [class.is-search-open]="mobileSearchOpen()">
       @if (showMobileMenuButton) {
         <button
           nxIconButton="tertiary small"
@@ -99,6 +99,18 @@
           <a [routerLink]="'/guides'" routerLinkActive="is-active" nxHeaderLink>Guides</a>
         </nx-header-navigation-item>
       </nx-header-navigation>
+      <button
+        nxIconButton="tertiary small"
+        class="nx-margin-bottom-0 nx-mobile-search__trigger"
+        aria-label="Open search"
+        [attr.aria-expanded]="mobileSearchOpen()"
+        (click)="openMobileSearch()"
+      >
+        <nx-icon name="search"></nx-icon>
+      </button>
+      <div class="nx-mobile-search__overlay" [class.is-open]="mobileSearchOpen()">
+        <nxv-search #mobileSearch mobile (close)="closeMobileSearch()"></nxv-search>
+      </div>
     </nx-header-row>
   </header>
 }

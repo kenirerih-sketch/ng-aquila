@@ -15,7 +15,7 @@ $toc-width: 200px;
   padding-top: var(--header-height);
 
   @media (max-width: $sidebar-hidden-breakpoint) {
-    padding-top: 120px;
+    padding-top: calc(2 * var(--header-height));
   }
 }
 
@@ -80,6 +80,8 @@ nx-header-navigation ::ng-deep .nx-header__link {
 }
 
 .nx-mobile-navigation {
+  position: relative;
+
   @media (min-width: $sidebar-hidden-breakpoint) {
     display: none;
   }
@@ -188,9 +190,56 @@ nx-header-actions > :not(:first-child) {
   margin-left: 4px;
 }
 
-// hide search on very small screens due to space constrains, especially with a wide logo
-nxv-search {
+// on small screens the inline search in the top header row doesn't fit alongside
+// the logo and header navigation. On mobile it is replaced by a search-icon
+// trigger in the mobile nav row that expands into a full-width overlay on top
+// of the nav items (see .nx-mobile-search__* below).
+nx-header-navigation nxv-search {
   @media (max-width: 592px) {
+    display: none !important;
+  }
+}
+
+// Search trigger icon + expandable overlay inside the mobile navigation row.
+
+.nx-mobile-search__trigger {
+  @media (min-width: 593px) {
+    display: none !important;
+  }
+}
+
+.nx-mobile-search__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: v(header-background-color);
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.18s ease,
+    visibility 0s linear 0.18s;
+  z-index: 2;
+
+  @media (min-width: 593px) {
     display: none;
+  }
+
+  &.is-open {
+    visibility: visible;
+    opacity: 1;
+    transition:
+      opacity 0.18s ease,
+      visibility 0s;
+  }
+
+  nxv-search {
+    flex: 1;
+    display: block;
+  }
+
+  ::ng-deep .search-input {
+    margin-right: 0;
   }
 }

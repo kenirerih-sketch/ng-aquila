@@ -16,13 +16,16 @@ export const NX_DOCS_SELECTABLE_THEMES = new InjectionToken<Theme[]>('DOCS_SELEC
 
 const LOCAL_STORAGE_KEY = 'nx-docs-selected-theme';
 const LOCAL_STORAGE_GRID_TYPE_KEY = 'nx-docs-selected-grid-type';
+const DEFAULT_THEME_NAME = 'allianz-one-compact';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeSwitcherService {
   private readonly _themes = inject(NX_DOCS_SELECTABLE_THEMES);
   private readonly _router = inject(Router);
   private readonly _hashService = inject(NxvVersionHashService);
-  readonly selectedTheme = signal<Theme>(this._themes[0]);
+  readonly selectedTheme = signal<Theme>(
+    this._themes.find((t) => t.name === DEFAULT_THEME_NAME) ?? this._themes[0],
+  );
   readonly selectedGridType = signal<GridType>('default');
 
   private readonly layoutOptions = inject<LayoutDefaultOptions>(LAYOUT_DEFAULT_OPTIONS, {

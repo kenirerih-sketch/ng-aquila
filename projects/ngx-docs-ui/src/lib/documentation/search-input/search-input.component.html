@@ -1,13 +1,19 @@
 <div class="search-input">
   <nx-formfield>
-    <input placeholder="Search" nxInput (keyup)="onSearchKeyUp($event)" [(ngModel)]="searchTerm" />
-    @if (searchTerm) {
+    <input
+      #searchInput
+      placeholder="Search"
+      nxInput
+      (keyup)="onSearchKeyUp($event)"
+      [(ngModel)]="searchTerm"
+    />
+    @if (searchTerm || mobile()) {
       <button
         nxPlainButton
         type="button"
         class="search-input__clear"
         (click)="resetSearchInput()"
-        aria-label="Clear search"
+        [attr.aria-label]="mobile() && !searchTerm ? 'Close search' : 'Clear search'"
       >
         <nx-icon name="close" aria-hidden="true"></nx-icon>
       </button>
