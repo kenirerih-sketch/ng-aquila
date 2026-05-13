@@ -79,6 +79,8 @@ describe('NxCheckboxGroupComponent', () => {
         ConditionalCheckboxGroupReactive,
         ConfigurableCheckboxGroup,
         CheckboxGroupOnPush,
+        CheckboxGroupAriaLabelledBy,
+        CheckboxGroupAriaLabelledByWithError,
       ],
     }).compileComponents();
   }));
@@ -302,6 +304,51 @@ describe('NxCheckboxGroupComponent', () => {
       createTestComponent(BasicCheckboxGroup);
       await expectAsync(fixture.nativeElement).toBeAccessible();
     });
+
+    it('should include ariaLabelledBy in aria-labelledby', () => {
+      createTestComponent(CheckboxGroupAriaLabelledBy);
+      const groupEl = fixture.nativeElement.querySelector('nx-checkbox-group') as HTMLElement;
+
+      expect(groupEl.getAttribute('aria-labelledby')).not.toContain('external-label');
+
+      (fixture as ComponentFixture<CheckboxGroupAriaLabelledBy>).componentInstance.ariaLabelledBy =
+        'external-label';
+      fixture.detectChanges();
+
+      expect(groupEl.getAttribute('aria-labelledby')).toContain('external-label');
+    });
+
+    it('should merge ariaLabelledBy with the internal nx-label id', () => {
+      createTestComponent(CheckboxGroupAriaLabelledBy);
+      (fixture as ComponentFixture<CheckboxGroupAriaLabelledBy>).componentInstance.ariaLabelledBy =
+        'external-label';
+      fixture.detectChanges();
+
+      const labelId = fixture.nativeElement.querySelector('.nx-label__content')?.id;
+      const groupEl = fixture.nativeElement.querySelector('nx-checkbox-group') as HTMLElement;
+      const ariaLabelledBy = groupEl.getAttribute('aria-labelledby');
+
+      expect(ariaLabelledBy).toBe(`external-label ${labelId}`);
+    });
+
+    it('should merge ariaLabelledBy with nx-label id and error id', fakeAsync(() => {
+      createTestComponent(CheckboxGroupAriaLabelledByWithError);
+      const instance = fixture.componentInstance as CheckboxGroupAriaLabelledByWithError;
+      instance.ariaLabelledBy = 'external-label';
+      fixture.detectChanges();
+      tick();
+
+      // trigger error state by submitting with no values selected
+      instance.myFormGroup.markAllAsTouched();
+      fixture.detectChanges();
+
+      const groupEl = fixture.nativeElement.querySelector('nx-checkbox-group') as HTMLElement;
+      const labelId = fixture.nativeElement.querySelector('.nx-label__content')?.id;
+      const errorId = fixture.nativeElement.querySelector('.nx-error__content')?.id;
+      const ariaLabelledBy = groupEl.getAttribute('aria-labelledby');
+
+      expect(ariaLabelledBy).toBe(`external-label ${labelId} ${errorId}`);
+    }));
   });
 });
 
@@ -510,4 +557,47 @@ export class ConditionalCheckboxGroupReactive extends CheckboxGroupTest {
 export class CheckboxGroupOnPush extends CheckboxGroupTest {
   checkboxes: string[] = ['Term 1', 'Term 2', 'Term 3'];
   @ViewChild('checkboxGroup', { read: NxAbstractControl }) group!: NxAbstractControl;
+}
+
+@Component({
+  template: `
+    <nx-checkbox-group name="terms" [ariaLabelledBy]="ariaLabelledBy">
+      <nx-label>Accept terms</nx-label>
+      <nx-checkbox>Term 1</nx-checkbox>
+      <nx-checkbox>Term 2</nx-checkbox>
+    </nx-checkbox-group>
+  `,
+  imports: [NxCheckboxModule, FormsModule, NxErrorModule, NxLabelModule, ReactiveFormsModule],
+})
+class CheckboxGroupAriaLabelledBy extends CheckboxGroupTest {
+  ariaLabelledBy: string | null = null;
+}
+
+@Component({
+  template: `
+    <form [formGroup]="myFormGroup">
+      <nx-checkbox-group
+        name="terms"
+        formControlName="terms"
+        [ariaLabelledBy]="ariaLabelledBy"
+        required
+      >
+        <nx-label>Accept terms</nx-label>
+        <nx-checkbox value="Term 1">Term 1</nx-checkbox>
+        <nx-checkbox value="Term 2">Term 2</nx-checkbox>
+        <nx-error appearance="text">Please accept all our terms and conditions</nx-error>
+      </nx-checkbox-group>
+    </form>
+  `,
+  imports: [NxCheckboxModule, FormsModule, NxErrorModule, NxLabelModule, ReactiveFormsModule],
+})
+class CheckboxGroupAriaLabelledByWithError extends CheckboxGroupTest {
+  ariaLabelledBy: string | null = null;
+
+  constructor(private readonly fb: FormBuilder) {
+    super();
+    this.myFormGroup = this.fb.group({
+      terms: [[], Validators.required],
+    });
+  }
 }

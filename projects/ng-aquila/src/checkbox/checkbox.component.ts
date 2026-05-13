@@ -114,6 +114,9 @@ export class NxCheckboxGroupComponent
     alias: 'id',
   });
 
+  /** Sets additional aria-labelledby IDs to be merged with the auto-generated label reference on the group element. */
+  readonly ariaLabelledBy = input<string | null>(null);
+
   /** Sets the name of the checkboxes inside the nx-checkbox-group. */
   @Input() set name(value: string) {
     this._name = value;
@@ -296,10 +299,8 @@ export class NxCheckboxGroupComponent
   }
 
   getLabelledby() {
-    if (!this._label?.id && !this.error?.id) {
-      return null;
-    }
-    return [this._label?.id, this.error?.id].join(' ');
+    const ids = [this.ariaLabelledBy(), this._label?.id, this.error?.id].filter(Boolean);
+    return ids.length ? ids.join(' ') : null;
   }
 }
 
@@ -357,6 +358,14 @@ export class NxCheckboxComponent
 
   readonly ariaLabel = input<string | null>(null);
   readonly ariaLabelledBy = input<string | null>(null);
+  /** Sets the aria-describedby attribute on the native input element, merged with any projected error id. */
+  readonly ariaDescribedBy = input<string | null>(null);
+
+  /** @docs-private */
+  protected get _getAriaDescribedBy(): string | null {
+    const ids = [this.ariaDescribedBy(), this.error?.id].filter(Boolean);
+    return ids.length ? ids.join(' ') : null;
+  }
   /**
    * Id of the checkbox.
    *

@@ -96,6 +96,8 @@ describe('NxCheckboxComponent', () => {
         CheckboxNegative,
         CheckboxA11y,
         CheckboxConfigurable,
+        CheckboxAriaDescribedBy,
+        ReactiveCheckboxWithDescribedBy,
       ],
     }).compileComponents();
   }));
@@ -432,6 +434,30 @@ describe('NxCheckboxComponent', () => {
 
       expect(inputElement.getAttribute('aria-describedby')).toBe(errorId);
     });
+
+    it('should set aria-describedby from ariaDescribedBy input', () => {
+      createTestComponent(CheckboxAriaDescribedBy);
+
+      expect(inputElement.getAttribute('aria-describedby')).toBeNull();
+
+      (fixture as ComponentFixture<CheckboxAriaDescribedBy>).componentInstance.ariaDescribedBy =
+        'external-hint';
+      fixture.detectChanges();
+
+      expect(inputElement.getAttribute('aria-describedby')).toBe('external-hint');
+    });
+
+    it('should merge ariaDescribedBy input with projected error id', () => {
+      createTestComponent(ReactiveCheckboxWithDescribedBy);
+      (
+        fixture as ComponentFixture<ReactiveCheckboxWithDescribedBy>
+      ).componentInstance.ariaDescribedBy = 'my-hint';
+      checkboxInstance.ngControl!.control!.markAsTouched();
+      fixture.detectChanges();
+      const errorId = (testInstance as ReactiveCheckboxWithDescribedBy).error?.id;
+
+      expect(inputElement.getAttribute('aria-describedby')).toBe(`my-hint ${errorId}`);
+    });
   });
 });
 
@@ -538,6 +564,43 @@ class ReactiveCheckbox extends CheckboxTest {
 
     this.fb = new FormBuilder();
 
+    this.testForm = this.fb.group({
+      checkbox: new FormControl(
+        { value: false, disabled: false },
+        { validators: Validators.requiredTrue },
+      ),
+    });
+  }
+}
+
+@Component({
+  template: `<nx-checkbox [ariaDescribedBy]="ariaDescribedBy"></nx-checkbox>`,
+  imports: [NxCheckboxModule],
+})
+class CheckboxAriaDescribedBy extends CheckboxTest {
+  ariaDescribedBy: string | null = null;
+}
+
+@Component({
+  template: `
+    <form [formGroup]="testForm">
+      <nx-checkbox formControlName="checkbox" [ariaDescribedBy]="ariaDescribedBy">
+        Hello NX
+        <nx-error>This is error</nx-error>
+      </nx-checkbox>
+      <button nxButton="primary small" type="submit" id="submit-button">Click</button>
+    </form>
+  `,
+  imports: [NxCheckboxModule, FormsModule, ReactiveFormsModule, NxErrorComponent],
+})
+class ReactiveCheckboxWithDescribedBy extends CheckboxTest {
+  @ViewChild(NxErrorComponent) error!: NxErrorComponent;
+  ariaDescribedBy: string | null = null;
+
+  fb;
+  constructor() {
+    super();
+    this.fb = new FormBuilder();
     this.testForm = this.fb.group({
       checkbox: new FormControl(
         { value: false, disabled: false },

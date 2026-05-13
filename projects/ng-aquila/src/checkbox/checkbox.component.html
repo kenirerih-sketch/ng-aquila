@@ -9,7 +9,7 @@
   (blur)="touch()"
   [attr.aria-labelledby]="ariaLabelledBy()"
   [attr.aria-label]="ariaLabel()"
-  [attr.aria-describedby]="error?.id || null"
+  [attr.aria-describedby]="_getAriaDescribedBy"
   [attr.aria-disabled]="readonly || null"
   (click)="_onInputClick($event)"
   class="nx-checkbox__input"
