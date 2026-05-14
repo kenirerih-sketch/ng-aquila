@@ -969,6 +969,8 @@ $nx-theme: (
   checkbox-on-selection-readonly-selected-background-color: readonly-surface-color,
   checkbox-on-selection-readonly-selected-border-color: readonly-surface-color,
   checkbox-on-selection-readonly-selected-icon-color: readonly-on-surface-color,
+  checkbox-error-margin-top: 8px,
+  checkbox-label-margin-bottom: 16px,
   // Eyebrow
   eyebrow-font-m: paragraph-01-font-weight paragraph-01-font-size / paragraph-01-line-height
     'font-family',

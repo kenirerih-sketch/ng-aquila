@@ -3,11 +3,11 @@
 :host {
   ::ng-deep {
     nx-error {
-      margin-bottom: nx-spacer(2xs);
+      margin-top: v(checkbox-error-margin-top);
     }
 
     nx-label {
-      margin-bottom: nx-spacer(s);
+      margin-bottom: v(checkbox-label-margin-bottom);
       display: block;
     }
   }
