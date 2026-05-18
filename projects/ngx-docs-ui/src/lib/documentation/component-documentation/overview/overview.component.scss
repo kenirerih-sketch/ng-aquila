@@ -82,6 +82,54 @@
   table-layout: fixed;
 }
 
+.nxv-feature-comparison-table {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  max-width: 720px;
+
+  .nxv-feature-comparison-table__status-cell {
+    text-align: center;
+    width: 160px;
+  }
+
+  td .nxv-feature-comparison-table__status-header {
+    gap: 4px;
+  }
+
+  .nxv-feature-comparison-table__status-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+
+    nx-info-icon {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+}
+
+.nxv-feature-comparison-table--non-a1 {
+  .nxv-feature-comparison-table__status-cell nx-icon[name='check'] {
+    color: #1a6e1a;
+  }
+}
+
+.nxv-feature-comparison-table__caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  opacity: 0.8;
+  font-size: 0.875rem;
+}
+
+.nxv-theme-switcher-hint {
+  font-weight: 600;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
 .nxv-component-category__container {
   margin-bottom: 64px;
   margin-top: 32px;
@@ -140,7 +188,7 @@
 
 .nxv-components-table__group,
 .nxv-components-table__alias {
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .nxv-components-table__status-badge {

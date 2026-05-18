@@ -5,7 +5,9 @@ import { NxGridModule } from '@allianz/ng-aquila/grid';
 import { NxHeadlineModule } from '@allianz/ng-aquila/headline';
 import { NxIconComponent } from '@allianz/ng-aquila/icon';
 import { NxIndicatorComponent } from '@allianz/ng-aquila/indicator';
+import { NxInfoIconComponent } from '@allianz/ng-aquila/info-icon';
 import { NxInputModule } from '@allianz/ng-aquila/input';
+import { NxLinkComponent } from '@allianz/ng-aquila/link';
 import {
   NxRadioToggleButtonComponent,
   NxRadioToggleComponent,
@@ -38,12 +40,14 @@ type A1FilterTag = 'a1Light' | 'densities' | 'a1Full' | 'ndbxOnly';
     NxBadgeModule,
     NxIconComponent,
     NxIndicatorComponent,
+    NxInfoIconComponent,
     NxTagGroupComponent,
     NxTagComponent,
     NxPlainButtonComponent,
     NxRadioToggleComponent,
     NxRadioToggleButtonComponent,
     FormsModule,
+    NxLinkComponent,
     NxvComponentIconComponent,
   ],
 })
@@ -56,14 +60,18 @@ export class NxvOverviewComponent {
     this._themeService.selectedTheme().name.includes('aquila'),
   );
 
+  protected readonly _isNonA1Theme = computed(
+    () => !this._themeService.selectedTheme().name.startsWith('allianz-one'),
+  );
+
   readonly filterTags: { value: A1FilterTag; label: string }[] = [
-    { value: 'a1Light', label: 'Only A1 Light' },
-    { value: 'densities', label: 'A1 Light & Densities' },
+    { value: 'a1Light', label: 'A1 Light' },
+    { value: 'densities', label: 'A1 Ready' },
     { value: 'a1Full', label: 'A1 Full' },
     { value: 'ndbxOnly', label: 'NDBX Only' },
   ];
 
-  readonly selectedFilters = signal<A1FilterTag[]>(['a1Light', 'densities', 'a1Full', 'ndbxOnly']);
+  readonly selectedFilters = signal<A1FilterTag[]>([]);
 
   readonly searchQuery = signal('');
 
@@ -81,8 +89,7 @@ export class NxvOverviewComponent {
 
   clearAllFilters(): void {
     this.searchQuery.set('');
-    this.selectedFilters.set(this.filterTags.map((t) => t.value));
-    this.selectedGroup.set('all');
+    this.selectedFilters.set([]);
   }
 
   constructor(
@@ -92,10 +99,7 @@ export class NxvOverviewComponent {
     this.issueBoardLink = `${githubLinkConfig.repoLink}/issues`;
   }
 
-  readonly allSelected = computed(
-    () =>
-      this.selectedFilters().length === this.filterTags.length && this.selectedGroup() === 'all',
-  );
+  readonly noneSelected = computed(() => this.selectedFilters().length === 0);
   readonly totalCount = computed(() =>
     (this._components() ?? []).reduce((sum, cat) => sum + cat.children.length, 0),
   );
@@ -112,15 +116,15 @@ export class NxvOverviewComponent {
   }
 
   readonly filteredComponents = computed(() => {
-    const selected: Set<A1FilterTag | null> = new Set(this.selectedFilters());
+    const selected = new Set<A1FilterTag>(this.selectedFilters());
     const query = this.searchQuery().trim().toLowerCase();
     const group = this.selectedGroup();
     return (this._components() ?? []).map((cat) => ({
       ...cat,
       totalChildren: cat.children.length,
       children: cat.children.filter((child) => {
-        const category = this._getA1Category(child.component);
-        const matchesA1Progress = category === null || selected.has(category);
+        const categories = this._getA1Categories(child.component);
+        const matchesA1Progress = selected.size === 0 || categories.some((c) => selected.has(c));
         const matchesSearch = !query || this._matchesSearch(child, query);
         const groups = child.component.group;
         const matchesGroup =
@@ -143,11 +147,16 @@ export class NxvOverviewComponent {
     return false;
   }
 
-  private _getA1Category(c: ComponentDescriptor): A1FilterTag | null {
-    if (c.a1Full) return 'a1Full';
-    if (c.a1Densities) return 'densities';
-    if (c.a1Light) return 'a1Light';
-    if (c.a1 === false) return 'ndbxOnly';
-    return null;
+  private _getA1Categories(c: ComponentDescriptor): A1FilterTag[] {
+    const categories: A1FilterTag[] = [];
+    if (c.a1 === false) categories.push('ndbxOnly');
+    if (c.a1Full) {
+      categories.push('a1Full');
+    } else if (c.a1Densities) {
+      categories.push('densities');
+    } else if (c.a1Light) {
+      categories.push('a1Light');
+    }
+    return categories;
   }
 }

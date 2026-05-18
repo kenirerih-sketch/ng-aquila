@@ -11,6 +11,13 @@ a1: false
 group: Forms & Inputs
 ---
 
+<div class="docs-deprecation-warning">
+<strong>NDBX Only</strong></br>
+The Circle Toggle is only supported in NDBX and is not part of the A1 design system. For A1 applications, it should be migrated to <a href="./documentation/tile/overview">Tiles</a>.</br>
+The <a href="./guides/develop-with-ai">Develop with AI</a> migration skill can help automate this migration.
+<div class="docs-a1"><small><a href="./guides/a1#tl%253Bdr">More A1 Design System infos</a></small></div>
+</div>
+
 The toggle circle can be used as standalone toggle circle (checkbox role) or multiple toggle circles can be grouped with the circle toggle group wrapper and fullfill a radio group role.
 
 Use this component to illustrate what information your checkbox communicates by integrating an icon or custom SVG. In order to edit your SVGs correctly, it should be 80x80px in size. You can use the viewBox attribute to do so. Since the circle has a diameter of 80, it will fit neatly at the edges and cut off the images' corners.<br> This is how the feature is currently implemented in the desktop version.<br> To avoid cutting off the corners you may, however, decide to place a smaller version of the SVG wholly inside the circle. The icon or SVG you use should not have a border as it is a part of the component itself and in case the icon is not shown the user will still see a good looking empty button with a label.

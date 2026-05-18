@@ -5,62 +5,227 @@
     <div nxCol="12,12,12,10">
       All components can be used with the A1 themes. The table below shows the compatibility status
       of each component with the different A1 support levels:
-      <div class="status-explanation">
-        <div>
-          <nx-badge
-            class="nxv-components-table__status-badge"
-            colorScheme="gray"
-            prominence="subtle"
-          >
-            <div class="badge-content-centered">
-              <nx-icon name="check" size="auto"></nx-icon>
-              A1 Light
-            </div>
-          </nx-badge>
-        </div>
-        Supports basic A1 with colors, typography icons etc.. Ready to be used but deviations from
-        A1 designs possible.
-        <div>
-          <nx-badge class="nxv-components-table__status-badge" type="active">
-            <div class="badge-content-centered">
-              <nx-icon name="check" size="auto"></nx-icon> Densities
-            </div>
-          </nx-badge>
-        </div>
-        Supports A1 densities. Component adapts to different A1 density themes.
-        <div>
-          <nx-badge class="nxv-components-table__status-badge" type="positive">
-            <div class="badge-content-centered">
-              <nx-icon name="check" size="auto"></nx-icon> A1 Full
-            </div>
-          </nx-badge>
-        </div>
-        Full support for A1 including all components features as per A1 design system.
-        <div>
-          <nx-badge class="nxv-components-table__status-badge" type="critical">
-            <div class="badge-content-centered">
-              <nx-icon name="exclamation-circle-warning" size="auto"></nx-icon> NDBX Only
-            </div>
-          </nx-badge>
-        </div>
-        Not part of A1 design system. Usage in A1 projects is not recommended and should be upgraded
-        to A1 Components or patterns.
-      </div>
-      To see the individual component in the A1 themes, switch the theme using the theme switcher
-      <nx-icon name="fill-drip" class="nxv-icon-inline"></nx-icon> in the top right corner.
+      <table
+        nxTable
+        class="nxv-feature-comparison-table"
+        [class.nxv-feature-comparison-table--non-a1]="_isNonA1Theme()"
+      >
+        <thead>
+          <tr nxTableRow>
+            <th nxHeaderCell></th>
+            <th nxHeaderCell class="nxv-feature-comparison-table__status-cell">
+              <div class="nxv-feature-comparison-table__status-header">
+                <nx-badge
+                  class="nxv-components-table__status-badge"
+                  colorScheme="gray"
+                  prominence="subtle"
+                >
+                  <div class="badge-content-centered">
+                    <nx-icon name="check" size="auto"></nx-icon>
+                    A1 Light
+                  </div>
+                </nx-badge>
+                <nx-info-icon buttonAriaLabel="About A1 Light" popoverWidth="280px">
+                  Supports basic A1 with colors, typography, icons etc. Ready to be used, but
+                  deviations from A1 designs are possible.
+                </nx-info-icon>
+              </div>
+            </th>
+            <th nxHeaderCell class="nxv-feature-comparison-table__status-cell">
+              <div class="nxv-feature-comparison-table__status-header">
+                <nx-badge class="nxv-components-table__status-badge" type="active">
+                  <div class="badge-content-centered">
+                    <nx-icon name="check" size="auto"></nx-icon> A1 Ready
+                  </div>
+                </nx-badge>
+                <nx-info-icon buttonAriaLabel="About A1 Ready" popoverWidth="280px">
+                  Aligned with A1 designs. Supports A1 densities and adapts to different A1 density
+                  themes, including dark theme.
+                </nx-info-icon>
+              </div>
+            </th>
+            <th nxHeaderCell class="nxv-feature-comparison-table__status-cell">
+              <div class="nxv-feature-comparison-table__status-header">
+                <nx-badge class="nxv-components-table__status-badge" type="positive">
+                  <div class="badge-content-centered">
+                    <nx-icon name="check" size="auto"></nx-icon> A1 Full
+                  </div>
+                </nx-badge>
+                <nx-info-icon buttonAriaLabel="About A1 Full" popoverWidth="280px">
+                  Full support for A1, including all component features as per the A1 design system.
+                </nx-info-icon>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr nxTableRow>
+            <td nxCell>A1 Colors &amp; Typography</td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="check"
+                type="accent-subtle"
+                contained="true"
+                accentColor="green"
+                aria-label="A1 Colors and Typography supported in A1 Light"
+              ></nx-icon>
+            </td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="check"
+                type="accent-subtle"
+                contained="true"
+                accentColor="green"
+                aria-label="A1 Colors and Typography supported in A1 Ready"
+              ></nx-icon>
+            </td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="check"
+                type="accent-subtle"
+                contained="true"
+                accentColor="green"
+                aria-label="A1 Colors and Typography supported in A1 Full"
+              ></nx-icon>
+            </td>
+          </tr>
+          <tr nxTableRow>
+            <td nxCell>A1 Appearance</td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon name="minus" aria-label="A1 Appearance not supported in A1 Light"></nx-icon>
+            </td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="check"
+                type="accent-subtle"
+                contained="true"
+                accentColor="green"
+                aria-label="A1 Appearance supported in A1 Ready"
+              ></nx-icon>
+            </td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="check"
+                type="accent-subtle"
+                contained="true"
+                accentColor="green"
+                aria-label="A1 Appearance supported in A1 Full"
+              ></nx-icon>
+            </td>
+          </tr>
+          <tr nxTableRow>
+            <td nxCell>A1 Densities</td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon name="minus" aria-label="Densities not supported in A1 Light"></nx-icon>
+            </td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="check"
+                type="accent-subtle"
+                contained="true"
+                accentColor="green"
+                aria-label="Densities supported in A1 Ready"
+              ></nx-icon>
+            </td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="check"
+                type="accent-subtle"
+                contained="true"
+                accentColor="green"
+                aria-label="Densities supported in A1 Full"
+              ></nx-icon>
+            </td>
+          </tr>
+          <tr nxTableRow>
+            <td nxCell>A1 Dark Theme</td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon name="minus" aria-label="Dark Theme not supported in A1 Light"></nx-icon>
+            </td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="check"
+                type="accent-subtle"
+                contained="true"
+                accentColor="green"
+                aria-label="Dark Theme supported in A1 Ready"
+              ></nx-icon>
+            </td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="check"
+                type="accent-subtle"
+                contained="true"
+                accentColor="green"
+                aria-label="Dark Theme supported in A1 Full"
+              ></nx-icon>
+            </td>
+          </tr>
+          <tr nxTableRow>
+            <td nxCell>
+              <div class="nxv-feature-comparison-table__status-header">
+                All new A1 Features
+                <nx-info-icon buttonAriaLabel="About All new A1 Features" popoverWidth="280px">
+                  A1 introduced new features to components that are being implemented, such as new
+                  component style variants, additional interaction patterns, and other A1-specific
+                  enhancements.
+                </nx-info-icon>
+              </div>
+            </td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="minus"
+                aria-label="All A1 Features not supported in A1 Light"
+              ></nx-icon>
+            </td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="minus"
+                aria-label="All A1 Features not supported in A1 Ready"
+              ></nx-icon>
+            </td>
+            <td nxCell class="nxv-feature-comparison-table__status-cell">
+              <nx-icon
+                name="check"
+                type="accent-subtle"
+                contained="true"
+                accentColor="green"
+                aria-label="All A1 Features supported in A1 Full"
+              ></nx-icon>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="nxv-feature-comparison-table__caption">
+        <nx-badge class="nxv-components-table__status-badge" type="critical">
+          <div class="badge-content-centered">
+            <nx-icon name="exclamation-circle-warning" size="auto"></nx-icon> NDBX Only
+          </div>
+        </nx-badge>
+        <small
+          >Not part of A1. Usage in A1 projects is not recommended — upgrade to an A1 component or
+          pattern. <nx-link><a [routerLink]="['/guides', 'a1']">More on A1</a></nx-link></small
+        >
+      </p>
+
+      <p class="nxv-theme-switcher-hint">
+        To see the individual component in the A1 themes, switch the theme using the theme switcher
+        <nx-icon name="fill-drip" class="nxv-icon-inline"></nx-icon> in the top right corner.
+      </p>
 
       <h2 class="nxv-catalog-heading">
         Catalog <span class="nxv-filter-count">{{ filteredCount() }}/{{ totalCount() }}</span>
       </h2>
       <h3 nxHeadline="subsection-small" class="nxv-filter-heading">
         <span>
-          Filter by group, name, alias or A1 progress
-          @if (!allSelected() || searchQuery()) {
+          Filter by name, alias or A1 progress
+          @if (!noneSelected() || searchQuery()) {
             <nx-indicator position="after-text"></nx-indicator>
           }
         </span>
 
-        @if (!allSelected() || searchQuery()) {
+        @if (!noneSelected() || searchQuery()) {
           <button nxPlainButton (click)="clearAllFilters()">Clear</button>
         }
       </h3>
@@ -186,11 +351,21 @@
                   style="text-align: start"
                 >
                   @if (!_isAquilaDocs()) {
-                    @if (
+                    @let isNdbxOnly =
+                      component.component.a1 !== undefined && !component.component.a1;
+                    @let hasAnyA1 =
                       component.component.a1Light ||
                       component.component.a1Densities ||
-                      component.component.a1Full
-                    ) {
+                      component.component.a1Full;
+                    @if (isNdbxOnly) {
+                      <nx-badge class="nxv-components-table__status-badge" type="critical">
+                        <div class="badge-content-centered">
+                          <nx-icon name="exclamation-circle-warning" size="auto"></nx-icon> NDBX
+                          Only
+                        </div>
+                      </nx-badge>
+                    }
+                    @if (isNdbxOnly && hasAnyA1) {
                       <nx-badge
                         class="nxv-components-table__status-badge"
                         colorScheme="gray"
@@ -201,26 +376,27 @@
                           A1 Light
                         </div>
                       </nx-badge>
-                    }
-                    @if (component.component.a1 !== undefined && !component.component.a1) {
-                      <nx-badge class="nxv-components-table__status-badge" type="critical">
-                        <div class="badge-content-centered">
-                          <nx-icon name="exclamation-circle-warning" size="auto"></nx-icon> NDBX
-                          Only
-                        </div>
-                      </nx-badge>
-                    }
-                    @if (component.component.a1Densities || component.component.a1Full) {
-                      <nx-badge class="nxv-components-table__status-badge" type="active">
-                        <div class="badge-content-centered">
-                          <nx-icon name="check" size="auto"></nx-icon> Densities
-                        </div>
-                      </nx-badge>
-                    }
-                    @if (component.component.a1Full) {
+                    } @else if (component.component.a1Full) {
                       <nx-badge class="nxv-components-table__status-badge" type="positive">
                         <div class="badge-content-centered">
                           <nx-icon name="check" size="auto"></nx-icon> A1 Full
+                        </div>
+                      </nx-badge>
+                    } @else if (component.component.a1Densities) {
+                      <nx-badge class="nxv-components-table__status-badge" type="active">
+                        <div class="badge-content-centered">
+                          <nx-icon name="check" size="auto"></nx-icon> A1 Ready
+                        </div>
+                      </nx-badge>
+                    } @else if (component.component.a1Light) {
+                      <nx-badge
+                        class="nxv-components-table__status-badge"
+                        colorScheme="gray"
+                        prominence="subtle"
+                      >
+                        <div class="badge-content-centered">
+                          <nx-icon name="check" size="auto"></nx-icon>
+                          A1 Light
                         </div>
                       </nx-badge>
                     }

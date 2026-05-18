@@ -14,7 +14,8 @@
 }
 
 .nxv-example-viewer {
-  border: 1px solid lightgrey;
+  border: 1px solid v(card-border-color);
+  border-radius: var(--card-border-radius, 6px);
   margin-bottom: 32px;
   width: 100%;
   background: v(ui-01);
@@ -39,6 +40,7 @@
 
 .nxv-example-viewer__header {
   background: v(documentation-header-background);
+  border-radius: v(card-border-radius) v(card-border-radius) 0 0;
   padding: 16px;
   display: flex;
   justify-content: space-between;
