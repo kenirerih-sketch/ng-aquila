@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 21.9.0 (2026-05-19)
+
+
+### Documentation 📚
+
+* **overview:**  add group and icon ([aadd20d](https://github.com/allianz/ng-aquila/commit/aadd20dfaf5fee6c8d091d77991eec6ce4f20fc6))
+
+
+### Features ✨
+
+* **docs:** improving docs readability and style ([b953e57](https://github.com/allianz/ng-aquila/commit/b953e57fe8eeb05f7813eddfe8fa445d9f097cfb))
+
+
+### Bug Fixes 🐛
+
+* **checkbox:** add ariaDescribedBy input ([4e04af7](https://github.com/allianz/ng-aquila/commit/4e04af7ff918be710737cc2225c02d92570cbced))
+* **checkbox:** reorder error and update margin styles ([8bed569](https://github.com/allianz/ng-aquila/commit/8bed569d61cc16f24cecffd2a4da2422f381076d))
+* **link:** move text-decoration to inner anchor element ([d58142d](https://github.com/allianz/ng-aquila/commit/d58142d33abc20e43c497bf68d46626f2cb29da2))
+* **multi-select:** remove liveannoucer ([e407237](https://github.com/allianz/ng-aquila/commit/e40723720e5b5c3f7483dc9b26b93cd75d8e301c))
+* **number-stepper:** forward-clicks from wrapper to input ([2bf4182](https://github.com/allianz/ng-aquila/commit/2bf41821ecad9a0d64848f461104fd3a50605271))
+* **tab-group:** fix underline bleeding ([f0618b3](https://github.com/allianz/ng-aquila/commit/f0618b33c0fb58011c23d1b6fd76904591b1dd70))
+* **timefield:** remove inline style ([7fc9199](https://github.com/allianz/ng-aquila/commit/7fc91997974a9cddaf299d654ee5152938c6bb2b))
+
 ## 21.8.0 (2026-04-30)
 
 
