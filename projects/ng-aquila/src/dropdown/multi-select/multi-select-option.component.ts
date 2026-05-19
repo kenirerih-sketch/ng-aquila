@@ -1,7 +1,7 @@
 import { AppearanceType } from '@allianz/ng-aquila/formfield';
 import { NxIconModule } from '@allianz/ng-aquila/icon';
 import { IdGenerationService } from '@allianz/ng-aquila/utils';
-import { Highlightable, ListKeyManagerOption, LiveAnnouncer } from '@angular/cdk/a11y';
+import { Highlightable, ListKeyManagerOption } from '@angular/cdk/a11y';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -80,7 +80,6 @@ export class NxMultiSelectOptionComponent<T> implements Highlightable, ListKeyMa
   constructor(
     private readonly _cdr: ChangeDetectorRef,
     readonly elementRef: ElementRef,
-    private readonly liveAnnouncer: LiveAnnouncer,
   ) {}
 
   setActiveStyles(): void {
@@ -96,7 +95,6 @@ export class NxMultiSelectOptionComponent<T> implements Highlightable, ListKeyMa
     if (!this.disabled) {
       this.selected = !this.selected;
       this.selectedChange.emit(this.selected);
-      this.liveAnnouncer.announce(`${this.label()} ${this.selected ? 'selected' : 'unselected'}`);
     }
   }
 

@@ -1,5 +1,4 @@
 import { AppearanceType } from '@allianz/ng-aquila/formfield';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ComponentHarness, HarnessLoader, parallel } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, Directive, Type, ViewChild } from '@angular/core';
@@ -60,12 +59,10 @@ describe('NxMultiSelectOptionComponent', () => {
   let multiSelectOptionInstance: NxMultiSelectOptionComponent<any>;
   let loader: HarnessLoader;
   let multiSelectOptionHarness: MultiSelectOptionHarness;
-  let liveAnnouncer: LiveAnnouncer;
 
   async function configureTestingModule() {
     return TestBed.configureTestingModule({
       imports: [NxDropdownModule, BasicMultiSelectOptionComponent],
-      providers: [LiveAnnouncer],
     }).compileComponents();
   }
 
@@ -74,7 +71,6 @@ describe('NxMultiSelectOptionComponent', () => {
     fixture.detectChanges();
     testInstance = fixture.componentInstance;
     multiSelectOptionInstance = testInstance.multiSelectOption;
-    liveAnnouncer = TestBed.inject(LiveAnnouncer);
 
     loader = TestbedHarnessEnvironment.loader(fixture);
   }
@@ -212,14 +208,6 @@ describe('NxMultiSelectOptionComponent', () => {
     it('has no accessibility violations', async () => {
       createTestComponent(BasicMultiSelectOptionComponent);
       await expectAsync(fixture.nativeElement).toBeAccessible();
-    });
-
-    it('read out select state', async () => {
-      createTestComponent(BasicMultiSelectOptionComponent);
-      const announceSpy = spyOn(liveAnnouncer, 'announce');
-      await multiSelectOptionHarness.click();
-
-      expect(announceSpy).toHaveBeenCalledWith('example label selected');
     });
   });
 });
